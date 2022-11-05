@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import Logo from './Logo'
 
-export default function SideBar() {
+export default function SideBar({user}) {
 
   return(
     <>
@@ -28,6 +28,13 @@ export default function SideBar() {
           <li><Link to="/err">Err</Link></li>
         </ul>
       </nav>
+
+      {
+      user &&
+        <div>
+          Logged in as { user }
+        </div>
+      }
     
     </div>
     </>

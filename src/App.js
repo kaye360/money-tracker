@@ -10,8 +10,12 @@ import Transactions from "./views/Transactions";
 import Savings from "./views/Savings";
 import About from "./views/About";
 import PageNotFound from "./views/PageNotFound";
+import { useState } from "react";
 
 function App() {
+
+  const [user, setUser] = useState(false);
+
   return (
     <>
     
@@ -27,12 +31,12 @@ function App() {
 
     <div className="App">
 
-      <SideBar />
+      <SideBar user={ user } />
 
       <main>
         <Routes>
 
-          <Route path="/" element={ <Home /> } />
+          <Route path="/" element={ <Home setUser={ setUser } /> } />
       
           <Route path="/budgets" element={ <Budgets /> } />
       

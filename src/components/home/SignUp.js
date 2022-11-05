@@ -16,6 +16,8 @@ export default function SignUp() {
         password : e.target[1].value,
         confirmPassword : e.target[2].value
       })   
+
+      if(res.error) throw new Error(res.error)
       setSignUpError(false)
     } catch (error) {
       setSignUpError(error.message)

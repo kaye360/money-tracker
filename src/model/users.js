@@ -41,5 +41,5 @@ export async function login({username, password}) {
   if (!loginRes.ok) throw new Error('Error with fetch Login')
 
   // Return success or fail
-  console.log(username, password)
+  return loginRes.json()
 }

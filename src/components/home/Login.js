@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Style } from 'react-style-tag'
 import { login } from '../../model/users'
 
-export default function Login() {
+export default function Login({setUser}) {
 
   const [loginError, setLoginError] = useState(false)
 
@@ -15,8 +15,11 @@ export default function Login() {
         password : e.target[1].value
       })
 
+      if(res.error) throw new Error(res.error)
+
       // set user to logged in
       setLoginError(false)
+      setUser(res[0])
     } catch (error) {
       setLoginError(error.message)
     }
@@ -46,6 +49,7 @@ export default function Login() {
       <h2>Log In</h2>
 
       {loginError}
+
       <form onSubmit={ handleLogin } >
 
         <label>
