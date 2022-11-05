@@ -98,16 +98,4 @@ class Users {
 
 
 
-  public function getUserSettings($params) {
-    echo json_encode( $params, JSON_PRETTY_PRINT);
-  } 
-  
-
-
-
-
-  public function setUserSettings($params) {
-    // Get Post Data    
-  } 
-
 }

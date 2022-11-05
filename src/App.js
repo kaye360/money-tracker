@@ -10,15 +10,19 @@ import Transactions from "./views/Transactions";
 import Savings from "./views/Savings";
 import About from "./views/About";
 import PageNotFound from "./views/PageNotFound";
-import { useState } from "react";
+import { createContext, useState } from "react";
+
+export const UserContext = createContext()
 
 function App() {
+
 
   const [user, setUser] = useState(false);
 
   return (
     <>
-    
+    <UserContext.Provider value={ user } >
+
     <Style>{`
       .App {
         display : grid;
@@ -31,7 +35,7 @@ function App() {
 
     <div className="App">
 
-      <SideBar user={ user } />
+      <SideBar />
 
       <main>
         <Routes>
@@ -56,6 +60,7 @@ function App() {
 
     </div>
     </Router>
+    </UserContext.Provider>
     </>
   );
 }

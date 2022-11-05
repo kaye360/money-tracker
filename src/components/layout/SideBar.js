@@ -1,8 +1,12 @@
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import Logo from './Logo'
+import { UserContext } from '../../App'
 
-export default function SideBar({user}) {
+export default function SideBar() {
+
+  const user = useContext(UserContext)
 
   return(
     <>
