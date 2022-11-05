@@ -6,6 +6,10 @@ class Users {
   private $dbh;
   private $stmt;
 
+
+
+
+  
   public function __construct() {
 
     $options = array(
@@ -21,6 +25,9 @@ class Users {
   }
   
   
+
+
+
   public function signUp() {
     // Get POST data and hash password
     $newUser = json_decode( file_get_contents("php://input"), true );
@@ -35,6 +42,10 @@ class Users {
     }
   } 
   
+
+
+
+
   public function logIn() {
     // Get Post data
     $loginPostData = json_decode( file_get_contents("php://input"), true );
@@ -58,18 +69,43 @@ class Users {
 
   } 
   
+
+
+
+
   public function logOut() {
-    // Get Post Data
+    // Place holder until I figure out how to use sessions with react. It shouldn't be that hard...
   } 
 
-  public function getUserById($params) {
-    echo json_encode( $params, JSON_PRETTY_PRINT);
+
+
+
+
+  public function getUserById($id) {
+    $this->stmt = $this->dbh->prepare('SELECT user_id, username, budgets, email FROM users where user_id = :id');
+    $this->stmt->execute(['id' => $id]);
+
+    $user = $this->stmt->fetch(PDO::FETCH_OBJ);
+
+    if( empty($user)) {
+      echo json_encode(['error' => 'User not found'], JSON_PRETTY_PRINT);
+    } else {
+      echo json_encode( $user, JSON_PRETTY_PRINT);
+    }
   } 
   
+
+
+
+
   public function getUserSettings($params) {
     echo json_encode( $params, JSON_PRETTY_PRINT);
   } 
   
+
+
+
+
   public function setUserSettings($params) {
     // Get Post Data    
   } 
