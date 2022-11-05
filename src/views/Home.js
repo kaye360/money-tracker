@@ -1,4 +1,6 @@
 import { Style } from 'react-style-tag'
+import SignUp from '../components/home/SignUp'
+import Login from '../components/home/Login'
 
 export default function Home() {
 
@@ -6,11 +8,16 @@ export default function Home() {
     <>
     <Style>
     {`
+
     `}
     </Style>
     
     <div>
       <h1>Home</h1>
+
+      <Login />
+
+      <SignUp />
     
     </div>
     </>

@@ -27,13 +27,17 @@ function init() {
   unset($url[0]);
 
   // Check/Get Method
-  if (!isset($url[1])) throw new Exception('No method specified');
+  if ( !isset($url[1])) throw new Exception('No method specified');
   $method = $url[1];
-  if (!method_exists($class, $method)) throw new Exception('Method doesn\'t exist');
+  if ( !method_exists($class, $method)) throw new Exception('Method doesn\'t exist');
   unset($url[1]);
 
+  // Check/Get Params. Params set to false on POST request
+  if( !isset($url[2]) && $_SERVER['REQUEST_METHOD'] == 'GET') throw new Exception('No Params specified on Get Rquest');
+  $params = $_SERVER['REQUEST_METHOD'] == 'GET' ? $url[2] : false;
+
   // Call class method with params
-  call_user_func(array($class, $method), $url);
+  call_user_func(array($class, $method), $params);
 }
 
 try{
