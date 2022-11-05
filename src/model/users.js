@@ -1,9 +1,11 @@
 import { UserModelURL } from '../config/config'
 import { postReqOptions } from '../utils/fetch'
 
+
+
 export async function signUp({username, password, confirmPassword}) {
 
-  // Check all forms filled out
+  // Check all inputs filled out
   if(!username || !password || !confirmPassword) throw new Error('Please fill out all fields')
 
   // Check if disallowed characters in username
@@ -18,10 +20,26 @@ export async function signUp({username, password, confirmPassword}) {
 
   // Fetch
   const signUpRes = await fetch(`${UserModelURL}/signUp`, postReqOptions({username, password}))
-  if(!signUpRes.ok) throw new Error('Error with Fetch function')
+  if(!signUpRes.ok) throw new Error('Error with Fetch Sign Up')
 
   // Return Response JSON
   const signUpSuccess = await signUpRes.json()
   if(signUpSuccess.error) throw new Error(signUpSuccess.error)
   return signUpSuccess
+}
+
+
+
+
+export async function login({username, password}) {
+
+  // Check all inputs filled out
+  if (!username || !password) throw new Error('Please fill out all fields')
+
+  // Fetch
+  const loginRes = await fetch(`${UserModelURL}/login`, postReqOptions({username, password}))
+  if (!loginRes.ok) throw new Error('Error with fetch Login')
+
+  // Return success or fail
+  console.log(username, password)
 }

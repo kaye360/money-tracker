@@ -27,18 +27,23 @@ export default function SignUp() {
     <>
     <Style>
     {`
-          .signup label {
-            display : block;
-          }
-    
-          .signup-label {
-            display : block;
-          }
+      .signUp {
+        margin-block : 1rem;
+      }
+
+      .signup label {
+        display : block;
+      }
+
+      .signup-label {
+        display : block;
+      }
     `}
     </Style>
     
     <div className='signUp'>
 
+      <h2>Sign Up</h2>
       {
       signUpError && `Error : ${signUpError}`
       }
@@ -47,12 +52,12 @@ export default function SignUp() {
 
         <label>
           <span className='signup-label'>Username :</span>
-          <input type="text" name="username" />
+          <input type="text" name="signUpUsername" />
         </label>
 
         <label>
           <span className='signup-label'>Password :</span>
-          <input type="password" name="password" />
+          <input type="password" name="signUpPassword" />
         </label>
 
         <label>

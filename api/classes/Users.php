@@ -36,7 +36,26 @@ class Users {
   } 
   
   public function logIn() {
-    // Get Post Data
+    // Get Post data
+    $loginPostData = json_decode( file_get_contents("php://input"), true );
+
+    // Query DB
+    $this->stmt = $this->dbh->prepare('SELECT * FROM users WHERE username = :username');
+    $this->stmt->execute(['username' => $loginPostData['username']]);
+
+    $user = $this->stmt->fetch(PDO::FETCH_OBJ);
+
+    if ( empty($user) ) {
+      echo json_encode(['error' => 'User Not Found'], JSON_PRETTY_PRINT);
+      return;
+    }
+    
+    if( password_verify($loginPostData['password'], $user->password) ) {
+      echo json_encode([$user->username, $user->user_id], JSON_PRETTY_PRINT);
+    } else {
+      echo json_encode(['error' => 'User and password don\'t match'], JSON_PRETTY_PRINT);
+    }
+
   } 
   
   public function logOut() {
