@@ -21,7 +21,7 @@ function App() {
 
   return (
     <>
-    <UserContext.Provider value={ user } >
+    <UserContext.Provider value={ [user, setUser] } >
 
     <Style>{`
       .App {
@@ -40,7 +40,7 @@ function App() {
       <main>
         <Routes>
 
-          <Route path="/" element={ <Home setUser={ setUser } /> } />
+          <Route path="/" element={ <Home /> } />
       
           <Route path="/budgets" element={ <Budgets /> } />
       

@@ -15,7 +15,7 @@ export default function Home({setUser}) {
     <div>
       <h1>Home</h1>
 
-      <Login setUser={ setUser } />
+      <Login />
 
       <SignUp />
     

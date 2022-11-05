@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Style } from 'react-style-tag'
 import { login } from '../../model/users'
+import { UserContext } from '../../App'
 
-export default function Login({setUser}) {
+export default function Login() {
+
+  const [user, setUser] = useContext(UserContext)
 
   const [loginError, setLoginError] = useState(false)
 
