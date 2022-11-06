@@ -17,6 +17,11 @@ export async function signUp({username, password, confirmPassword}) {
   if((username.length <= 5) || (password.length <= 5)) throw new Error('Username and Password must be longer than 5 characters')
 
   // Check if user Exists
+  const isUsernameTaken = await fetch(`${UserModelURL}getUserByUsername/${username}`)
+  if (!isUsernameTaken.ok) throw new Error('Error checking username availability')
+
+  const isUsernameTakenResult = await isUsernameTaken.json()
+  if(isUsernameTakenResult.username) throw new Error('Username is already taken. Please choose another username')
 
   // Fetch
   const signUpRes = await fetch(`${UserModelURL}/signUp`, postReqOptions({username, password}))
@@ -27,6 +32,7 @@ export async function signUp({username, password, confirmPassword}) {
   if(signUpSuccess.error) throw new Error(signUpSuccess.error)
   return signUpSuccess
 }
+
 
 
 

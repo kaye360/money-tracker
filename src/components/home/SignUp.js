@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useContext } from 'react'
 import { Style } from 'react-style-tag'
+import { FlashContext } from '../../App'
 import { signUp } from '../../model/users'
 
 export default function SignUp() {
 
-  const [signUpError, setSignUpError] = useState(false)
-  
+  const setFlash = useContext(FlashContext)[1]
 
   async function handleSignUp(e) {
     e.preventDefault()
@@ -18,9 +18,17 @@ export default function SignUp() {
       })   
 
       if(res.error) throw new Error(res.error)
-      setSignUpError(false)
+
+      
+      setFlash({
+        type : 'success',
+        message : `You have succesfully signed up as ${e.target[0].value}`
+      })
     } catch (error) {
-      setSignUpError(error.message)
+      setFlash({
+        type : 'fail',
+        message : error.message
+      })
     }
   }
 
@@ -33,7 +41,7 @@ export default function SignUp() {
         margin-block : 1rem;
       }
 
-      .signup label {
+      .signUp label {
         display : block;
       }
 
@@ -46,9 +54,6 @@ export default function SignUp() {
     <div className='signUp'>
 
       <h2>Sign Up</h2>
-      {
-      signUpError && `Error : ${signUpError}`
-      }
 
       <form onSubmit={ handleSignUp } >
 

@@ -1,13 +1,13 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { Style } from 'react-style-tag'
 import { login } from '../../model/users'
-import { UserContext } from '../../App'
+import { FlashContext, UserContext } from '../../App'
 
 export default function Login() {
 
-  const [user, setUser] = useContext(UserContext)
+  const setUser = useContext(UserContext)[1]
+  const setFlash = useContext(FlashContext)[1]
 
-  const [loginError, setLoginError] = useState(false)
 
   async function handleLogin(e) {
     e.preventDefault()
@@ -21,10 +21,16 @@ export default function Login() {
       if(res.error) throw new Error(res.error)
 
       // set user to logged in
-      setLoginError(false)
       setUser(res[0])
+      setFlash({
+        type : 'success',
+        message : `You are now logged in as ${res[0]}`
+      })
     } catch (error) {
-      setLoginError(error.message)
+      setFlash({
+        type : 'fail',
+        message : error.message
+      })
     }
   }
 
@@ -50,8 +56,6 @@ export default function Login() {
     <div className='login'>
 
       <h2>Log In</h2>
-
-      {loginError}
 
       <form onSubmit={ handleLogin } >
 

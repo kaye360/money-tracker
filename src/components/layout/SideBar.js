@@ -6,7 +6,7 @@ import { UserContext } from '../../App'
 
 export default function SideBar() {
 
-  const [user, setUser] = useContext(UserContext)
+  const [user] = useContext(UserContext)
 
   return(
     <>

@@ -2,7 +2,7 @@ import { Style } from 'react-style-tag'
 import SignUp from '../components/home/SignUp'
 import Login from '../components/home/Login'
 
-export default function Home({setUser}) {
+export default function Home() {
 
   return(
     <>

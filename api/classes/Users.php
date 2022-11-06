@@ -53,14 +53,15 @@ class Users {
     // Query DB
     $this->stmt = $this->dbh->prepare('SELECT * FROM users WHERE username = :username');
     $this->stmt->execute(['username' => $loginPostData['username']]);
-
     $user = $this->stmt->fetch(PDO::FETCH_OBJ);
 
+    // Check if User exists
     if ( empty($user) ) {
       echo json_encode(['error' => 'User Not Found'], JSON_PRETTY_PRINT);
       return;
     }
     
+    // Verify Password, echo results
     if( password_verify($loginPostData['password'], $user->password) ) {
       echo json_encode([$user->username, $user->user_id], JSON_PRETTY_PRINT);
     } else {
@@ -74,7 +75,7 @@ class Users {
 
 
   public function logOut() {
-    // Place holder until I figure out how to use sessions with react. It shouldn't be that hard...
+    // Place holder until I figure out how to use php sessions with react. It shouldn't be that hard...
   } 
 
 
@@ -84,6 +85,23 @@ class Users {
   public function getUserById($id) {
     $this->stmt = $this->dbh->prepare('SELECT user_id, username, budgets, email FROM users where user_id = :id');
     $this->stmt->execute(['id' => $id]);
+
+    $user = $this->stmt->fetch(PDO::FETCH_OBJ);
+
+    if( empty($user)) {
+      echo json_encode(['error' => 'User not found'], JSON_PRETTY_PRINT);
+    } else {
+      echo json_encode( $user, JSON_PRETTY_PRINT);
+    }
+  } 
+
+
+
+
+
+  public function getUserByUsername($username) {
+    $this->stmt = $this->dbh->prepare('SELECT user_id, username, budgets, email FROM users where username= :username');
+    $this->stmt->execute(['username' => $username]);
 
     $user = $this->stmt->fetch(PDO::FETCH_OBJ);
 
