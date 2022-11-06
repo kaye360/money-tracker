@@ -2,7 +2,7 @@ import { BudgetModelURL } from '../config/config'
 import { postReqOptions } from '../utils/fetch'
 
 
-export async function add({ name, amount, userId }) {
+export async function addBudget({ name, amount, userId }) {
 
   // Check all inputs filled out
   if(!name || !amount) throw new Error('Please fill out all fields')
@@ -23,7 +23,7 @@ export async function add({ name, amount, userId }) {
 
 
 
-export async function edit({ id, name, amount }) {
+export async function editBudget({ id, name, amount }) {
   console.log(id, name, amount)
 } 
 
@@ -31,15 +31,22 @@ export async function edit({ id, name, amount }) {
 
 
 
-export async function get({ userId }) {
-  console.log(userId)
+export async function getBudgets({ userId }) {
+
+  // Fetch user budgets
+  const getBudgetsRes = await fetch(`${BudgetModelURL}/get/${userId}`)
+  if(!getBudgetsRes.ok) throw new Error('Error fetching User Budgets')
+
+  const getBudgetsSuccess = await getBudgetsRes.json()
+  if(getBudgetsSuccess.error) throw new Error(getBudgetsSuccess.error)
+  return getBudgetsSuccess
 } 
 
 
 
 
 
-export async function remove({ budgetId }) {
+export async function removeBudget({ budgetId }) {
   console.log(budgetId)
 } 
 

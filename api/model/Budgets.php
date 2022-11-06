@@ -61,16 +61,36 @@ class Budgets {
 
 
 
+  public function get($userId) {
+
+    // Format Inputs
+    $users = new Users;
+    $user = $users->getUserById($userId);
+    $budgets = json_decode( $user['budgets'] );
+
+    if($budgets == null) {
+      return ['error' => 'You don\'t have any budgets yet'];
+    } else {
+      return $budgets;
+    }
+    return ;
+  }
+
+
+
+
+
   public function edit() {
     // POST
   }
-  
+
+
+
+
+
   public function delete($params) {
     // delete by budget Id
   }
   
-  public function get($params) {
-    // Get by user Id
-  }
   
 }
