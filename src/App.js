@@ -12,6 +12,7 @@ import Transactions from "./views/Transactions";
 import Savings from "./views/Savings";
 import About from "./views/About";
 import PageNotFound from "./views/PageNotFound";
+import ReqLogin from "./views/ReqLogin";
 
 import './assets/css/main.css'
 
@@ -70,6 +71,8 @@ function App() {
             <Route path="/about" element={ <About /> } />
         
             <Route path="*" element={ <PageNotFound /> } />
+
+            <Route path="/req-login" element={ <ReqLogin /> } />
         
           </Routes>
 
