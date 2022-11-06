@@ -25,13 +25,18 @@ export default function Budgets() {
 
   // Get User Budgets
   const getUserBudgets = useCallback( async () => {
-    const res = await getBudgets({
-      'userId' : user.id
-    })
+
+    try {
+      const res = await getBudgets({
+        'userId' : user.id
+      })
+      
+      if(res.error) throw new Error(res.error)
     
-    if(res.error) throw new Error(res.error)
-  
-    setBudgets( res )
+      setBudgets( res )
+      
+    } catch (error) {
+    }
   }, [user.id])
 
   
@@ -143,7 +148,7 @@ export default function Budgets() {
         <h2>Budgets</h2>
 
         {
-          !budgets && 'You haven\'t added any budgets yet'
+          budgets.length === 0 && 'You haven\'t added any budgets yet'
         }
 
         {

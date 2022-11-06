@@ -31,17 +31,15 @@ class Users {
 
 
   public function signUp() {
+
     // Get POST data and hash password
     $newUser = json_decode( file_get_contents("php://input"), true );
     $newUser['password'] = password_hash($newUser['password'], PASSWORD_DEFAULT);
 
     // Add to DB
     $this->stmt = $this->dbh->prepare('INSERT INTO users (username, password) VALUES (:username, :password)');
-    if( $this->stmt->execute($newUser) ) {
-      return $newUser;
-    } else {
-      return ['error' => 'Error Executing DB Query'];
-    }
+
+    return $this->stmt->execute($newUser) ? $newUser : ['error' => 'Error Executing DB Query'];
   } 
   
 
@@ -49,6 +47,7 @@ class Users {
 
 
   public function logIn() {
+
     // Get Post data
     $loginPostData = json_decode( file_get_contents("php://input"), true );
 
@@ -63,12 +62,9 @@ class Users {
     }
     
     // Verify Password, echo results
-    if( password_verify($loginPostData['password'], $user->password) ) {
-      return [$user->username, $user->user_id];
-    } else {
-      return ['error' => 'User and password don\'t match'];
-    }
-
+    return password_verify($loginPostData['password'], $user->password)
+      ? [$user->username, $user->user_id]
+      : ['error' => 'User and password don\'t match'];
   } 
   
 
@@ -96,11 +92,7 @@ class Users {
     $user = $this->stmt->fetch(PDO::FETCH_ASSOC);
 
     // Return user data or error
-    if( empty($user)) {
-      return ['error' => 'User not found'];
-    } else {
-      return $user;
-    }
+    return !empty($user) ? $user : ['error' => 'User not found'];
   } 
 
 
@@ -119,11 +111,7 @@ class Users {
     $user = $this->stmt->fetch(PDO::FETCH_OBJ);
 
     // Return user or error
-    if( empty($user)) {
-      return ['error' => 'User not found'];
-    } else {
-      return $user;
-    }
+    return !empty($user) ? $user : ['error' => 'User not found'];
   } 
   
 

@@ -49,12 +49,8 @@ class Budgets {
     $this->stmt->bindValue(':user_id', $user['user_id']);
     $this->stmt->bindValue(':budgets', json_encode($new_budgets) );
 
-    // Execute!
-    if( $this->stmt->execute() ) {
-      return $new_budgets;
-    } else {
-      return ['error' => 'Failed to execute'];
-    }
+    // Execute
+    return $this->stmt->execute() ? $new_budgets : ['error' => 'Failed to execute'];
   }
 
   
@@ -70,11 +66,7 @@ class Budgets {
     $user = $users->getUserById($userId);
     $budgets = json_decode( $user['budgets'] );
 
-    if($budgets == null) {
-      return ['error' => 'You don\'t have any budgets yet'];
-    } else {
-      return $budgets;
-    }
+    return $budgets == null ? ['error' => 'You don\'t have any budgets yet'] : $budgets;
   }
 
 
@@ -107,7 +99,7 @@ class Budgets {
     $user = $users->getUserById($userId);
     $budgets = json_decode($user['budgets'], true);
     
-    // Check if budget to delete is in
+    // Check if budget to delete is in budgets
     if( !array_key_exists($budgetToDelete, $budgets) ) return ['error' => 'Cannot delete. Budget does not exist'];
     
     // Find budget to delete and remove
@@ -119,11 +111,7 @@ class Budgets {
     $this->stmt->bindValue(':budgets', json_encode($budgets) );
 
     // Execute
-    if( $this->stmt->execute() ) {
-      return $budgets;
-    } else {
-      return ['error' => 'Failed to execute'];
-    }
+    return $this->stmt->execute() ? $budgets : ['error' => 'Failed to execute'];
   }
   
   
