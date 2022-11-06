@@ -6,7 +6,7 @@ import { UserContext } from '../../App'
 
 export default function SideBar() {
 
-  const [user] = useContext(UserContext)
+  const [user, setUser] = useContext(UserContext)
 
   return(
     <>
@@ -36,7 +36,8 @@ export default function SideBar() {
       {
       user &&
         <div>
-          Logged in as { user }
+          Logged in as { user } <br />
+          <button onClick={ () => setUser(false) }>Log out</button>
         </div>
       }
     
