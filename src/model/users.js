@@ -17,7 +17,7 @@ export async function signUp({username, password, confirmPassword}) {
   if((username.length <= 5) || (password.length <= 5)) throw new Error('Username and Password must be longer than 5 characters')
 
   // Check if user Exists
-  const isUsernameTaken = await fetch(`${UserModelURL}getUserByUsername/${username}`)
+  const isUsernameTaken = await fetch(`${UserModelURL}/getUserByUsername/${username}`)
   if (!isUsernameTaken.ok) throw new Error('Error checking username availability')
 
   const isUsernameTakenResult = await isUsernameTaken.json()

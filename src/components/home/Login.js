@@ -21,7 +21,10 @@ export default function Login() {
       if(res.error) throw new Error(res.error)
 
       // set user to logged in
-      setUser(res[0])
+      setUser({
+        'name' : res[0],
+        'id' : res[1]
+      })
       setFlash({
         type : 'success',
         message : `You are now logged in as ${res[0]}`

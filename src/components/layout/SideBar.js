@@ -36,7 +36,7 @@ export default function SideBar() {
       {
       user &&
         <div>
-          Logged in as { user } <br />
+          Logged in as { user.name } <br />
           <button onClick={ () => setUser(false) }>Log out</button>
         </div>
       }

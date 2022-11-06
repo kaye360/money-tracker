@@ -16,6 +16,7 @@ export default function Dashboard() {
     <div className='dashboard'>
       <h2>Dashboard</h2>
     
+      <p>Welcome User</p>
     </div>
     </>
   )

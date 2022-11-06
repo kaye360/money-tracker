@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import { FlashContext, UserContext } from '../App'
@@ -10,7 +10,7 @@ export default function Budgets() {
   const user = useContext(UserContext)[0]
   const setFlash = useContext(FlashContext)[1]
 
-  const [budgets, setBudgets] = usestate([])
+  const [budgets, setBudgets] = useState([])
 
   const navigate = useNavigate()
 

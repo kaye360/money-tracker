@@ -20,7 +20,7 @@ class Users {
     try {
       $this->dbh = new PDO($this->dsn, DB_USER, DB_PASS, $options);
     } catch(PDOException $err ) {
-      echo $err->getMessage();
+      return $err->getMessage();
     }
   }
   
@@ -36,9 +36,9 @@ class Users {
     // Add to DB
     $this->stmt = $this->dbh->prepare('INSERT INTO users (username, password) VALUES (:username, :password)');
     if( $this->stmt->execute($newUser) ) {
-      echo json_encode($newUser, JSON_PRETTY_PRINT);
+      return $newUser;
     } else {
-      echo json_encode(['error' => 'Error Executing DB Query'], JSON_PRETTY_PRINT);
+      return ['error' => 'Error Executing DB Query'];
     }
   } 
   
@@ -57,15 +57,14 @@ class Users {
 
     // Check if User exists
     if ( empty($user) ) {
-      echo json_encode(['error' => 'User Not Found'], JSON_PRETTY_PRINT);
-      return;
+      return ['error' => 'User Not Found'];
     }
     
     // Verify Password, echo results
     if( password_verify($loginPostData['password'], $user->password) ) {
-      echo json_encode([$user->username, $user->user_id], JSON_PRETTY_PRINT);
+      return [$user->username, $user->user_id];
     } else {
-      echo json_encode(['error' => 'User and password don\'t match'], JSON_PRETTY_PRINT);
+      return ['error' => 'User and password don\'t match'];
     }
 
   } 
@@ -86,12 +85,12 @@ class Users {
     $this->stmt = $this->dbh->prepare('SELECT user_id, username, budgets, email FROM users where user_id = :id');
     $this->stmt->execute(['id' => $id]);
 
-    $user = $this->stmt->fetch(PDO::FETCH_OBJ);
+    $user = $this->stmt->fetch(PDO::FETCH_ASSOC);
 
     if( empty($user)) {
-      echo json_encode(['error' => 'User not found'], JSON_PRETTY_PRINT);
+      return json_encode(['error' => 'User not found']);
     } else {
-      echo json_encode( $user, JSON_PRETTY_PRINT);
+      return $user;
     }
   } 
 
@@ -106,9 +105,9 @@ class Users {
     $user = $this->stmt->fetch(PDO::FETCH_OBJ);
 
     if( empty($user)) {
-      echo json_encode(['error' => 'User not found'], JSON_PRETTY_PRINT);
+      return ['error' => 'User not found'];
     } else {
-      echo json_encode( $user, JSON_PRETTY_PRINT);
+      return $user;
     }
   } 
   
