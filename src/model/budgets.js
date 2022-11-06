@@ -39,15 +39,27 @@ export async function getBudgets({ userId }) {
 
   const getBudgetsSuccess = await getBudgetsRes.json()
   if(getBudgetsSuccess.error) throw new Error(getBudgetsSuccess.error)
-  return getBudgetsSuccess
+
+  const userBudgets = Object.entries(getBudgetsSuccess).map(budget => {
+    return { 'name' : budget[0], 'amount' : budget[1] }
+  })
+  return userBudgets
 } 
 
 
 
 
 
-export async function removeBudget({ budgetId }) {
-  console.log(budgetId)
+export async function deleteBudget({ userId, budgetName }) {
+
+  // Fetch delete budget
+  const deleteBudgetRes = await fetch(`${BudgetModelURL}/delete/${ userId }:${ budgetName }`)
+  if(!deleteBudgetRes.ok) throw new Error('Error fetching Delete function')
+
+  const deleteBudgetSuccess = await deleteBudgetRes.json()
+  if(deleteBudgetSuccess.error) throw new Error(deleteBudgetSuccess.error)
+
+  return deleteBudgetSuccess
 } 
 
 

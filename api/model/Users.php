@@ -12,11 +12,13 @@ class Users {
   
   public function __construct() {
 
+    // Set Connection Options
     $options = array(
       PDO::ATTR_PERSISTENT => true,
       PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     );
 
+    // Connect to DB
     try {
       $this->dbh = new PDO($this->dsn, DB_USER, DB_PASS, $options);
     } catch(PDOException $err ) {
@@ -82,13 +84,20 @@ class Users {
 
 
   public function getUserById($id) {
+
+    // Format Data
+    $id = rtrim($id);
+    $id = filter_var($id, FILTER_SANITIZE_URL);
+
+    // Prepare stmt
     $this->stmt = $this->dbh->prepare('SELECT user_id, username, budgets, email FROM users where user_id = :id');
     $this->stmt->execute(['id' => $id]);
 
     $user = $this->stmt->fetch(PDO::FETCH_ASSOC);
 
+    // Return user data or error
     if( empty($user)) {
-      return json_encode(['error' => 'User not found']);
+      return ['error' => 'User not found'];
     } else {
       return $user;
     }
@@ -99,11 +108,17 @@ class Users {
 
 
   public function getUserByUsername($username) {
+
+    // Format Data
+    $username = rtrim($username);
+    $username = filter_var($username, FILTER_SANITIZE_URL);
+
+    // Prepare stmt, execute
     $this->stmt = $this->dbh->prepare('SELECT user_id, username, budgets, email FROM users where username= :username');
     $this->stmt->execute(['username' => $username]);
-
     $user = $this->stmt->fetch(PDO::FETCH_OBJ);
 
+    // Return user or error
     if( empty($user)) {
       return ['error' => 'User not found'];
     } else {

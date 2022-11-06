@@ -1,8 +1,9 @@
+import { useCallback } from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import { FlashContext, UserContext } from '../App'
-import { addBudget, getBudgets, editBudget, removeBudget } from '../model/budgets'
+import { addBudget, getBudgets, editBudget, deleteBudget } from '../model/budgets'
 
 
 export default function Budgets() {
@@ -20,6 +21,19 @@ export default function Budgets() {
     !user && navigate('/req-login')
   }, [navigate, user])
   
+
+
+  // Get User Budgets
+  const getUserBudgets = useCallback( async () => {
+    const res = await getBudgets({
+      'userId' : user.id
+    })
+    
+    if(res.error) throw new Error(res.error)
+  
+    setBudgets( res )
+  }, [user.id])
+
   
 
   // Array of objects {name, amount} or false
@@ -34,24 +48,10 @@ export default function Budgets() {
         message : error
       })
     }
-  }, [])
+  }, [getUserBudgets, setFlash])
   
 
   
-  // Get User Budgets
-  async function getUserBudgets() {
-    const res = await getBudgets({
-      'userId' : user.id
-    })
-    
-    if(res.error) throw new Error(res.error)
-
-    const budgets = Object.entries(res).map(budget => {
-      return { 'name' : budget[0], 'amount' : budget[1] }
-    })
-
-    setBudgets( budgets )
-  }
 
 
 
@@ -80,6 +80,34 @@ export default function Budgets() {
         type : 'fail',
         message : error.message
       })
+    }
+
+  }
+
+
+
+  // Handle Delete
+  async function handleDeleteBudget(e) {
+    e.preventDefault()
+
+    try {
+
+      const res = await deleteBudget({
+        'userId' : user.id,
+        'budgetName' : e.target.id
+      })
+      
+      if (res.error) throw new Error(res.error)
+
+      getUserBudgets()
+
+    } catch (error) {
+
+      setFlash({
+        'type' : 'fail',
+        'message' : error.message
+      })
+
     }
 
   }
@@ -121,8 +149,9 @@ export default function Budgets() {
         {
           budgets.map( (budget) => {
             return(
-              <div key={ budget.name }>
+              <div className='my1' key={ budget.name }>
                 { budget.name } : { budget.amount }
+                <button onClick={ handleDeleteBudget } id={ budget.name }>Delete</button>
               </div>
             )
           })

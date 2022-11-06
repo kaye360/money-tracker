@@ -64,6 +64,8 @@ class Budgets {
   public function get($userId) {
 
     // Format Inputs
+    $userId = rtrim($userId);
+    $userId = filter_var($userId, FILTER_SANITIZE_URL);
     $users = new Users;
     $user = $users->getUserById($userId);
     $budgets = json_decode( $user['budgets'] );
@@ -73,7 +75,6 @@ class Budgets {
     } else {
       return $budgets;
     }
-    return ;
   }
 
 
@@ -89,7 +90,40 @@ class Budgets {
 
 
   public function delete($params) {
-    // delete by budget Id
+
+    // Format params
+    $params = rtrim($params);
+    $params = filter_var($params, FILTER_SANITIZE_URL);
+    $params = explode(':', $params);
+
+    // Check if both params are set
+    if( (!isset($params[0])) || (!isset($params[1])) ) return ['error' => 'Delete requires 2 params (UserId, BudgetName)'];
+
+    $userId = $params[0];
+    $budgetToDelete = $params[1] ;
+
+    // Get User Budgets
+    $users = new Users;
+    $user = $users->getUserById($userId);
+    $budgets = json_decode($user['budgets'], true);
+    
+    // Check if budget to delete is in
+    if( !array_key_exists($budgetToDelete, $budgets) ) return ['error' => 'Cannot delete. Budget does not exist'];
+    
+    // Find budget to delete and remove
+    unset($budgets[$budgetToDelete]);
+
+    // Prepare Statment
+    $this->stmt = $this->dbh->prepare('UPDATE users SET budgets = :budgets WHERE user_id = :user_id');
+    $this->stmt->bindValue(':user_id', $user['user_id']);
+    $this->stmt->bindValue(':budgets', json_encode($budgets) );
+
+    // Execute
+    if( $this->stmt->execute() ) {
+      return $budgets;
+    } else {
+      return ['error' => 'Failed to execute'];
+    }
   }
   
   

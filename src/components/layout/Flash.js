@@ -10,7 +10,7 @@ export default function Flash() {
 
   useEffect( () => {
     setTimeout( () => setFlash(false), 5000 )
-  }, [])
+  }, [setFlash])
 
   return(
     <>
