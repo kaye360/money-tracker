@@ -38,6 +38,7 @@ function App() {
       .main-layout {
         display : grid;
         grid-template-columns : 200px 1fr;
+        margin-top : 1rem;
       }
     `}
     </Style>

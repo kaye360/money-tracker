@@ -1,12 +1,16 @@
 import { Style } from 'react-style-tag'
 import { Link } from 'react-router-dom'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { FlashContext } from '../../App'
 
 export default function Flash() {
 
-  const flash = useContext(FlashContext)
-  const { type, message, link, linkText } = flash[0]
+  const [flash, setFlash] = useContext(FlashContext)
+  const { type, message, link, linkText } = flash
+
+  useEffect( () => {
+    setTimeout( () => setFlash(false), 5000 )
+  }, [])
 
   return(
     <>

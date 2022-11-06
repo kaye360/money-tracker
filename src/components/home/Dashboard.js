@@ -1,6 +1,10 @@
 import { Style } from 'react-style-tag'
+import { useContext } from 'react'
+import { UserContext } from '../../App'
 
 export default function Dashboard() {
+
+  const user = useContext(UserContext)[0]
 
   return(
     <>
@@ -14,9 +18,9 @@ export default function Dashboard() {
     </Style>
     
     <div className='dashboard'>
-      <h2>Dashboard</h2>
+      <h2 className='mb3'>Dashboard</h2>
     
-      <p>Welcome User</p>
+      <p>Welcome { user.name }</p>
     </div>
     </>
   )
