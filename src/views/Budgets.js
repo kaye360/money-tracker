@@ -73,7 +73,6 @@ export default function Budgets() {
   // Add budget handler
   async function handleAddBudget(e) {
     e.preventDefault()
-    console.log(e)
 
     const type = e.target[2].value
     const amount = (type === 'paycheck') ? e.target[1].value * -1 : e.target[1].value
