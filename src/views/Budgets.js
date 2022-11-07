@@ -3,7 +3,8 @@ import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import { FlashContext, UserContext } from '../App'
-import { addBudget, getBudgets, editBudget, deleteBudget } from '../model/budgets'
+import Budget from '../components/budgets/Budget'
+import { addBudget, getBudgets } from '../model/budgets'
 
 
 export default function Budgets() {
@@ -50,14 +51,11 @@ export default function Budgets() {
     } catch(error) {
       setFlash({
         type : 'fail',
-        message : error
+        message : error.message
       })
     }
   }, [getUserBudgets, setFlash])
   
-
-  
-
 
 
   // Add budget handler
@@ -91,32 +89,7 @@ export default function Budgets() {
 
 
 
-  // Handle Delete
-  async function handleDeleteBudget(e) {
-    e.preventDefault()
-
-    try {
-
-      const res = await deleteBudget({
-        'userId' : user.id,
-        'budgetName' : e.target.id
-      })
-      
-      if (res.error) throw new Error(res.error)
-
-      getUserBudgets()
-
-    } catch (error) {
-
-      setFlash({
-        'type' : 'fail',
-        'message' : error.message
-      })
-
-    }
-
-  }
-
+  
   return(
     <>
     <Style>
@@ -154,10 +127,12 @@ export default function Budgets() {
         {
           budgets.map( (budget) => {
             return(
-              <div className='my1' key={ budget.name }>
-                { budget.name } : { budget.amount }
-                <button onClick={ handleDeleteBudget } id={ budget.name }>Delete</button>
-              </div>
+              <Budget 
+                name={ budget.name } 
+                amount={ budget.amount }
+                key={ budget.name } 
+                getUserBudgets={ getUserBudgets }
+              />
             )
           })
         }
