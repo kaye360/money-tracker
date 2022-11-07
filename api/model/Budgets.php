@@ -37,7 +37,7 @@ class Budgets {
     $user = $users->getUserById($post_data->userId);
 
     $current_budgets = json_decode($user['budgets'], true);
-    $new_budgets = $current_budgets + [ $post_data->name => $post_data->amount ];
+    $new_budgets = $current_budgets + [ ucwords($post_data->name) => $post_data->amount ];
 
     // If budget already exists in JSON, return an error
     if( array_key_exists( $post_data->name, $current_budgets) ) {
@@ -62,6 +62,8 @@ class Budgets {
     // Format Inputs
     $userId = rtrim($userId);
     $userId = filter_var($userId, FILTER_SANITIZE_URL);
+
+    // Get User's budgets
     $users = new Users;
     $user = $users->getUserById($userId);
     $budgets = json_decode( $user['budgets'] );
@@ -74,7 +76,37 @@ class Budgets {
 
 
   public function edit() {
-    // POST
+    
+    // Get/Format Post data
+    $post_data = json_decode( file_get_contents("php://input"), true );
+    
+    [
+      'userId' => $userId, 
+      'oldName' => $oldName,
+      'newName' => $newName, 
+      'newAmount' => $newAmount
+    ] = $post_data;
+      
+    $newName = rtrim($newName);
+    $newName = ucwords($newName);
+    $newAmount = ucwords($newAmount);
+    
+    // Get User's budgets
+    $users = new Users;
+    $user = $users->getUserById($userId);
+    $budgets = json_decode( $user['budgets'], true );
+
+    // Replace single budget with new values
+    unset($budgets[$oldName]);
+    $budgets[$newName] = $newAmount;
+
+    // Prepare PDO
+    $this->stmt = $this->dbh->prepare('UPDATE users SET budgets = :budgets WHERE user_id = :user_id');
+    $this->stmt->bindValue(':budgets', json_encode($budgets) );
+    $this->stmt->bindValue(':user_id', $userId);
+
+    // Execute
+    return $this->stmt->execute() ? $budgets : ['error' => 'Error updating DB'];
   }
 
 

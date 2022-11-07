@@ -19,8 +19,8 @@ export default function Budget({ name, amount, getUserBudgets }) {
     try {
 
       const res = await deleteBudget({
-        'userId' : user.id,
-        'budgetName' : e.target.id
+        userId : user.id,
+        budgetName : e.target.id
       })
       
       if (res.error) throw new Error(res.error)
@@ -30,8 +30,8 @@ export default function Budget({ name, amount, getUserBudgets }) {
     } catch (error) {
 
       setFlash({
-        'type' : 'fail',
-        'message' : error.message
+        type : 'fail',
+        message : error.message
       })
 
     }
@@ -42,6 +42,25 @@ export default function Budget({ name, amount, getUserBudgets }) {
  async function handleEdit(e) {
   e.preventDefault()
   setIsEditMode(!isEditMode)
+
+  try {
+    const res = await editBudget({
+      userId : user.id,
+      oldName : name,
+      newName : nameInput,
+      newAmount : amountInput
+    })
+
+    if(res.error) throw new Error(res.error)
+
+    getUserBudgets()
+
+  } catch (error) {
+    setFlash({
+      type : 'fail',
+      message : error.message
+    })
+  }
 
   console.log(nameInput, amountInput)
  }
@@ -77,30 +96,29 @@ export default function Budget({ name, amount, getUserBudgets }) {
       {
         isEditMode
         ? 
-        <>
-          <form onSubmit={ handleEdit } >
-          <div className='budget my2'>
-            <input 
-              type="text" 
-              name="name" 
-              value={ nameInput } 
-              onChange={ (e) => setNameInput(e.target.value) } 
-            />
-            
-            <input 
-              type="number" 
-              name="amount" 
-              value={ amountInput }
-              onChange={ (e) => setAmountInput(e.target.value) }
-            />
+        
+        <form onSubmit={ handleEdit } >
+        <div className='budget my2'>
+          <input 
+            type="text" 
+            name="name" 
+            value={ nameInput } 
+            onChange={ (e) => setNameInput(e.target.value) } 
+          />
+          
+          <input 
+            type="number" 
+            name="amount" 
+            value={ amountInput }
+            onChange={ (e) => setAmountInput(e.target.value) }
+          />
 
-            <div className='budget-buttons'>
-              <input type="submit" value="Save" className='budget-edit-btn' />
-              <button onClick={ handleDeleteBudget } id={ name }>Delete</button>
-            </div>
+          <div className='budget-buttons'>
+            <input type="submit" value="Save" className='budget-edit-btn' />
+            <button onClick={ handleDeleteBudget } id={ name }>Delete</button>
           </div>
-          </form>
-        </>
+        </div>
+        </form>
 
         : 
         <div className='budget mt1'>

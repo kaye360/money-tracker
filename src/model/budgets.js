@@ -23,8 +23,15 @@ export async function addBudget({ name, amount, userId }) {
 
 
 
-export async function editBudget({ id, name, amount }) {
-  console.log(id, name, amount)
+export async function editBudget({ userId, newName, newAmount, oldName }) {
+
+  const editBudgetRes = await fetch(`${BudgetModelURL}/edit`, postReqOptions({userId, newName, newAmount, oldName}))
+  if(!editBudgetRes.ok) throw new Error('Error editing budget')
+
+  const editBudgetSuccess = await editBudgetRes.json()
+  if(editBudgetSuccess.error) throw new Error(editBudgetSuccess.error)
+
+  return editBudgetSuccess
 } 
 
 
