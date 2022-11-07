@@ -37,6 +37,7 @@ class Budgets {
     $user = $users->getUserById($post_data->userId);
 
     $current_budgets = json_decode($user['budgets'], true);
+    $current_budgets = $current_budgets == null ? [] : $current_budgets;
     $new_budgets = $current_budgets + [ ucwords($post_data->name) => $post_data->amount ];
 
     // If budget already exists in JSON, return an error
