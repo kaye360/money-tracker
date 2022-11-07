@@ -4,6 +4,8 @@ import { postReqOptions } from '../utils/fetch'
 
 export async function addBudget({ name, amount, userId }) {
 
+  console.log({name, amount, userId})
+
   // Check all inputs filled out
   if(!name || !amount) throw new Error('Please fill out all fields')
 

@@ -73,11 +73,16 @@ export default function Budgets() {
   // Add budget handler
   async function handleAddBudget(e) {
     e.preventDefault()
+    console.log(e)
+
+    const type = e.target[2].value
+    const amount = (type === 'paycheck') ? e.target[1].value * -1 : e.target[1].value
+    const name = e.target[0].value
 
     try {
       const res = await addBudget({
-        'name' : e.target[0].value,
-        'amount' : e.target[1].value,
+        'name' : name,
+        'amount' : amount,
         'userId' : user.id
       })
 
@@ -178,6 +183,14 @@ export default function Budgets() {
           <label>
             <span className="add-budget-label">Budget Amount:</span>
             <input type="text" name="budgetAmount" />
+          </label>
+
+          <label>
+            <span className="add-budget-label">Type</span>
+            <select>
+              <option value="bill">Bill</option>
+              <option value="paycheck">Paycheck</option>
+            </select>
           </label>
 
           <div>
