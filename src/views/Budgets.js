@@ -15,6 +15,7 @@ export default function Budgets() {
 
 
 
+  
   // Require Login for this page
   const navigate = useNavigate()
 
@@ -22,6 +23,7 @@ export default function Budgets() {
     !user && navigate('/req-login')
   }, [navigate, user])
   
+
 
 
   // Get User Budgets
@@ -40,6 +42,7 @@ export default function Budgets() {
     }
   }, [user.id])
 
+
   
 
   // Array of objects {name, amount} or false
@@ -55,6 +58,15 @@ export default function Budgets() {
       })
     }
   }, [getUserBudgets, setFlash])
+
+
+
+
+  // Total amount of all Budgets. Number
+  function  totalBudgetsAmount(total=0) {
+    budgets.forEach( (budget) => total += Number(budget.amount) )
+    return total
+  }
   
 
 
@@ -88,12 +100,22 @@ export default function Budgets() {
   }
 
 
-
   
   return(
     <>
     <Style>
     {`
+      .budgets h1 {
+        display : flex;
+        justify-content : space-between;
+        align-items : flex-end;
+        width : 100%;
+      }
+
+      .budgets h1 span {
+        font-size : 1.2rem;
+      }
+
       .view-budgets {
         padding : 1rem;
         border : 1px solid #333;
@@ -114,8 +136,11 @@ export default function Budgets() {
     `}
     </Style>
     
-    <div>
-      <h1>Budgets</h1>
+    <div className='budgets'>
+      <h1 className='px1'>
+        Budgets 
+        <span className='budgets-total-amount'>Total ${ totalBudgetsAmount() }/month</span>
+      </h1>
 
       <div className='view-budgets my2'>
         <h2>Budgets</h2>
