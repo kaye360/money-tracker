@@ -67,8 +67,10 @@ class Budgets {
     // Get User's budgets
     $users = new Users;
     $user = $users->getUserById($userId);
-    $budgets = json_decode( $user['budgets'] );
+    if ( isset($user['error']) ) return ['error' => $user['error']];
+    $budgets = isset($user['budgets']) ? json_decode( $user['budgets'] ) : null;
 
+    // Return budgets or error
     return $budgets == null ? ['error' => 'You don\'t have any budgets yet'] : $budgets;
   }
 
