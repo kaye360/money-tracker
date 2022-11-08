@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react'
 import { Style } from 'react-style-tag'
-import { deleteBudget, editBudget } from '../../model/budgets'
+import { deleteBudget, editBudget } from '../../model/budgets.model'
 import { FlashContext, UserContext } from '../../App'
 
 export default function Budget({ name, amount, getUserBudgets }) {
@@ -62,7 +62,6 @@ export default function Budget({ name, amount, getUserBudgets }) {
     })
   }
 
-  console.log(nameInput, amountInput)
  }
 
 

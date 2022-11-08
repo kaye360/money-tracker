@@ -1,4 +1,4 @@
-import { UserModelURL } from '../config/config'
+import { UserAPIURL } from '../config/config'
 import { postReqOptions } from '../utils/fetch'
 
 
@@ -17,14 +17,14 @@ export async function signUp({username, password, confirmPassword}) {
   if((username.length <= 5) || (password.length <= 5)) throw new Error('Username and Password must be longer than 5 characters')
 
   // Check if user Exists
-  const isUsernameTaken = await fetch(`${UserModelURL}/getUserByUsername/${username}`)
+  const isUsernameTaken = await fetch(`${UserAPIURL}/getUserByUsername/${username}`)
   if (!isUsernameTaken.ok) throw new Error('Error checking username availability')
 
   const isUsernameTakenResult = await isUsernameTaken.json()
   if(isUsernameTakenResult.username) throw new Error('Username is already taken. Please choose another username')
 
   // Fetch
-  const signUpRes = await fetch(`${UserModelURL}/signUp`, postReqOptions({username, password}))
+  const signUpRes = await fetch(`${UserAPIURL}/signUp`, postReqOptions({username, password}))
   if(!signUpRes.ok) throw new Error('Error with Fetch Sign Up')
 
   // Return Response JSON
@@ -43,7 +43,7 @@ export async function login({username, password}) {
   if (!username || !password) throw new Error('Please fill out all fields')
 
   // Fetch
-  const loginRes = await fetch(`${UserModelURL}/login`, postReqOptions({username, password}))
+  const loginRes = await fetch(`${UserAPIURL}/login`, postReqOptions({username, password}))
   if (!loginRes.ok) throw new Error('Error with fetch Login')
 
   // Return success or fail

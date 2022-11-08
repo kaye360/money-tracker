@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { Style } from 'react-style-tag'
-import { login } from '../../model/users'
+import { login } from '../../model/users.model'
 import { FlashContext, UserContext } from '../../App'
 
 export default function Login() {

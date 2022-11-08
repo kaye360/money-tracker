@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { Style } from 'react-style-tag'
 import { FlashContext } from '../../App'
-import { signUp } from '../../model/users'
+import { signUp } from '../../model/users.model'
 
 export default function SignUp() {
 

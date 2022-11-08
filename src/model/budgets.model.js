@@ -1,18 +1,18 @@
-import { BudgetModelURL } from '../config/config'
+import { BudgetAPIURL } from '../config/config'
 import { postReqOptions } from '../utils/fetch'
 
 
 export async function addBudget({ name, amount, userId }) {
 
-  console.log({name, amount, userId})
-
   // Check all inputs filled out
   if(!name || !amount) throw new Error('Please fill out all fields')
+
+  // Check isNan
 
   // Check if disallowded characters, amount is a number
 
   // fetch
-  const addBudgetRes = await fetch(`${BudgetModelURL}/add`, postReqOptions({name, amount, userId}))
+  const addBudgetRes = await fetch(`${BudgetAPIURL}/add`, postReqOptions({name, amount, userId}))
   if(!addBudgetRes.ok) throw new Error('Error adding budget')
 
   // return response json
@@ -27,7 +27,7 @@ export async function addBudget({ name, amount, userId }) {
 
 export async function editBudget({ userId, newName, newAmount, oldName }) {
 
-  const editBudgetRes = await fetch(`${BudgetModelURL}/edit`, postReqOptions({userId, newName, newAmount, oldName}))
+  const editBudgetRes = await fetch(`${BudgetAPIURL}/edit`, postReqOptions({userId, newName, newAmount, oldName}))
   if(!editBudgetRes.ok) throw new Error('Error editing budget')
 
   const editBudgetSuccess = await editBudgetRes.json()
@@ -43,7 +43,7 @@ export async function editBudget({ userId, newName, newAmount, oldName }) {
 export async function getBudgets({ userId }) {
 
   // Fetch user budgets
-  const getBudgetsRes = await fetch(`${BudgetModelURL}/get/${userId}`)
+  const getBudgetsRes = await fetch(`${BudgetAPIURL}/get/${userId}`)
   if(!getBudgetsRes.ok) throw new Error('Error fetching User Budgets')
 
   const getBudgetsSuccess = await getBudgetsRes.json()
@@ -62,7 +62,7 @@ export async function getBudgets({ userId }) {
 export async function deleteBudget({ userId, budgetName }) {
 
   // Fetch delete budget
-  const deleteBudgetRes = await fetch(`${BudgetModelURL}/delete/${ userId }:${ budgetName }`)
+  const deleteBudgetRes = await fetch(`${BudgetAPIURL}/delete/${ userId }:${ budgetName }`)
   if(!deleteBudgetRes.ok) throw new Error('Error fetching Delete function')
 
   const deleteBudgetSuccess = await deleteBudgetRes.json()

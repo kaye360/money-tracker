@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import { FlashContext, UserContext } from '../App'
 import Budget from '../components/budgets/Budget'
-import { addBudget, getBudgets } from '../model/budgets'
+import { addBudget, getBudgets } from '../model/budgets.model'
 
 
 export default function Budgets() {
@@ -45,6 +45,7 @@ export default function Budgets() {
 
   
 
+  // Users Budgets
   // Array of objects {name, amount} or false
   const [budgets, setBudgets] = useState([])
   
@@ -75,7 +76,7 @@ export default function Budgets() {
     e.preventDefault()
 
     const type = e.target[2].value
-    const amount = (type === 'paycheck') ? e.target[1].value * -1 : e.target[1].value
+    const amount = (type === 'paycheck') ? Number(e.target[1].value) * -1 : Number(e.target[1].value)
     const name = e.target[0].value
 
     try {
@@ -85,7 +86,7 @@ export default function Budgets() {
         'userId' : user.id
       })
 
-      if(res.error) throw new Error('Error adding budget')
+      if(res.error) throw new Error(res.error)
 
       setFlash({
         type : 'success',

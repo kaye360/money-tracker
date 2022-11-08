@@ -32,12 +32,22 @@ class Transactions {
   public function add() {
 
     // Format Data
-    $post_data = json_decode( file_get_contents("php://input") );
+    $post_data = json_decode( file_get_contents("php://input"), true );
+    $post_data['name'] = rtrim($post_data['name']);
+    $post_data['amount'] = rtrim($post_data['amount']);
+    $post_data['amount'] = number_format($post_data['amount'], 2);
 
-    $users = new Users;
-    $user = $users->getUserById($post_data->userId);
+    // Prepare Statement
+    $this->stmt = $this->dbh->prepare('
+      INSERT INTO transactions (user_id, name, budget, amount) 
+      VALUES (:user_id, :name, :budget, :amount) ');    
+    $this->stmt->bindValue(':user_id', $post_data['userId']);
+    $this->stmt->bindValue(':name', $post_data['name']);
+    $this->stmt->bindValue(':budget', $post_data['budget']);
+    $this->stmt->bindValue(':amount', $post_data['amount']);
 
-    
+    // Execute
+    return $this->stmt->execute() ? $post_data : ['error' => 'Failed to execute'];
   }
 
   public function edit() {
