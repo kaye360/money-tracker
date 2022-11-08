@@ -7,19 +7,20 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 require_once './config/config.php';
 
-require_once './controller.php';
 
 require_once './model/Users.php';
 require_once './model/Transactions.php';
 require_once './model/Budgets.php';
 require_once './model/Savings.php';
 
+require_once './controller.php';
 
 
 try{
 
-  $data = controller();
-  echo json_encode( $data, JSON_PRETTY_PRINT );
+  $controller = new Controller;
+
+  echo json_encode( $controller->render(), JSON_PRETTY_PRINT );
 
 } catch(Exception $error) {
   
