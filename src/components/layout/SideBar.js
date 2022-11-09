@@ -25,6 +25,7 @@ export default function SideBar() {
       <nav>
         <ul>
           <li><Link to="/">Home</Link></li>
+          <li><Link to="/forecast">Forecast</Link></li>
           <li><Link to="/budgets">Budgets</Link></li>
           <li><Link to="/transactions">Transactions</Link></li>
           <li><Link to="/savings">Savings</Link></li>

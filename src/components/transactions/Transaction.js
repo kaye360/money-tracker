@@ -23,7 +23,7 @@ export default function Transaction({name, budget, amount, date, isNewTransactio
     
     <div className={ isNewTransaction ? 'new-transaction' : 'transaction' }>
       { 
-        `${name} | ${budget} | ${amount} | ${date} || ${isNewTransaction}`
+        `${name} | ${budget} | ${amount} | ${date}`
       }
     
     </div>

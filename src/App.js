@@ -7,6 +7,7 @@ import Footer from "./components/layout/Footer"
 import Flash from "./components/layout/Flash";
 
 import Home from "./views/Home";
+import Forecast from "./views/Forecast"
 import Budgets from "./views/Budgets";
 import Transactions from "./views/Transactions";
 import Savings from "./views/Savings";
@@ -62,6 +63,8 @@ function App() {
           <Routes>
 
             <Route path="/" element={ <Home /> } />
+
+            <Route path="/forecast" element={ <Forecast /> } />
         
             <Route path="/budgets" element={ <Budgets /> } />
         
