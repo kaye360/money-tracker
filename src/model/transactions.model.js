@@ -47,6 +47,18 @@ export async function getTransactionsInMonth() {
 
 
 
-export async function getTransactionsAll() {
+export async function getTransactionsAll({ userId }) {
 
+  // Fetch User transactions
+  const getTransactionsRes = await fetch(`${TransactionsAPIURL}/getAll/${userId}`)
+  if(!getTransactionsRes.ok) throw new Error('Error fetching User Transactions')
+
+  const getTransactionsSuccess = await getTransactionsRes.json()
+  if(getTransactionsSuccess.error) throw new Error(getTransactionsSuccess.error)
+
+  const userTransactions = Object.values(getTransactionsSuccess).map( transaction => {
+    return transaction
+  } )
+
+  return userTransactions
 }

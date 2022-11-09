@@ -1,8 +1,9 @@
 import { Style } from 'react-style-tag'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState, useCallback } from 'react'
 import { FlashContext, UserContext } from '../App'
 import { useNavigate } from 'react-router-dom'
-import { addTransaction } from '../model/transactions.model'
+import { addTransaction, getTransactionsAll } from '../model/transactions.model'
+import Transaction from '../components/transactions/Transaction'
 
 export default function Transactions() {
 
@@ -23,13 +24,34 @@ export default function Transactions() {
 
 
   // Get User transactions
-  
+  const getUserTransactions = useCallback( async () => {
+     
+    const res = await getTransactionsAll({
+      userId : user.id
+    })
 
+    if(res.error) throw new Error(res.error)
+
+    setTransactions( res )
+
+  }, [user.id]) 
 
 
 
   // Users Transactions
   // Array of Objects
+  const [transactions, setTransactions] = useState([])
+
+  useEffect( () => {
+    try {
+      getUserTransactions()
+    } catch (error) {
+      setFlash({
+        type : 'fail',
+        message : error.message
+      })
+    }
+  }, [getUserTransactions, setFlash])
 
 
 
@@ -81,6 +103,7 @@ export default function Transactions() {
       <h1 className="px1">Transactions</h1>
 
       <div className='add-transaction'>
+        <h2>Add a Transaction</h2>
         <form onSubmit={ handleAddTransaction }>
 
           <label>
@@ -107,6 +130,29 @@ export default function Transactions() {
           </div>
 
         </form>
+      </div>
+
+      <div className='view-transactions my1'>
+        <h2>View Transactions</h2>
+
+        {
+          transactions.length === 0 && 'You dont\'t have any transactions yet'
+        }
+
+        {
+          transactions.map( transaction => {
+            console.log(transaction)
+            return(
+              <Transaction 
+                name={ transaction.name }
+                budget={ transaction.budget }
+                amount={ transaction.amount }
+                date={ transaction.date }
+              />
+            )
+          } )
+        }
+
       </div>
     </div>
     </>

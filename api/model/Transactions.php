@@ -58,12 +58,27 @@ class Transactions {
 
   }
 
-  public function getMonth($params) {
+  public function getMonth($userId, $date) {
 
   }
 
-  public function getAll($params) {
+  public function getAll($userId) {
 
+    // Format Inputs
+    $userId = rtrim($userId);
+    $userId = filter_var($userId, FILTER_SANITIZE_URL);
+
+    // Prepare stmt
+    $this->stmt = $this->dbh->prepare('SELECT * FROM transactions where user_id = :user_id');
+    $this->stmt->bindValue(':user_id', $userId);
+    
+    // Get transactions
+    if( $this->stmt->execute() ) {
+      $transactions = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+      return count($transactions) != 0 ? $transactions : ['error' => 'No transactions found'];
+    } else {
+      return ['error' => 'Error getting transactions'];
+    }
   }
   
 }

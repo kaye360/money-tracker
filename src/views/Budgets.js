@@ -39,8 +39,12 @@ export default function Budgets() {
       setBudgets( res )
       
     } catch (error) {
+      setFlash({
+        type : 'fail',
+        message : error.message
+      })
     }
-  }, [user.id])
+  }, [user.id, setFlash])
 
 
   
