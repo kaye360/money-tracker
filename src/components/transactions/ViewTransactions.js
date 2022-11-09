@@ -1,5 +1,5 @@
 import { Style } from 'react-style-tag'
-import { useState, useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import { FlashContext } from '../../App'
 import Transaction from './Transaction'
 
@@ -26,7 +26,7 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
 
 
 
-  
+
   return(
     <>
     <Style>

@@ -3,7 +3,9 @@ import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import { FlashContext, UserContext } from '../App'
-import Budget from '../components/budgets/Budget'
+import AddBudget from '../components/budgets/AddBudget'
+
+import ViewBudget from '../components/budgets/ViewBudget'
 import { addBudget, getBudgets } from '../model/budgets.model'
 
 
@@ -75,38 +77,7 @@ export default function Budgets() {
   
 
 
-  // Add budget handler
-  async function handleAddBudget(e) {
-    e.preventDefault()
-
-    const type = e.target[2].value
-    const amount = (type === 'paycheck') ? Number(e.target[1].value) * -1 : Number(e.target[1].value)
-    const name = e.target[0].value
-
-    try {
-      const res = await addBudget({
-        'name' : name,
-        'amount' : amount,
-        'userId' : user.id
-      })
-
-      if(res.error) throw new Error(res.error)
-
-      setFlash({
-        type : 'success',
-        message : `Budget ${e.target[0].value} was added successfully`
-      })
-
-      getUserBudgets()
-
-    } catch (error) {
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
-    }
-
-  }
+  
 
 
   
@@ -151,60 +122,19 @@ export default function Budgets() {
         <span className='budgets-total-amount'>Total ${ totalBudgetsAmount() }/month</span>
       </h1>
 
-      <div className='view-budgets my2'>
-        <h2>Budgets</h2>
+      <ViewBudget 
+        budgets={ budgets }
+        getUserBudgets={ getUserBudgets }
+      />
 
-        {
-          budgets.length === 0 && 'You haven\'t added any budgets yet'
-        }
-
-        {
-          budgets.map( (budget) => {
-            return(
-              <Budget 
-                name={ budget.name } 
-                amount={ budget.amount }
-                key={ budget.name } 
-                getUserBudgets={ getUserBudgets }
-              />
-            )
-          })
-        }
+      <AddBudget
+        getUserBudgets={ getUserBudgets }
+      />
 
 
-      </div>
+      
 
-      <div className='add-budget'>
-        <h2>Add a Budget</h2>
-
-        <form onSubmit={ handleAddBudget } >
-
-          <label>
-            <span className="add-budget-label">Budget Name:</span>
-            <input type="text" name="budgetName" />
-          </label>
-
-          <label>
-            <span className="add-budget-label">Budget Amount:</span>
-            <input type="text" name="budgetAmount" />
-          </label>
-
-          <label>
-            <span className="add-budget-label">Type</span>
-            <select>
-              <option value="bill">Bill</option>
-              <option value="paycheck">Paycheck</option>
-            </select>
-          </label>
-
-          <div>
-            <input type="submit" value="Add Budget" />
-          </div>
-
-        </form>
-
-
-      </div>
+      
     
     </div>
     </>
