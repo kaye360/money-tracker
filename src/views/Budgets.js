@@ -6,7 +6,7 @@ import { FlashContext, UserContext } from '../App'
 import AddBudget from '../components/budgets/AddBudget'
 
 import ViewBudget from '../components/budgets/ViewBudget'
-import { addBudget, getBudgets } from '../model/budgets.model'
+import { getBudgets } from '../model/budgets.model'
 
 
 export default function Budgets() {
@@ -95,24 +95,6 @@ export default function Budgets() {
       .budgets h1 span {
         font-size : 1.2rem;
       }
-
-      .view-budgets {
-        padding : 1rem;
-        border : 1px solid #333;
-      }
-
-      .add-budget {
-        padding : 1rem;
-        border : 1px solid #333;
-      }
-
-      .add-budget label {
-        display : block;
-      }
-
-      .add-budget-label {
-        display : block;
-      }
     `}
     </Style>
     
@@ -130,11 +112,6 @@ export default function Budgets() {
       <AddBudget
         getUserBudgets={ getUserBudgets }
       />
-
-
-      
-
-      
     
     </div>
     </>

@@ -52,7 +52,11 @@ export async function getBudgets({ userId }) {
   const userBudgets = Object.entries(getBudgetsSuccess).map(budget => {
     return { 'name' : budget[0], 'amount' : budget[1] }
   })
-  return userBudgets
+
+  return userBudgets.sort( (a,b) => {
+    if(Number(a.amount) === Number(b.amount)) return 0
+    return Number(a.amount) > Number(b.amount) ? -1 : 1;
+  })
 } 
 
 

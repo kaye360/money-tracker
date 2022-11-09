@@ -4,7 +4,6 @@ import Login from '../components/home/Login'
 import Dashboard from '../components/home/Dashboard'
 import { useContext } from 'react'
 import { UserContext } from '../App'
-import ViewTransactions from '../components/transactions/ViewTransactions'
 
 export default function Home() {
 

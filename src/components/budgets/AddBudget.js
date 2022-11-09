@@ -46,6 +46,18 @@ export default function AddBudget({getUserBudgets}) {
     <>
     <Style>
     {`
+      .add-budget {
+        padding : 1rem;
+        border : 1px solid #333;
+      }
+
+      .add-budget label {
+        display : block;
+      }
+
+      .add-budget-label {
+        display : block;
+      }
     `}
     </Style>
     

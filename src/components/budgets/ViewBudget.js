@@ -7,6 +7,10 @@ export default function ViewBudget({ budgets, getUserBudgets }) {
     <>
     <Style>
     {`
+      .view-budgets {
+        padding : 1rem;
+        border : 1px solid #333;
+      }
     `}
     </Style>
     
