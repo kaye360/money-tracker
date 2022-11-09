@@ -3,6 +3,7 @@ import { useContext, useEffect, useState, useCallback } from 'react'
 import { FlashContext, UserContext } from '../App'
 import { useNavigate } from 'react-router-dom'
 import { addTransaction, getTransactionsAll } from '../model/transactions.model'
+import { getBudgets } from '../model/budgets.model'
 import Transaction from '../components/transactions/Transaction'
 
 export default function Transactions() {
@@ -19,6 +20,44 @@ export default function Transactions() {
   useEffect( () => {
     !user && navigate('/req-login')
   }, [navigate, user])
+
+
+
+   // Get User Budgets - For Add Transaction form
+   const getUserBudgets = useCallback( async () => {
+
+    try {
+      const res = await getBudgets({
+        'userId' : user.id
+      })
+      
+      if(res.error) throw new Error(res.error)
+    
+      setBudgets( res )
+      
+    } catch (error) {
+      setFlash({
+        type : 'fail',
+        message : error.message
+      })
+    }
+  }, [user.id, setFlash])
+
+
+  
+
+  // Users Budgets
+  // Array of objects {name, amount} or false
+  const [budgets, setBudgets] = useState([])  
+
+  useEffect( () => {
+    try {
+      getUserBudgets()
+    } catch(error) {
+    }
+  }, [getUserBudgets])
+
+
 
 
 
@@ -56,6 +95,12 @@ export default function Transactions() {
 
 
 
+  // Newly added transaction. Used for adding a 'flash style' when new transaction is added
+  // false or number
+  const [isNewTransaction, setIsNewTransaction] = useState(false)
+
+
+
   // Add Transaction handler
   async function handleAddTransaction(e) {
     e.preventDefault()
@@ -73,9 +118,15 @@ export default function Transactions() {
       })
 
       if (res.error) throw new Error(res.error)
+
+      getUserTransactions()
+      
+      setIsNewTransaction(res.transaction_id)
+      setTimeout( () => {
+        setIsNewTransaction(false)
+      }, 1000)
       
     } catch (error) {
-      console.log(error)
       setFlash({
         type : 'fail',
         message : error.message
@@ -119,9 +170,14 @@ export default function Transactions() {
           <label>
             <span className='add-transation-label'>Budget</span>
             <select>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+              <option value="Uncategorized">--Uncategorized</option>
+              {
+                budgets.map( budget => {
+                  return(
+                    <option value={ budget.name } key={budget.name} >{ budget.name }</option>
+                  )
+                })
+              }
             </select>
           </label>
 
@@ -141,13 +197,13 @@ export default function Transactions() {
 
         {
           transactions.map( transaction => {
-            console.log(transaction)
             return(
               <Transaction 
                 name={ transaction.name }
                 budget={ transaction.budget }
                 amount={ transaction.amount }
                 date={ transaction.date }
+                isNewTransaction = { transaction.transaction_id === isNewTransaction }
               />
             )
           } )

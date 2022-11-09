@@ -20,6 +20,7 @@ export async function addTransaction({name, amount, budget, userId}) {
   // return json response
   const addTransactionSuccess = await addTransactionRes.json()
   if(addTransactionSuccess.error) throw new Error(addTransactionSuccess.error)
+  
   return addTransactionSuccess
 }
 

@@ -46,8 +46,18 @@ class Transactions {
     $this->stmt->bindValue(':budget', $post_data['budget']);
     $this->stmt->bindValue(':amount', $post_data['amount']);
 
-    // Execute
-    return $this->stmt->execute() ? $post_data : ['error' => 'Failed to execute'];
+    // Execute and return newly added DB Row
+    if( $this->stmt->execute() ) {
+
+      $new_transaction_id = $this->dbh->lastInsertId();
+      $this->stmt = $this->dbh->prepare('SELECT * FROM transactions where transaction_id = :transaction_id');
+      $this->stmt->bindValue(':transaction_id', $new_transaction_id);
+      $this->stmt->execute();
+      return $this->stmt->fetch(PDO::FETCH_ASSOC);
+
+    } else {
+      return ['error' => 'Failed to execute'];
+    }
   }
 
   public function edit() {
@@ -69,7 +79,8 @@ class Transactions {
     $userId = filter_var($userId, FILTER_SANITIZE_URL);
 
     // Prepare stmt
-    $this->stmt = $this->dbh->prepare('SELECT * FROM transactions where user_id = :user_id');
+    $sql = 'SELECT * FROM transactions WHERE user_id = :user_id ORDER BY date DESC';
+    $this->stmt = $this->dbh->prepare($sql);
     $this->stmt->bindValue(':user_id', $userId);
     
     // Get transactions
