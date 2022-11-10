@@ -34,8 +34,14 @@ export async function editTransaction() {
 
 
 
-export async function deleteTransaction() {
+export async function deleteTransaction({transactionId}) {
+  const deleteTransactionRes = await fetch(`${TransactionsAPIURL}/delete/${transactionId}`)
+  if(!deleteTransactionRes.ok) throw new Error('Error deleting transaction')
 
+  const deleteTransactionSuccess = await deleteTransactionRes.json()
+  if((deleteTransactionSuccess.error)) throw new Error(deleteTransactionSuccess.error)
+
+  return deleteTransactionSuccess
 }
 
 

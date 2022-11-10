@@ -2,7 +2,7 @@ import { Style } from 'react-style-tag'
 import { useNavigate } from 'react-router-dom'
 import { useContext, useEffect, useState, useCallback } from 'react'
 
-import { UserContext } from '../App'
+import { FlashContext, UserContext } from '../App'
 import { getTransactionsAll } from '../model/transactions.model'
 
 
@@ -14,7 +14,7 @@ export default function Transactions() {
 
   // Get Context
   const user = useContext(UserContext)[0]
-  
+  const setFlash = useContext(FlashContext)[1]
 
 
   // Require Login for this page
@@ -34,24 +34,32 @@ export default function Transactions() {
 
   // Get User transactions
   const getUserTransactions = useCallback( async () => {
-     
-    const res = await getTransactionsAll({
-      userId : user.id
-    })
 
-    if(res.error) throw new Error(res.error)
+    try {
+     const res = await getTransactionsAll({
+       userId : user.id
+     })
+ 
+     if(res.error) throw new Error(res.error)
+ 
+     console.log(res)
+ 
+     setTransactions( res )
+      
+    } catch (error) {
+      setFlash({
+        type : 'fail',
+        message : error.message
+      })
+    }
 
-    setTransactions( res )
-
-  }, [user.id]) 
+  }, [user.id, setFlash]) 
 
 
 
   // Newly added transaction. Used for adding a 'flash style' when new transaction is added
   // false or number
   const [isNewTransaction, setIsNewTransaction] = useState(false)
-
-
 
   
 

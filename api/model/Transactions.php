@@ -60,17 +60,43 @@ class Transactions {
     }
   }
 
+
+
+
+
   public function edit() {
     // Post
   }
 
-  public function delete($params) {
 
+
+
+
+  public function delete($transaction_id) {
+
+    // Format Inputs
+    $transaction_id = rtrim($transaction_id);
+    $transaction_id = filter_var($transaction_id);
+
+    // Prepare Statement
+    $this->stmt = $this->dbh->prepare('DELETE FROM transactions WHERE transaction_id = :transaction_id');
+    $this->stmt->bindValue(':transaction_id', $transaction_id);
+
+    // Execute and return
+    return $this->stmt->execute() ? ['transaction_id' => $transaction_id] : ['error' => 'Failed to delete from database'];
   }
+
+
+
+
 
   public function getMonth($userId, $date) {
 
   }
+
+
+
+
 
   public function getAll($userId) {
 
