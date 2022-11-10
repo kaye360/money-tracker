@@ -5,19 +5,25 @@ import { FlashContext, UserContext } from '../../App'
 
 export default function Budget({ name, amount, getUserBudgets }) {
 
+  // Context
   const user = useContext(UserContext)[0]
   const setFlash = useContext(FlashContext)[1]
 
-  const [isEditMode, setIsEditMode] = useState()
-  const [nameInput, setNameInput] = useState(name)
-  const [amountInput, setAmountInput] = useState(amount)
+  // Edit mode
+  const [isEditMode, setIsEditMode] = useState() // BOOL true or false
+  const [nameInput, setNameInput] = useState(name) // String or false
+  const [amountInput, setAmountInput] = useState(amount) // Number or false
+  
+
+
+
 
   // Handle Delete
   async function handleDeleteBudget(e) {
     e.preventDefault()
 
     try {
-
+ 
       const res = await deleteBudget({
         userId : user.id,
         budgetName : e.target.id
