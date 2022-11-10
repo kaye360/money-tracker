@@ -47,8 +47,7 @@ export default function Budget({ name, amount, getUserBudgets }) {
 
  async function handleEdit(e) {
   e.preventDefault()
-  setIsEditMode(!isEditMode)
-
+  
   try {
     const res = await editBudget({
       userId : user.id,
@@ -58,7 +57,8 @@ export default function Budget({ name, amount, getUserBudgets }) {
     })
 
     if(res.error) throw new Error(res.error)
-
+    
+    setIsEditMode(!isEditMode)
     getUserBudgets()
 
   } catch (error) {

@@ -23,6 +23,8 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
   }, [getUserTransactions, setFlash])
 
 
+  
+  
 
 
 
@@ -31,18 +33,26 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
     <>
     <Style>
     {`
-      .transactions-table {
-        width : 100%;
-        border-collapse : collapse;
-        border-bottom : 1px solid #333;
+      .transactions-grid {
+
       }
 
-      .transactions-table thead {
+      .transaction-grid-row {
+        display : grid;
+        grid-template-columns : repeat(4, 1fr) repeat(2, 0.5fr);
+        
+        padding : 0.5rem;
+      }
+
+      .transaction-grid-row input {
+        border : 1px solid red;
+        max-width : min-content;
+        width : min-content;
+        min-width : 10px;
+      }
+
+      .transactions-grid-head {
         background-color : #f3f3f3;
-      }
-
-      .transactions-table td {
-        padding-block : 1rem;
       }
     `}
     </Style>
@@ -51,21 +61,19 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
         <h2>View Transactions</h2>
 
 
+        <div className='transactions-grid'>
 
-        <table className='transactions-table'>
+          <div className='transaction-grid-row transactions-grid-head'>
 
-          <thead>
-            <tr>
-              <td>Date</td>
-              <td>Name</td>
-              <td>Category</td>
-              <td>Amount</td>
-              <td>Edit</td>
-              <td>Delete</td>
-            </tr>
-          </thead>
+            <div>Date</div>
+            <div>Name</div>
+            <div>Category</div>
+            <div>Amount</div>
+            <div>Edit</div>
+            <div>Delete</div>
 
-          <tbody>
+          </div>
+
             {
             transactions.map( transaction => {
             return(
@@ -82,8 +90,7 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
                 )
               } )
             }
-          </tbody>
-        </table>
+        </div>
 
         {
           transactions.length === 0 && 'You dont\'t have any transactions yet'

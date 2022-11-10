@@ -42,8 +42,6 @@ export default function Transactions() {
  
      if(res.error) throw new Error(res.error)
  
-     console.log(res)
- 
      setTransactions( res )
       
     } catch (error) {
