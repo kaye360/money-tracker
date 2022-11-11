@@ -1,11 +1,11 @@
 import { useContext, useState } from 'react'
 import { Style } from 'react-style-tag'
 import { FlashContext } from '../../App'
-import { deleteTransaction, } from '../../model/transactions.model'
+import { deleteTransaction, editTransaction, } from '../../model/transactions.model'
 
 export default function Transaction({
   name, budget, amount, date, 
-  isNewTransaction, transactionId, getUserTransactions, handleEditTransaction}) {
+  isNewTransaction, transactionId, getUserTransactions, budgets }) {
 
   // Get Context
   const setFlash = useContext(FlashContext)[1]
@@ -14,6 +14,7 @@ export default function Transaction({
   const [isEditMode, setIsEditMode] = useState(false)
 
   // Format Date
+  const dateInitial = date
   const dateInWords = new Date(date).toDateString().split(' ').slice(1).join(' ')
   date = date.split(' ')[0] 
 
@@ -44,12 +45,28 @@ export default function Transaction({
   // Handle Edit Transaction
   async function handleEditTransaction(e) {
     e.preventDefault()
-    console.log(e)
-
-    setIsEditMode(!isEditMode)
+    
+    try {
+      const res = await editTransaction({
+        date : e.target.elements[0].value,
+        name : e.target.elements[1].value,
+        budget : e.target.elements[2].value,
+        amount : e.target.elements[3].value,
+        transactionId : transactionId
+      })
+  
+      if(res.error) throw new Error(res.error``)
+      
+      setIsEditMode(!isEditMode)
+      getUserTransactions()
+      
+    } catch (error) {
+      setFlash({
+        type : 'fail',
+        message : error.message
+      })
+    }
   }
-
-
 
 
   return(
@@ -77,70 +94,79 @@ export default function Transaction({
     { 
     isEditMode
     ?
-    <form onSubmit={ handleEditTransaction } >
-    <div className='transaction-grid-row'>
+    
+    <tr>
 
-      <div>
+      <td>
         <input 
-          type="date" 
+          type="datetime-local" 
           name="date"
           size="1"
-          value={ date }
-          onChange={ () => {} }
+          defaultValue={ dateInitial }
+          form={ transactionId }
           />
-      </div>
-      <div>
+      </td>
+      <td>
         <input
           type="text"
           name="name"
           size="1"
-          value={ name }
-          onChange={ () => {} }
+          defaultValue={ name }
+          form={ transactionId }
           />
-      </div>
-      <div>
-        <select>
+      </td>
+      <td>
+        <select form={ transactionId } >
+          <option value={ budget }>{ budget }</option>
+          {
+            budgets.map( budget => {
+              return(
+                <option value={ budget.name } key={budget.name} >{ budget.name }</option>
+              )
+            })
+          }
           <option value="Uncategorized">--Uncategorized</option>
         </select>
-      </div>
-      <div>
+      </td>
+      <td>
         <input 
           type="number"
           name="amount"
           size="1"
-          value={ amount }
-          onChange={ () => {} }
+          defaultValue={ amount }
+          form={ transactionId }
         />
-      </div>
-      <div>
-        <input type="submit" value="Save" />
-      </div>
-      <div>
+      </td>
+      <td>
+        <form onSubmit={ handleEditTransaction } id={ transactionId } name={ transactionId } >
+          <input type="submit" value="Save" />
+        </form>
+      </td>
+      <td>
         <button onClick={ handleDeleteTransaction }>
             DD
         </button>
-      </div>
-    </div>
-    </form>
+      </td>
+    </tr>
     
     :
-    <div className={ isNewTransaction ? 'transaction-grid-row new-transaction' : 'transaction-grid-row' }>
-      <div>{dateInWords}</div>
-      <div>{name}</div>
-      <div>{budget}</div>
-      <div>{amount}</div>
-      <div>
+    <tr className={ isNewTransaction ? 'new-transaction' : '' }>
+      <td>{dateInWords}</td>
+      <td>{name}</td>
+      <td>{budget}</td>
+      <td>{amount}</td>
+      <td>
         <button onClick={ () => setIsEditMode(!isEditMode) }>
           EE
         </button>
-      </div>
-      <div>
+      </td>
+      <td>
         <button onClick={ handleDeleteTransaction }>
           DD
         </button>
-      </div>
+      </td>
 
-    </div>
+    </tr>
     }
 
     </>

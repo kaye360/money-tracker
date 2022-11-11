@@ -65,7 +65,29 @@ class Transactions {
 
 
   public function edit() {
-    // Post
+
+    // Get post data
+    $post_data = json_decode( file_get_contents('php://input'), true );
+
+    // Prepare statmenet
+    $this->stmt = $this->dbh->prepare('
+      UPDATE transactions 
+      SET name = :name,
+          budget = :budget,
+          amount = :amount,
+          date = :date
+      WHERE 
+        transaction_id = :transaction_id');
+
+    $this->stmt->bindValue(':name', $post_data['name']);
+    $this->stmt->bindValue(':budget', $post_data['budget']);
+    $this->stmt->bindValue(':amount', $post_data['amount']);
+    $this->stmt->bindValue(':date', $post_data['date']);
+    $this->stmt->bindValue(':transaction_id', $post_data['transactionId']);
+
+    return $this->stmt->execute() 
+      ? $this->getOne( $post_data['transactionId'] ) 
+      : ['error' => 'Failed to execute'];
   }
 
 
@@ -113,6 +135,29 @@ class Transactions {
     if( $this->stmt->execute() ) {
       $transactions = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
       return count($transactions) != 0 ? $transactions : ['error' => 'No transactions found'];
+    } else {
+      return ['error' => 'Error getting transactions'];
+    }
+  }
+
+
+
+
+  
+  public function getOne($transaction_id) {
+
+    // Format Inputs
+    $transaction_id = rtrim($transaction_id);
+    $transaction_id = filter_var($transaction_id, FILTER_SANITIZE_URL);
+
+    // Prepare stmt
+    $this->stmt = $this->dbh->prepare('SELECT * FROM transactions WHERE transaction_id = :transaction_id');
+    $this->stmt->bindValue(':transaction_id', $transaction_id);
+    
+    // Get transactions
+    if( $this->stmt->execute() ) {
+      $transaction = $this->stmt->fetch(PDO::FETCH_ASSOC);
+      return !empty($transaction) ? $transaction : ['error' => 'No transactions found'];
     } else {
       return ['error' => 'Error getting transactions'];
     }

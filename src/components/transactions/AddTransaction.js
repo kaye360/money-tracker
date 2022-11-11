@@ -1,10 +1,9 @@
 import { Style } from 'react-style-tag'
-import { useContext, useCallback, useState, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { FlashContext, UserContext } from '../../App'
 import { addTransaction } from '../../model/transactions.model'
-import { getBudgets } from '../../model/budgets.model'
 
-export default function Base({ getUserTransactions, setIsNewTransaction }) {
+export default function Base({ getUserTransactions, setIsNewTransaction, getUserBudgets, budgets }) {
 
     // Get Context
   const user = useContext(UserContext)[0]
@@ -12,32 +11,8 @@ export default function Base({ getUserTransactions, setIsNewTransaction }) {
 
 
 
-  // Get User Budgets - For Add Transaction form
-  const getUserBudgets = useCallback( async () => {
+    
 
-    try {
-      const res = await getBudgets({
-        'userId' : user.id
-      })
-      
-      if(res.error) throw new Error(res.error)
-    
-      setBudgets( res )
-      
-    } catch (error) {
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
-    }
-  }, [user.id, setFlash])
-  
-  
-    
-  
-  // Users Budgets
-  // Array of objects {name, amount} or false
-  const [budgets, setBudgets] = useState([])  
 
   useEffect( () => {
     try {

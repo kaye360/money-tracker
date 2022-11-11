@@ -16,8 +16,6 @@ export default function Budget({ name, amount, getUserBudgets }) {
   
 
 
-
-
   // Handle Delete
   async function handleDeleteBudget(e) {
     e.preventDefault()
@@ -45,6 +43,7 @@ export default function Budget({ name, amount, getUserBudgets }) {
 
 
 
+ // Handle edit
  async function handleEdit(e) {
   e.preventDefault()
   

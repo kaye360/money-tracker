@@ -27,8 +27,21 @@ export async function addTransaction({name, amount, budget, userId}) {
 
 
 
-export async function editTransaction() {
+export async function editTransaction({ date, name, budget, amount, transactionId }) {
 
+  // Check all fields filled out
+  if(!date || !name  || !budget || !amount) throw new Error('Please fill out all fields')
+  if( isNaN(amount) ) throw new Error('Amount must be a number')
+
+  // fetch
+  const editTransactionRes = await fetch(`${TransactionsAPIURL}/edit`, postReqOptions({ date, name, budget, amount, transactionId }))
+  if(!editTransactionRes.ok) throw new Error('Error editing Transaction')
+
+  // Return json response
+  const editTransactionSuccess = await editTransactionRes.json()
+  if(editTransactionSuccess.error) throw new Error(editTransactionSuccess.error)
+
+  return editTransactionSuccess
 }
 
 

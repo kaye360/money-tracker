@@ -4,6 +4,7 @@ import { useContext, useEffect, useState, useCallback } from 'react'
 
 import { FlashContext, UserContext } from '../App'
 import { getTransactionsAll } from '../model/transactions.model'
+import { getBudgets } from '../model/budgets.model'
 
 
 
@@ -15,6 +16,7 @@ export default function Transactions() {
   // Get Context
   const user = useContext(UserContext)[0]
   const setFlash = useContext(FlashContext)[1]
+
 
 
   // Require Login for this page
@@ -55,6 +57,38 @@ export default function Transactions() {
 
 
 
+  // Users Budgets
+  // Array of objects {name, amount} or false
+  const [budgets, setBudgets] = useState([])  
+
+
+
+  // Get User Budgets - For Add/Edit Transaction form
+  const getUserBudgets = useCallback( async () => {
+
+    try {
+      const res = await getBudgets({
+        'userId' : user.id
+      })
+      
+      if(res.error) throw new Error(res.error)
+    
+      setBudgets( res )
+      
+    } catch (error) {
+      setFlash({
+        type : 'fail',
+        message : error.message
+      })
+    }
+  }, [user.id, setFlash])
+    
+    
+      
+
+
+
+
   // Newly added transaction. Used for adding a 'flash style' when new transaction is added
   // false or number
   const [isNewTransaction, setIsNewTransaction] = useState(false)
@@ -78,12 +112,16 @@ export default function Transactions() {
         getUserTransactions={ getUserTransactions }
         setIsNewTransaction={ setIsNewTransaction }
         setTransactions={ setTransactions } 
-      />      
+        getUserBudgets={ getUserBudgets }
+        budgets={ budgets }
+        />      
 
       <ViewTransactions 
         getUserTransactions={ getUserTransactions }
         isNewTransaction={ isNewTransaction }
         transactions={ transactions }
+        getUserBudgets={ getUserBudgets }
+        budgets={ budgets }
       />
 
       

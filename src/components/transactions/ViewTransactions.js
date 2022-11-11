@@ -4,13 +4,14 @@ import { FlashContext } from '../../App'
 import Transaction from './Transaction'
 
 
-export default function ViewTransactions({ getUserTransactions, isNewTransaction, transactions }) {
+export default function ViewTransactions({ getUserTransactions, isNewTransaction, transactions, getUserBudgets, budgets }) {
 
   // Get Context
   const setFlash = useContext(FlashContext)[1]
 
 
 
+  // get Transactions
   useEffect( () => {
     try {
       getUserTransactions()
@@ -23,8 +24,14 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
   }, [getUserTransactions, setFlash])
 
 
-  
-  
+
+  // Get Budgets
+  useEffect( () => {
+    try {
+      getUserBudgets()
+    } catch(error) {
+    }
+  }, [getUserBudgets])
 
 
 
@@ -33,68 +40,65 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
     <>
     <Style>
     {`
-      .transactions-grid {
-
+      .transactions-table {
+        width : 100%;
       }
 
-      .transaction-grid-row {
-        display : grid;
-        grid-template-columns : repeat(4, 1fr) repeat(2, 0.5fr);
-        
-        padding : 0.5rem;
+      .transactions-table td {
+        padding : 0.5rem 0;
       }
 
-      .transaction-grid-row input {
-        border : 1px solid red;
-        max-width : min-content;
-        width : min-content;
-        min-width : 10px;
-      }
-
-      .transactions-grid-head {
+      .transactions-table-head {
         background-color : #f3f3f3;
       }
     `}
     </Style>
     
     <div className='view-transactions my1'>
-        <h2>View Transactions</h2>
+      <h2>View Transactions</h2>
 
 
-        <div className='transactions-grid'>
+      <table className='transactions-table'>
 
-          <div className='transaction-grid-row transactions-grid-head'>
+        <thead>
+          <tr className='transaction-grid-row transactions-table-head'>
 
-            <div>Date</div>
-            <div>Name</div>
-            <div>Category</div>
-            <div>Amount</div>
-            <div>Edit</div>
-            <div>Delete</div>
+            <td>Date</td>
+            <td>Name</td>
+            <td>Category</td>
+            <td>Amount</td>
+            <td>Edit</td>
+            <td>Delete</td>
 
-          </div>
+          </tr>
+        </thead>
 
-            {
+        <tbody>
+
+          {
             transactions.map( transaction => {
-            return(
+              return(
                 <Transaction 
-                  name={ transaction.name }
-                  budget={ transaction.budget }
-                  amount={ transaction.amount }
-                  date={ transaction.date }
-                  transactionId={ transaction.transaction_id }
-                  key={ transaction.transaction_id }
-                  isNewTransaction = { transaction.transaction_id === isNewTransaction }
-                  getUserTransactions={ getUserTransactions }
-                />
-                )
-              } )
-            }
-        </div>
+                    name={ transaction.name }
+                    budget={ transaction.budget }
+                    amount={ transaction.amount }
+                    date={ transaction.date }
+                    transactionId={ transaction.transaction_id }
+                    key={ transaction.transaction_id }
 
-        {
-          transactions.length === 0 && 'You dont\'t have any transactions yet'
-        }
+                    isNewTransaction = { transaction.transaction_id === isNewTransaction }
+                    getUserTransactions={ getUserTransactions }
+                    budgets={ budgets }
+                    />
+                    )
+                  } )
+          }
+        </tbody>
+      </table>
+
+      {
+        transactions.length === 0 && 'You dont\'t have any transactions yet'
+      }
 
       </div>
     </>
