@@ -9,38 +9,42 @@ export default function AddBudget({getUserBudgets}) {
   const user = useContext(UserContext)[0]
   const setFlash = useContext(FlashContext)[1]
 
+
+
   // Add budget handler
   async function handleAddBudget(e) {
     e.preventDefault()
 
+    // Format inputs
     const type = e.target[2].value
     const amount = (type === 'paycheck') ? Number(e.target[1].value) * -1 : Number(e.target[1].value)
     const name = e.target[0].value
 
+    // Get Response
     try {
       const res = await addBudget({
         'name' : name,
         'amount' : amount,
         'userId' : user.id
-      })
+    })
 
+      // Check/Set response
       if(res.error) throw new Error(res.error)
-
-      setFlash({
-        type : 'success',
-        message : `Budget ${e.target[0].value} was added successfully`
-      })
-
+      setFlash({ type : 'success', message : `Budget ${e.target[0].value} was added successfully` })
       getUserBudgets()
 
     } catch (error) {
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
+
+      // Flash error message
+      setFlash({ type : 'fail', message : error.message })
+
     }
 
   }
+
+
+
+
 
   return(
     <>

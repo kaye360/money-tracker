@@ -60,6 +60,22 @@ export async function deleteTransaction({transactionId}) {
 
 
 
+
+export async function getDateRange(userId) {
+  // Fetch User transactions
+  const getDateRangeRes = await fetch(`${TransactionsAPIURL}/getDateRange/${userId}`)
+  if(!getDateRangeRes.ok) throw new Error('Error fetching Transaction Date Range')
+
+  const getDateRangeSuccess = await getDateRangeRes.json()
+  if(getDateRangeSuccess.error) throw new Error(getDateRangeSuccess.error)
+
+  return getDateRangeSuccess
+}
+
+
+
+
+
 export async function getTransactionsInMonth() {
 
 }

@@ -5,22 +5,18 @@ import { addTransaction } from '../../model/transactions.model'
 
 export default function Base({ getUserTransactions, setIsNewTransaction, getUserBudgets, budgets }) {
 
-    // Get Context
+  // Get Context
   const user = useContext(UserContext)[0]
   const setFlash = useContext(FlashContext)[1]
 
 
-
-    
-
-
+  // Load User Budgets
   useEffect( () => {
     try {
       getUserBudgets()
     } catch(error) {
     }
   }, [getUserBudgets])
-
   
 
 
@@ -28,32 +24,29 @@ export default function Base({ getUserTransactions, setIsNewTransaction, getUser
   async function handleAddTransaction(e) {
     e.preventDefault()
 
-    const name = e.target[0].value
-    const amount = e.target[1].value
-    const budget = e.target[2].value
-
     try {
+
+      // Fetch Response
       const res = await addTransaction({
-        name,
-        amount,
-        budget,
+        name : e.target[0].value,
+        amount : e.target[1].value,
+        budget : e.target[2].value,
         userId : user.id
       })
 
+      // Check/Set user transactions
       if (res.error) throw new Error(res.error)
-
       getUserTransactions()
-      
+
+      // Flash New Transaction
       setIsNewTransaction(res.transaction_id)
-      setTimeout( () => {
-        setIsNewTransaction(false)
-      }, 1000)
+      setTimeout( () => { setIsNewTransaction(false) }, 1000)
       
     } catch (error) {
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
+
+      // Flash error message
+      setFlash({ type : 'fail', message : error.message })
+      
     }
   }
 
@@ -73,7 +66,7 @@ export default function Base({ getUserTransactions, setIsNewTransaction, getUser
     `}
     </Style>
     
-    <div className='add-transaction'>
+    <div className='add-transaction mb2'>
       <h2>Add a Transaction</h2>
       <form onSubmit={ handleAddTransaction }>
 

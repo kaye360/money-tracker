@@ -11,27 +11,21 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
 
 
 
-  // get Transactions
+  // load Transactions
   useEffect( () => {
     try {
       getUserTransactions()
     } catch (error) {
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
+      setFlash({ type : 'fail', message : error.message })
     }
   }, [getUserTransactions, setFlash])
 
 
 
-  // Get Budgets
-  useEffect( () => {
-    try {
-      getUserBudgets()
-    } catch(error) {
-    }
-  }, [getUserBudgets])
+  // load Budgets
+  useEffect( () => { 
+    try { getUserBudgets() } catch(error) {} }, [getUserBudgets]
+  )
 
 
 
@@ -45,16 +39,25 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
       }
 
       .transactions-table td {
-        padding : 0.5rem 0;
+        min-width : 100px;
+        padding : 0.5rem 0.4rem;
+      }
+
+      .transactions-table tr:nth-child(2n) {
+        background-color : #f4f4f4;
       }
 
       .transactions-table-head {
-        background-color : #f3f3f3;
+        background-color : #f0f0f0;
+      }
+
+      .transactions-table input:not([type=submit]) {
+        width : 100px;
       }
     `}
     </Style>
     
-    <div className='view-transactions my1'>
+    <div className='view-transactions my2'>
       <h2>View Transactions</h2>
 
 
@@ -65,10 +68,9 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
 
             <td>Date</td>
             <td>Name</td>
-            <td>Category</td>
+            <td>Budget</td>
             <td>Amount</td>
-            <td>Edit</td>
-            <td>Delete</td>
+            <td>Action</td>
 
           </tr>
         </thead>

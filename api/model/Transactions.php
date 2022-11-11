@@ -112,7 +112,37 @@ class Transactions {
 
 
 
-  public function getMonth($userId, $date) {
+  public function getMonth($userId) {
+
+    // Check/Filter/Get URL
+    if( !isset($_GET['url']) ) throw new Exception('No Url Param');
+    $url = rtrim($_GET['url'], " \n\r\t\v\x00/");
+    $url = filter_var($url, FILTER_SANITIZE_URL);
+    $url = explode('/', $url);
+
+    $date = isset($url[3]) ? $url[3] : false;
+    $date = explode('-', $date);
+
+    // var_dump($date);
+
+    // Format Inputs
+    $userId = rtrim($userId);
+    $userId = filter_var($userId, FILTER_SANITIZE_URL);
+
+    // Prepare stmt
+    $sql = 'SELECT * FROM transactions WHERE user_id = :user_id AND YEAR(date) = :year AND MONTH(date) = :month ORDER BY date DESC';
+    $this->stmt = $this->dbh->prepare($sql);
+    $this->stmt->bindValue(':user_id', $userId);
+    $this->stmt->bindValue(':year', $date[0]);
+    $this->stmt->bindValue(':month', $date[1]);
+
+    // Get transactions
+    if( $this->stmt->execute() ) {
+      $transactions = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+      return count($transactions) != 0 ? $transactions : ['error' => 'No transactions found'];
+    } else {
+      return ['error' => 'Error getting transactions'];
+    }
 
   }
 
@@ -163,4 +193,27 @@ class Transactions {
     }
   }
   
+
+
+
+
+  public function getDateRange($user_id) {
+    
+    // Format Inputs
+    $user_id = rtrim($user_id);
+    $user_id = filter_var($user_id, FILTER_SANITIZE_URL);
+    
+    // Prepare stmt
+    $sql = 'SELECT MIN(date) AS min, MAX(date) AS max FROM transactions WHERE user_id = :user_id';
+    $this->stmt = $this->dbh->prepare($sql);
+    $this->stmt->bindValue(':user_id', $user_id);
+    
+    // Get transactions
+    if( $this->stmt->execute() ) {
+      $transaction = $this->stmt->fetch(PDO::FETCH_ASSOC);
+      return !empty($transaction) ? $transaction : ['error' => 'No transactions found'];
+    } else {
+      return ['error' => 'Error getting transactions'];
+    }
+  }
 }

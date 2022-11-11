@@ -9,8 +9,10 @@ export default function Budget({ name, amount, getUserBudgets }) {
   const user = useContext(UserContext)[0]
   const setFlash = useContext(FlashContext)[1]
 
+  
+
   // Edit mode
-  const [isEditMode, setIsEditMode] = useState() // BOOL true or false
+  const [isEditMode, setIsEditMode] = useState(false) // BOOL true or false
   const [nameInput, setNameInput] = useState(name) // String or false
   const [amountInput, setAmountInput] = useState(amount) // Number or false
   
@@ -21,22 +23,16 @@ export default function Budget({ name, amount, getUserBudgets }) {
     e.preventDefault()
 
     try {
- 
-      const res = await deleteBudget({
-        userId : user.id,
-        budgetName : e.target.id
-      })
-      
-      if (res.error) throw new Error(res.error)
 
+      // Get/Check/Set response
+      const res = await deleteBudget({ userId : user.id, budgetName : e.target.id })
+      if (res.error) throw new Error(res.error)
       getUserBudgets()
 
     } catch (error) {
 
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
+      // Flash error message
+      setFlash({ type : 'fail', message : error.message })
 
     }
  }
@@ -48,6 +44,8 @@ export default function Budget({ name, amount, getUserBudgets }) {
   e.preventDefault()
   
   try {
+
+    // Get response
     const res = await editBudget({
       userId : user.id,
       oldName : name,
@@ -55,16 +53,16 @@ export default function Budget({ name, amount, getUserBudgets }) {
       newAmount : amountInput
     })
 
+    // Check/Set reponse
     if(res.error) throw new Error(res.error)
-    
     setIsEditMode(!isEditMode)
     getUserBudgets()
 
   } catch (error) {
-    setFlash({
-      type : 'fail',
-      message : error.message
-    })
+
+    // Flash Error message
+   setFlash({ type : 'fail',  message : error.message })
+   
   }
 
  }

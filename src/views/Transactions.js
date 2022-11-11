@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useContext, useEffect, useState, useCallback } from 'react'
 
 import { FlashContext, UserContext } from '../App'
-import { getTransactionsAll } from '../model/transactions.model'
+import { getTransactionsAll, getDateRange } from '../model/transactions.model'
 import { getBudgets } from '../model/budgets.model'
 
 
@@ -22,9 +22,7 @@ export default function Transactions() {
   // Require Login for this page
   const navigate = useNavigate()
 
-  useEffect( () => {
-    !user && navigate('/req-login')
-  }, [navigate, user])
+  useEffect( () => { !user && navigate('/req-login') }, [navigate, user])
 
 
 
@@ -38,19 +36,17 @@ export default function Transactions() {
   const getUserTransactions = useCallback( async () => {
 
     try {
-     const res = await getTransactionsAll({
-       userId : user.id
-     })
- 
-     if(res.error) throw new Error(res.error)
- 
-     setTransactions( res )
+
+      // Get/Check/Set Transactions, set state  
+      const res = await getTransactionsAll({ userId : user.id })
+      if(res.error) throw new Error(res.error)
+      setTransactions( res )
       
     } catch (error) {
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
+
+      // Flash error message
+      setFlash({ type : 'fail', message : error.message })
+
     }
 
   }, [user.id, setFlash]) 
@@ -67,33 +63,54 @@ export default function Transactions() {
   const getUserBudgets = useCallback( async () => {
 
     try {
-      const res = await getBudgets({
-        'userId' : user.id
-      })
-      
+
+      // Get/Check budgets, set budgets to rewsponse value
+      const res = await getBudgets({ 'userId' : user.id })
       if(res.error) throw new Error(res.error)
-    
       setBudgets( res )
       
     } catch (error) {
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
+
+       // Display error message
+       setFlash({ type : 'fail', message : error.message })
+
     }
   }, [user.id, setFlash])
-    
-    
-      
 
 
 
-
-  // Newly added transaction. Used for adding a 'flash style' when new transaction is added
-  // false or number
+  // Newly added transaction. Used for adding a 'flash/fade style' when new transaction is added
+  // false or number(transaction_id)
   const [isNewTransaction, setIsNewTransaction] = useState(false)
 
   
+
+  // Date Range
+  // object { minDate, maxDate } or { error }
+  const [transactionDateRange, setTransactionDateRange] = useState({})
+
+
+
+  // Get Date Range from DB or Flash error
+  useEffect( () => {
+    ( async () => {
+      try {
+
+        // Get/Check/Set Date Range
+        const dateRange = await getDateRange(user.id)
+        if (dateRange.error) throw new Error(dateRange.error)
+        setTransactionDateRange(dateRange)
+
+      } catch (error) {
+
+          // Flash error message
+          setFlash({ type : 'fail', message : error.message })
+          
+      }
+    })()
+  }, [setFlash, user.id])
+
+
 
 
   return(
@@ -108,13 +125,23 @@ export default function Transactions() {
     <div className="transactions">
       <h1 className="px1">Transactions</h1>
 
+
+
       <AddTransaction 
         getUserTransactions={ getUserTransactions }
         setIsNewTransaction={ setIsNewTransaction }
         setTransactions={ setTransactions } 
         getUserBudgets={ getUserBudgets }
         budgets={ budgets }
-        />      
+      />      
+
+      {
+      transactionDateRange &&
+        <div>
+          Min: { transactionDateRange.min } <br />
+          Max: { transactionDateRange.max } <br />
+        </div>
+      }
 
       <ViewTransactions 
         getUserTransactions={ getUserTransactions }

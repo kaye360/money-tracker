@@ -17,34 +17,28 @@ export default function Budgets() {
 
 
 
-  
   // Require Login for this page
   const navigate = useNavigate()
-
-  useEffect( () => {
-    !user && navigate('/req-login')
-  }, [navigate, user])
+  useEffect( () => { !user && navigate('/req-login') }, [navigate, user])
   
 
 
 
-  // Get User Budgets
+  // Get User Budgets or Flash error
   const getUserBudgets = useCallback( async () => {
 
     try {
-      const res = await getBudgets({
-        'userId' : user.id
-      })
-      
+
+      // Get/Check/Set Budgets
+      const res = await getBudgets({ 'userId' : user.id })
       if(res.error) throw new Error(res.error)
-    
       setBudgets( res )
       
     } catch (error) {
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
+
+      // Flash Error message
+      setFlash({ type : 'fail', message : error.message })
+
     }
   }, [user.id, setFlash])
 
@@ -55,14 +49,12 @@ export default function Budgets() {
   // Array of objects {name, amount} or false
   const [budgets, setBudgets] = useState([])
   
+  // load budgets
   useEffect( () => {
     try {
       getUserBudgets()
     } catch(error) {
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
+      setFlash({ type : 'fail', message : error.message })
     }
   }, [getUserBudgets, setFlash])
 
@@ -75,8 +67,6 @@ export default function Budgets() {
     return total
   }
   
-
-
   
 
 

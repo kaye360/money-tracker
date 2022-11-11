@@ -4,20 +4,25 @@ import { FlashContext } from '../../App'
 import { deleteTransaction, editTransaction, } from '../../model/transactions.model'
 
 export default function Transaction({
-  name, budget, amount, date, 
-  isNewTransaction, transactionId, getUserTransactions, budgets }) {
+  name, budget, amount, date, transactionId,
+  isNewTransaction, getUserTransactions, budgets }) {
 
   // Get Context
   const setFlash = useContext(FlashContext)[1]
 
-  // is Edit mode - BOOL true/false
+
+
+  // is Edit mode
+  // BOOL true/false
   const [isEditMode, setIsEditMode] = useState(false)
 
-  // Format Date
-  const dateInitial = date
-  const dateInWords = new Date(date).toDateString().split(' ').slice(1).join(' ')
-  date = date.split(' ')[0] 
 
+
+  // Format Date
+  // dateInWords = human readable date
+  // String
+  const dateInWords = new Date(date).toDateString().split(' ').slice(1).join(' ')
+  console.log(typeof dateInWords)
 
 
 
@@ -26,17 +31,16 @@ export default function Transaction({
     e.preventDefault()
 
     try {
-      const res = await deleteTransaction({transactionId : transactionId})
-      
-      if (res.error) throw new Error(res.error)
 
+      // Get/Check/Set response
+      const res = await deleteTransaction({transactionId : transactionId})
+      if (res.error) throw new Error(res.error)
       getUserTransactions()
 
     } catch(error) {
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
+
+      // Flash error message
+      setFlash({ type : 'fail', message : error.message })
     }
   }
 
@@ -46,6 +50,7 @@ export default function Transaction({
   async function handleEditTransaction(e) {
     e.preventDefault()
     
+    // Get response
     try {
       const res = await editTransaction({
         date : e.target.elements[0].value,
@@ -55,16 +60,16 @@ export default function Transaction({
         transactionId : transactionId
       })
   
+      // Check response, set state
       if(res.error) throw new Error(res.error``)
-      
       setIsEditMode(!isEditMode)
       getUserTransactions()
       
     } catch (error) {
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
+
+      // Flash error message
+      setFlash({ type : 'fail', message : error.message })
+
     }
   }
 
@@ -93,7 +98,7 @@ export default function Transaction({
 
     { 
     isEditMode
-    ?
+    ? 
     
     <tr>
 
@@ -102,7 +107,7 @@ export default function Transaction({
           type="datetime-local" 
           name="date"
           size="1"
-          defaultValue={ dateInitial }
+          defaultValue={ date }
           form={ transactionId }
           />
       </td>
@@ -140,16 +145,14 @@ export default function Transaction({
       <td>
         <form onSubmit={ handleEditTransaction } id={ transactionId } name={ transactionId } >
           <input type="submit" value="Save" />
-        </form>
-      </td>
-      <td>
         <button onClick={ handleDeleteTransaction }>
             DD
         </button>
+        </form>
       </td>
     </tr>
     
-    :
+    : // isEditMode === false
     <tr className={ isNewTransaction ? 'new-transaction' : '' }>
       <td>{dateInWords}</td>
       <td>{name}</td>
@@ -159,8 +162,6 @@ export default function Transaction({
         <button onClick={ () => setIsEditMode(!isEditMode) }>
           EE
         </button>
-      </td>
-      <td>
         <button onClick={ handleDeleteTransaction }>
           DD
         </button>
