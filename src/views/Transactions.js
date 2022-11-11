@@ -1,15 +1,14 @@
 import { Style } from 'react-style-tag'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useContext, useEffect, useState, useCallback } from 'react'
 
 import { FlashContext, UserContext } from '../App'
-import { getTransactionsAll, getDateRange } from '../model/transactions.model'
+import { getTransactionsAll } from '../model/transactions.model'
 import { getBudgets } from '../model/budgets.model'
-
-
 
 import AddTransaction from '../components/transactions/AddTransaction'
 import ViewTransactions from '../components/transactions/ViewTransactions'
+import TransactionsMonthList from '../components/transactions/TransactionsMonthList'
 
 export default function Transactions() {
 
@@ -85,39 +84,10 @@ export default function Transactions() {
 
   
 
-  // Date Range
-  // object { minDate, maxDate } or { error }
-  const [transactionDateRange, setTransactionDateRange] = useState({})
-
-
-
-  // Get Date Range from DB or Flash error
-  useEffect( () => {
-    ( async () => {
-      try {
-
-        // Get/Check/Set Date Range
-        const dateRange = await getDateRange(user.id)
-        if (dateRange.error) throw new Error(dateRange.error)
-        setTransactionDateRange(dateRange)
-
-      } catch (error) {
-
-          // Flash error message
-          setFlash({ type : 'fail', message : error.message })
-          
-      }
-    })()
-  }, [setFlash, user.id])
-
-
-
-
   return(
     <>
     <Style>
     {`
-
 
     `}
     </Style>
@@ -135,13 +105,8 @@ export default function Transactions() {
         budgets={ budgets }
       />      
 
-      {
-      transactionDateRange &&
-        <div>
-          Min: { transactionDateRange.min } <br />
-          Max: { transactionDateRange.max } <br />
-        </div>
-      }
+      <TransactionsMonthList />
+
 
       <ViewTransactions 
         getUserTransactions={ getUserTransactions }

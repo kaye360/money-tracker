@@ -22,7 +22,6 @@ export default function Transaction({
   // dateInWords = human readable date
   // String
   const dateInWords = new Date(date).toDateString().split(' ').slice(1).join(' ')
-  console.log(typeof dateInWords)
 
 
 
