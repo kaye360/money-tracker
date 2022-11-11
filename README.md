@@ -6,3 +6,4 @@ This will be a money tracking app. Lots of plans to come...
 
 # Bugs
 - Cant delete budget, transaction with space in the name
+- TransactionMonthList - rework monthInWords to show proper month

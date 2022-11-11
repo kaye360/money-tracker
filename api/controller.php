@@ -8,6 +8,10 @@ class Controller {
   private $method;
   private $params;
 
+
+
+
+  
   public function __construct() {
 
     // Current page URL
@@ -29,6 +33,9 @@ class Controller {
   
   }
   
+
+
+
   
   public function render() {
 
@@ -38,6 +45,10 @@ class Controller {
   }
 
 
+
+
+
+  // Get URL and split into array
   public function getURL() {
     
     // Check/Filter/Get URL
