@@ -107,7 +107,9 @@ export default function Transactions() {
         budgets={ budgets }
       />      
 
-      <TransactionsMonthList />
+      <TransactionsMonthList 
+        transactions={ transactions }
+      />
 
 
       <ViewTransactions 

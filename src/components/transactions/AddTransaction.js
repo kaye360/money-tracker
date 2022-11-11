@@ -56,46 +56,53 @@ export default function Base({ getUserTransactions, setIsNewTransaction, getUser
     <>
     <Style>
     {`
-      .add-transaction label {
-        display : block;
+      .add-transaction {
+        padding : 1rem 0.5rem;
+        border : 1px solid #333;
       }
 
-      .add-transaction-label {
-        display : block;
+
+      .add-transaction-form {
+        display : flex;
+        flex-wrap : wrap;
+        gap : 1rem;
+        margin-block : 1rem;
       }
     `}
     </Style>
     
-    <div className='add-transaction mb2'>
+    <div className='add-transaction my2'>
       <h2>Add a Transaction</h2>
       <form onSubmit={ handleAddTransaction }>
 
-        <label>
-          <span className='add-transaction-label'>Transaction Name</span>
-          <input type="text" name="transactionName" />
-        </label>
+        <div className="add-transaction-form">
+          <label>
+            <span className='add-transaction-label'>Transaction Name </span>
+            <input type="text" name="transactionName" />
+          </label>
 
-        <label>
-          <span className='add-transaction-label'>Transaction Amount</span>
-          <input type="text" name="transactionAmount" />
-        </label>
+          <label>
+            <span className='add-transaction-label'>Transaction Amount </span>
+            <input type="text" name="transactionAmount" />
+          </label>
 
-        <label>
-          <span className='add-transation-label'>Budget</span>
-          <select>
-            <option value="Uncategorized">--Uncategorized</option>
-            {
-              budgets.map( budget => {
-                return(
-                  <option value={ budget.name } key={budget.name} >{ budget.name }</option>
-                )
-              })
-            }
-          </select>
-        </label>
+          <label>
+            <span className='add-transation-label'>Budget </span>
+            <select>
+              <option value="Uncategorized">--Uncategorized</option>
+              {
+                budgets.map( budget => {
+                  return(
+                    <option value={ budget.name } key={budget.name} >{ budget.name }</option>
+                  )
+                })
+              }
+            </select>
+          </label>
 
-        <div>
-          <input type="submit" value="Add transaction" />
+          <div>
+            <input type="submit" value="Add transaction" />
+          </div>
         </div>
 
         </form>

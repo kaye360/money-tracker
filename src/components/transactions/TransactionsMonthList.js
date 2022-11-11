@@ -3,11 +3,13 @@ import moment from 'moment/moment'
 import { Link } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react'
 import { UserContext, FlashContext } from '../../App'
+
 import { getDateRange } from '../../model/transactions.model'
+import { parseMonth } from '../../utils/date'
 
 
 
-export default function TransactionsMonthList() {
+export default function TransactionsMonthList({ transactions }) {
 
   // Get context
   const user = useContext(UserContext)[0]
@@ -38,7 +40,7 @@ export default function TransactionsMonthList() {
 
       }
     })()
-  }, [setFlash, user.id])
+  }, [setFlash, user.id, transactions])
 
 
 
@@ -52,6 +54,7 @@ export default function TransactionsMonthList() {
     if(!transactionDateRange.min || !transactionDateRange.max) return
 
     let startDate = moment(transactionDateRange.min)
+    // let endDate = moment(transactionDateRange.max).add(1, 'M')
     let endDate = moment(transactionDateRange.max)
     let dateList = []
 
@@ -64,8 +67,6 @@ export default function TransactionsMonthList() {
 
 
 
-
-
   return(
     <>
     <Style>
@@ -75,6 +76,7 @@ export default function TransactionsMonthList() {
       flex-wrap : wrap;
       gap : 1rem;
       padding : 0.5rem;
+      margin-block : 1rem;
       border : 1px solid #333;
     }
     `}
@@ -85,14 +87,8 @@ export default function TransactionsMonthList() {
       <div className='transactions-month-list'>
         {
         transactionMonthList.map( (month, index) => {
-
-          // Parse month
-          month = month.split('-').slice(0, 2).join('-')
-          let monthInWords = new Date(month).toDateString().split(' ')
-          monthInWords = [monthInWords[1], monthInWords[3]].join(' ')
-
-          // Return Link to /transactions/YYYY-MM
-          return <Link to={`/transactions/${month}`} key={ index } > { monthInWords } </Link>
+          month = parseMonth(month)
+          return <Link to={`/transactions/${month.asNumber}`} key={ index } > { month.asWords } </Link>
         })
         }
       </div>

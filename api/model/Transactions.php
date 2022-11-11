@@ -123,8 +123,6 @@ class Transactions {
     $date = isset($url[3]) ? $url[3] : false;
     $date = explode('-', $date);
 
-    // var_dump($date);
-
     // Format Inputs
     $userId = rtrim($userId);
     $userId = filter_var($userId, FILTER_SANITIZE_URL);
@@ -136,13 +134,8 @@ class Transactions {
     $this->stmt->bindValue(':year', $date[0]);
     $this->stmt->bindValue(':month', $date[1]);
 
-    // Get transactions
-    if( $this->stmt->execute() ) {
-      $transactions = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
-      return count($transactions) != 0 ? $transactions : ['error' => 'No transactions found'];
-    } else {
-      return ['error' => 'Error getting transactions'];
-    }
+    // Execute
+    return $this->stmt->execute() ? $this->stmt->fetchAll(PDO::FETCH_ASSOC) : ['error' => 'Error getting transactions'];
 
   }
 

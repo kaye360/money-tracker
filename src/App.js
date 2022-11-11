@@ -11,11 +11,12 @@ import Forecast from "./views/Forecast"
 import Budgets from "./views/Budgets";
 import Transactions from "./views/Transactions";
 import Savings from "./views/Savings";
-import About from "./views/About";
+import About from "./views/TransactionsInMonth";
 import PageNotFound from "./views/PageNotFound";
 import ReqLogin from "./views/ReqLogin";
 
 import './assets/css/main.css'
+import TransactionsInMonth from "./views/TransactionsInMonth";
 
 
 export const UserContext = createContext()
@@ -69,6 +70,8 @@ function App() {
             <Route path="/budgets" element={ <Budgets /> } />
         
             <Route path="/transactions" element={ <Transactions /> } />
+
+            <Route path="/transactions/:month" element={ <TransactionsInMonth /> } />
         
             <Route path="/savings" element={ <Savings /> } />
         
