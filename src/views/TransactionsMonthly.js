@@ -9,7 +9,7 @@ import { getBudgets } from '../model/budgets.model'
 import { useState } from 'react'
 import TransactionsMonthList from '../components/transactions/TransactionsMonthList'
 
-export default function TransactionsInMonth() {
+export default function TransactionsMonthly() {
 
 
 
@@ -129,7 +129,10 @@ export default function TransactionsInMonth() {
         <Link to='/transactions'>Back to Transactions</Link>
       </div>
 
-      <TransactionsMonthList />
+      <TransactionsMonthList 
+        transactions={ transactions }
+        routePath='transactions'
+      />
 
       <table className='transactions-table'>
 

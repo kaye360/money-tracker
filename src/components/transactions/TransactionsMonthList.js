@@ -9,7 +9,7 @@ import { parseMonth } from '../../utils/date'
 
 
 
-export default function TransactionsMonthList({ transactions }) {
+export default function TransactionsMonthList({ transactions, routePath }) {
 
   // Get context
   const user = useContext(UserContext)[0]
@@ -88,7 +88,7 @@ export default function TransactionsMonthList({ transactions }) {
         {
         transactionMonthList.map( (month, index) => {
           month = parseMonth(month)
-          return <Link to={`/transactions/${month.asNumber}`} key={ index } > { month.asWords } </Link>
+          return <Link to={`/${routePath}/${month.asNumber}`} key={ index } > { month.asWords } </Link>
         })
         }
       </div>

@@ -109,6 +109,7 @@ export default function Transactions() {
 
       <TransactionsMonthList 
         transactions={ transactions }
+        routePath='transactions'
       />
 
 

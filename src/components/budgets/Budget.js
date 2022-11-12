@@ -3,7 +3,7 @@ import { Style } from 'react-style-tag'
 import { deleteBudget, editBudget } from '../../model/budgets.model'
 import { FlashContext, UserContext } from '../../App'
 
-export default function Budget({ name, amount, spent, loadUserBudgets }) {
+export default function Budget({ name, amount, spent, loadUserBudgets, showProgressBar }) {
 
   // Context
   const user = useContext(UserContext)[0]
@@ -71,8 +71,15 @@ export default function Budget({ name, amount, spent, loadUserBudgets }) {
 
   // CSS variable
   const progressBarWidth = spent / amountInput * 100
-  const cssClassName = name.replace(/\s+/g, '');
-  const progressBarColor = progressBarWidth < 100 ? '#ccc' : '#f90'
+  const cssClassName = name.replace(/\s+/g, '')
+
+  let progressBarColor
+
+  switch (true) {
+    case (progressBarWidth > 100): progressBarColor = '#FFB8B8'; break
+    case (progressBarWidth > 90) && (progressBarWidth <=100): progressBarColor = '#FFE3B8'; break
+    default: progressBarColor = '#C5FCE1'
+  }
 
 
 
@@ -105,15 +112,23 @@ export default function Budget({ name, amount, spent, loadUserBudgets }) {
       .budget-progress-bar {
         width : 0%;
         height : 15px;
+        transform-origin : left center;
+        animation : budget-progress-bar 1.5s ease-out both;
       }
       
       div.budget-progress-bar-${cssClassName} {
         background-color : ${progressBarColor};
         width : ${ progressBarWidth }%;
       }
+
+      @keyframes budget-progress-bar {
+        from { transform : scaleX(0); opacity : 0; }
+        to { transform : scaleX(1); opacity : 1; }
+      }
     `}
     </Style>
     
+      
 
       {
         isEditMode
@@ -144,7 +159,7 @@ export default function Budget({ name, amount, spent, loadUserBudgets }) {
 
         : // Not Edit Mode
         <div className='budget mt1'>
-          <span>{ nameInput } : {spent} / { amountInput }</span>
+          <span>{ nameInput } : { showProgressBar && `$${spent} / `} ${ amountInput }</span>
 
           <div className='budget-buttons'>
             <button className='budget-edit-btn' onClick = { () => setIsEditMode(!isEditMode) } >Edit</button>
@@ -155,10 +170,12 @@ export default function Budget({ name, amount, spent, loadUserBudgets }) {
       
 
 
-
-    <div className='budget-progress-bar-wrapper mb1'>
-      <div className={`budget-progress-bar budget-progress-bar-${cssClassName}`}></div>
-    </div>
+      {
+      showProgressBar &&
+        <div className='budget-progress-bar-wrapper mb1'>
+          <div className={`budget-progress-bar budget-progress-bar-${cssClassName}`}></div>
+        </div>
+      }
     </>
   )
 }
