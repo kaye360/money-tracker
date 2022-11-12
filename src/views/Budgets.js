@@ -6,7 +6,7 @@ import { FlashContext, UserContext } from '../App'
 import AddBudget from '../components/budgets/AddBudget'
 
 import ViewBudget from '../components/budgets/ViewBudget'
-import { getBudgets } from '../model/budgets.model'
+import { getBudgets, getMontlySpendingTotals } from '../model/budgets.model'
 
 
 export default function Budgets() {
@@ -24,15 +24,26 @@ export default function Budgets() {
 
 
 
-  // Get User Budgets or Flash error
-  const getUserBudgets = useCallback( async () => {
+  // Load User Budgets or Flash error
+  const loadUserBudgets = useCallback( async () => {
 
     try {
 
       // Get/Check/Set Budgets
-      const res = await getBudgets({ 'userId' : user.id })
-      if(res.error) throw new Error(res.error)
-      setBudgets( res )
+      const budgetRes = await getBudgets({ 'userId' : user.id })
+      if(budgetRes.error) throw new Error(budgetRes.error)
+
+      // Get/Check Monthly spending totals
+      const spentRes = await(getMontlySpendingTotals({ userId : user.id, month : '2022-11'  }))
+      if(spentRes.error) throw new Error(spentRes.error)
+
+      // Add monthly spending total to budgets array
+      budgetRes.forEach( (budget, index) => {
+        budgetRes[index].spent = spentRes[budget.name] ? parseInt(spentRes[budget.name]) : 0
+      })
+      
+      // Set Budget State
+      setBudgets( budgetRes )
       
     } catch (error) {
 
@@ -52,11 +63,11 @@ export default function Budgets() {
   // load budgets
   useEffect( () => {
     try {
-      getUserBudgets()
+      loadUserBudgets()
     } catch(error) {
       setFlash({ type : 'fail', message : error.message })
     }
-  }, [getUserBudgets, setFlash])
+  }, [loadUserBudgets, setFlash])
 
 
 
@@ -90,17 +101,17 @@ export default function Budgets() {
     
     <div className='budgets'>
       <h1 className='px1'>
-        Budgets 
+        Budgets
         <span className='budgets-total-amount'>Total ${ totalBudgetsAmount() }/month</span>
       </h1>
 
       <ViewBudget 
         budgets={ budgets }
-        getUserBudgets={ getUserBudgets }
+        loadUserBudgets={ loadUserBudgets }
       />
 
       <AddBudget
-        getUserBudgets={ getUserBudgets }
+        loadUserBudgets={ loadUserBudgets }
       />
     
     </div>

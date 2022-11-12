@@ -1,7 +1,7 @@
 import { Style } from 'react-style-tag'
 import Budget from './Budget'
 
-export default function ViewBudget({ budgets, getUserBudgets }) {
+export default function ViewBudget({ budgets, loadUserBudgets }) {
 
   return(
     <>
@@ -27,8 +27,9 @@ export default function ViewBudget({ budgets, getUserBudgets }) {
               <Budget 
                 name={ budget.name } 
                 amount={ budget.amount }
+                spent={ budget.spent }
                 key={ budget.name } 
-                getUserBudgets={ getUserBudgets }
+                loadUserBudgets={ loadUserBudgets }
               />
             )
           })

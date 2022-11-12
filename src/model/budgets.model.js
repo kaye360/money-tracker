@@ -50,13 +50,29 @@ export async function getBudgets({ userId }) {
   if(getBudgetsSuccess.error) throw new Error(getBudgetsSuccess.error)
 
   const userBudgets = Object.entries(getBudgetsSuccess).map(budget => {
-    return { 'name' : budget[0], 'amount' : budget[1] }
+    return { 'name' : budget[0], 'amount' : parseInt(budget[1]) }
   })
 
   return userBudgets.sort( (a,b) => {
     if(Number(a.amount) === Number(b.amount)) return 0
     return Number(a.amount) > Number(b.amount) ? -1 : 1;
   })
+} 
+
+
+
+
+
+export async function getMontlySpendingTotals({ userId, month }) {
+
+  // Fetch user budgets
+  const getTotalsRes = await fetch(`${BudgetAPIURL}/getMonthlySpendingTotals/${userId}/${month}`)
+  if(!getTotalsRes.ok) throw new Error('Error fetching User Budgets')
+
+  const getTotalsSuccess = await getTotalsRes.json()
+  if(getTotalsSuccess.error) throw new Error(getTotalsSuccess.error)
+
+  return getTotalsSuccess
 } 
 
 
