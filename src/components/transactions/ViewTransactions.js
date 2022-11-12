@@ -4,7 +4,7 @@ import { FlashContext } from '../../App'
 import Transaction from './Transaction'
 
 
-export default function ViewTransactions({ getUserTransactions, isNewTransaction, transactions, getUserBudgets, budgets }) {
+export default function ViewTransactions({ getUserTransactions, isNewTransaction, transactions, getUserBudgets, budgets, maxCount = false }) {
 
   // Get Context
   const setFlash = useContext(FlashContext)[1]
@@ -26,7 +26,6 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
   useEffect( () => { 
     try { getUserBudgets() } catch(error) {} }, [getUserBudgets]
   )
-
 
 
 
@@ -58,7 +57,9 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
     </Style>
     
     <div className='view-transactions my2'>
-      <h2>All Transactions</h2>
+      <h2 className='my1'>
+        { maxCount ? 'Recent' : 'All' } Transactions
+      </h2>
 
 
       <table className='transactions-table'>
@@ -76,9 +77,38 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
         </thead>
 
         <tbody>
-
           {
-            transactions.map( transaction => {
+            maxCount && 
+            transactions.map( (transaction, index) => {
+              return(
+                <>
+                { 
+                index < maxCount
+                  ? <Transaction 
+                      name={ transaction.name }
+                      budget={ transaction.budget }
+                      amount={ transaction.amount }
+                      date={ transaction.date }
+                      transactionId={ transaction.transaction_id }
+                      key={ transaction.transaction_id }
+
+                      isNewTransaction = { transaction.transaction_id === isNewTransaction }
+                      getUserTransactions={ getUserTransactions }
+                      budgets={ budgets }
+                      />
+                  : ''
+
+                }
+                    
+                  </>
+                )
+              }
+            )
+
+          }
+          {
+            !maxCount &&
+            transactions.map( (transaction) => {
               return(
                 <Transaction 
                     name={ transaction.name }
@@ -92,8 +122,8 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
                     getUserTransactions={ getUserTransactions }
                     budgets={ budgets }
                     />
-                    )
-                  } )
+                )
+            })
           }
         </tbody>
       </table>

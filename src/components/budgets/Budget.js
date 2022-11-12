@@ -3,7 +3,7 @@ import { Style } from 'react-style-tag'
 import { deleteBudget, editBudget } from '../../model/budgets.model'
 import { FlashContext, UserContext } from '../../App'
 
-export default function Budget({ name, amount, spent, loadUserBudgets, showProgressBar }) {
+export default function Budget({ name, amount, spent, loadUserBudgets, showProgressBar, showButtons = true }) {
 
   // Context
   const user = useContext(UserContext)[0]
@@ -82,7 +82,8 @@ export default function Budget({ name, amount, spent, loadUserBudgets, showProgr
   }
 
 
-
+  // CSS variables
+  const budgetButtonsDisplay = showButtons ? 'flex' : 'none'
 
   return(
     <>
@@ -96,7 +97,7 @@ export default function Budget({ name, amount, spent, loadUserBudgets, showProgr
       }
 
       .budget-buttons {
-        display : flex;
+        display : ${ budgetButtonsDisplay };
         gap : 0.5rem;
         margin-left : auto;
       }
