@@ -101,7 +101,7 @@ export default function Dashboard() {
     <div className='dashboard'>
       <h2 className='mb3'>Dashboard</h2>
       
-      <div className='my2'>
+      <div className=''>
         Welcome { user.name }
       </div>
 

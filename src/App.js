@@ -1,24 +1,29 @@
+// Dependencies
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Style } from "react-style-tag";
 import { createContext, useState } from "react";
 
+// Layout
 import SideBar from "./components/layout/SideBar";
 import Footer from "./components/layout/Footer"
 import Flash from "./components/layout/Flash";
 
+// Views
 import Home from "./views/Home";
 import Forecast from "./views/Forecast"
 import Budgets from "./views/Budgets";
 import Transactions from "./views/Transactions";
 import Savings from "./views/Savings";
-import About from "./views/TransactionsMonthly";
+import About from "./views/About";
 import PageNotFound from "./views/PageNotFound";
 import ReqLogin from "./views/ReqLogin";
 
-import './assets/css/main.css'
+//Sub Views
 import TransactionsMonthly from "./views/TransactionsMonthly";
 import BudgetsMonthly from "./views/BudgetsMonthly";
 
+// Assets
+import './assets/css/main.css'
 
 export const UserContext = createContext()
 export const FlashContext = createContext()

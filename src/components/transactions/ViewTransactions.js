@@ -96,7 +96,7 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
                       getUserTransactions={ getUserTransactions }
                       budgets={ budgets }
                       />
-                  : ''
+                  : <tr key={ transaction.transaction_id }></tr>
 
                 }
                     

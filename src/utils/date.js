@@ -1,7 +1,7 @@
 
 
 // Parse Date function
-export function parseMonth(month) {
+export function parseMonth(month='2022-11') {
   let monthInWords = month
   month = month.split('-').slice(0, 2).join('-')
   
