@@ -57,6 +57,50 @@ class Budgets {
   
 
 
+  public function getMonthlySpendingTotals($userId) {
+
+    // Format Inputs
+    $userId = rtrim($userId);
+    $userId = filter_var($userId, FILTER_SANITIZE_URL);
+
+    // Check/Filter/Get URL
+    if( !isset($_GET['url']) ) throw new Exception('No Url Param');
+    $url = rtrim($_GET['url'], " \n\r\t\v\x00/");
+    $url = filter_var($url, FILTER_SANITIZE_URL);
+    $url = explode('/', $url);
+
+    $month = isset($url[3]) ? $url[3] : false;
+    $month = explode('-', $month);
+
+    // Get list of user budgets
+    $budget_totals = [];
+    $budgets = $this->get($userId);
+
+    // For each budget, get the total amount spent in $month
+    foreach( $budgets as $name => $value ) {
+
+      // Prepeare Statment
+      $sql ='SELECT SUM(amount) as total FROM transactions WHERE budget = :budget AND YEAR(date) = :year AND MONTH(date) = :month';
+      $this->stmt = $this->dbh->prepare($sql);
+      $this->stmt->bindValue(':budget', $name);
+      $this->stmt->bindValue(':year', $month[0]);
+      $this->stmt->bindValue(':month', $month[1]);
+
+      //Execute
+      $this->stmt->execute();
+
+      // Transactions in $budget in $month
+      $transactions = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      $total = !empty($transactions[0]['total']) ? $transactions[0]['total'] : 0;
+      $budget_totals[$name] = $total;
+    }
+
+    // Return an ASSOC array of budget => amount spent
+    return $budget_totals;
+  }
+
+
 
   public function get($userId) {
 

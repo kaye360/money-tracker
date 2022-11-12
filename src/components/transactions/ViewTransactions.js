@@ -58,7 +58,7 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
     </Style>
     
     <div className='view-transactions my2'>
-      <h2>View Transactions</h2>
+      <h2>All Transactions</h2>
 
 
       <table className='transactions-table'>
