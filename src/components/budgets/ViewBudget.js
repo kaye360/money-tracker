@@ -3,7 +3,6 @@ import Budget from './Budget'
 
 export default function ViewBudget({ budgets, loadBudgets, showProgressBar = true , showButtons = true }) {
 
-
   return(
   <>
     <Style>

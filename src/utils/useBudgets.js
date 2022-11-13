@@ -17,16 +17,16 @@
 
 
 import { useEffect, useState } from "react"
-import { getBudgets } from "../model/budgets.model"
+import { getBudgets, getMontlySpendingTotals } from "../model/budgets.model"
 
-export default function useBudgets( { userId = false } = {} ) {
-
+export default function useBudgets( { userId = false, month = false } = {} ) {
+  
   const [budgets, setBudgets] = useState([])
   const [budgetsError, setBudgetsError] = useState(false)
 
 
 
-  async function loadBudgets({ userId }) {
+  async function loadBudgets({ userId, month }) {
     try{
       
       // Check if ID is given
@@ -35,6 +35,16 @@ export default function useBudgets( { userId = false } = {} ) {
       // Get Budget Response
       const budgetRes = await getBudgets({userId : userId})
       if(budgetRes.error) throw new Error(budgetRes.error)
+
+      // If month param is given, 
+      if(month) {
+        const spentRes = await(getMontlySpendingTotals({ userId : userId, month : month  }))
+        if(spentRes.error) throw new Error(spentRes.error)
+
+        budgetRes.forEach( (budget, index) => {
+          budgetRes[index].spent = spentRes[budget.name] ? parseInt(spentRes[budget.name]) : 0
+        })
+      }
 
       // Set State
       setBudgetsError(false)
@@ -51,8 +61,8 @@ export default function useBudgets( { userId = false } = {} ) {
   
   
   useEffect( () => {
-    loadBudgets({userId : userId})
-  }, [ userId ])
+    loadBudgets({userId : userId, month : month})
+  }, [ userId, month ])
 
 
   

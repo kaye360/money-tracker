@@ -64,7 +64,7 @@ export async function getBudgets({ userId }) {
 
 
 export async function getMontlySpendingTotals({ userId, month }) {
-
+  
   // Fetch user budgets
   const getTotalsRes = await fetch(`${BudgetAPIURL}/getMonthlySpendingTotals/${userId}/${month}`)
   if(!getTotalsRes.ok) throw new Error('Error fetching User Budgets')

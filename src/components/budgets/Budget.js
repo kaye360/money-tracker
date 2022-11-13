@@ -1,13 +1,16 @@
 import { useState, useContext } from 'react'
 import { Style } from 'react-style-tag'
+import { useParams } from 'react-router-dom'
 import { deleteBudget, editBudget } from '../../model/budgets.model'
 import { FlashContext, UserContext } from '../../App'
+import { parseMonth } from '../../utils/date'
 
 export default function Budget({ name, amount, spent, loadBudgets, showProgressBar = false , showButtons = true }) {
 
   // Context
   const [ user ] = useContext(UserContext)
   const [ setFlash ] = useContext(FlashContext)
+  const month = parseMonth( useParams().month )
 
   
 
@@ -27,7 +30,10 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
       // Get/Check/Set response
       const res = await deleteBudget({ userId : user.id, budgetName : e.target.id })
       if (res.error) throw new Error(res.error)
-      loadBudgets({userId : user.id})
+      
+      month.asNumber 
+      ? loadBudgets({ userId : user.id, month : month.asNumber })
+      : loadBudgets({ userId : user.id })
 
     } catch (error) {
 
@@ -51,7 +57,10 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
       // Check/Set reponse
       if(res.error) throw new Error(res.error)
       setIsEditMode(!isEditMode)
-      loadBudgets({ userId : user.id })
+      
+      month.asNumber 
+        ? loadBudgets({ userId : user.id, month : month.asNumber })
+        : loadBudgets({ userId : user.id })
 
     } catch (error) {
 

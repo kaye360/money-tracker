@@ -16,8 +16,8 @@ export default function BudgetsMonthly() {
 
 
   // Context/Params
-  const user = useContext(UserContext)[0]
-  const setFlash = useContext(FlashContext)[1]
+  const [ user ] = useContext(UserContext)
+  const [ setFlash ] = useContext(FlashContext)
   const month = parseMonth( useParams().month )
 
 
@@ -28,7 +28,7 @@ export default function BudgetsMonthly() {
 
 
   // User Budgets
-  const budgets = useBudgets({userId : user.id, month : month.asNumber }).budgets
+  const { budgets, loadBudgets } = useBudgets({userId : user.id, month : month.asNumber })
   
 
 
@@ -105,7 +105,8 @@ export default function BudgetsMonthly() {
       />
 
       <ViewBudget 
-        userId={ user.id }
+        budgets={ budgets }
+        loadBudgets={ loadBudgets }
       />
 
       <AddBudget
