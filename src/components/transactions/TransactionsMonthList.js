@@ -45,6 +45,7 @@ export default function TransactionsMonthList({ transactions, routePath }) {
 
 
   // transaction month list
+  // array
   const [transactionMonthList, setTransactionMonthList] = useState([])
 
 

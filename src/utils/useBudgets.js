@@ -19,14 +19,14 @@
 import { useEffect, useState } from "react"
 import { getBudgets } from "../model/budgets.model"
 
-export default function useBudgets( { userId = false, month = false } = {} ) {
+export default function useBudgets( { userId = false } = {} ) {
 
   const [budgets, setBudgets] = useState([])
   const [budgetsError, setBudgetsError] = useState(false)
 
 
 
-  async function loadBudgets({ userId, month }) {
+  async function loadBudgets({ userId }) {
     try{
       
       // Check if ID is given
@@ -51,11 +51,11 @@ export default function useBudgets( { userId = false, month = false } = {} ) {
   
   
   useEffect( () => {
-
     loadBudgets({userId : userId})
-      
   }, [ userId ])
 
+
+  
   return { budgets, loadBudgets, budgetsError }
 }
 

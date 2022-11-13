@@ -1,25 +1,25 @@
 import { useContext, useState } from 'react'
 import { Style } from 'react-style-tag'
-import { FlashContext } from '../../App'
+import { FlashContext, UserContext } from '../../App'
 import { deleteTransaction, editTransaction, } from '../../model/transactions.model'
 
 export default function Transaction({
   name, budget, amount, date, transactionId,
-  isNewTransaction, getUserTransactions, budgets }) {
+  isNewTransaction, loadTransactions, budgets }) {
+
 
   // Get Context
-  const setFlash = useContext(FlashContext)[1]
-
+  const [ setFlash ] = useContext(FlashContext)
+  const [ user ] = useContext(UserContext)
 
 
   // is Edit mode
   // BOOL true/false
-  const [isEditMode, setIsEditMode] = useState(false)
+  const [ isEditMode, setIsEditMode ] = useState(false)
 
 
 
-  // Format Date
-  // dateInWords = human readable date
+  // Human readable date
   // String
   const dateInWords = new Date(date).toDateString().split(' ').slice(1).join(' ')
 
@@ -34,7 +34,7 @@ export default function Transaction({
       // Get/Check/Set response
       const res = await deleteTransaction({transactionId : transactionId})
       if (res.error) throw new Error(res.error)
-      getUserTransactions()
+      loadTransactions({ userId : user.id })
 
     } catch(error) {
 
@@ -62,7 +62,7 @@ export default function Transaction({
       // Check response, set state
       if(res.error) throw new Error(res.error``)
       setIsEditMode(!isEditMode)
-      getUserTransactions()
+      loadTransactions({ userId : user.id })
       
     } catch (error) {
 

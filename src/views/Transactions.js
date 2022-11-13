@@ -1,14 +1,14 @@
 import { Style } from 'react-style-tag'
 import { useNavigate } from 'react-router-dom'
-import { useContext, useEffect, useState, useCallback } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
-import { FlashContext, UserContext } from '../App'
-import { getTransactionsAll } from '../model/transactions.model'
+import { UserContext } from '../App'
 
 import AddTransaction from '../components/transactions/AddTransaction'
 import ViewTransactions from '../components/transactions/ViewTransactions'
 import TransactionsMonthList from '../components/transactions/TransactionsMonthList'
 import useBudgets from '../utils/useBudgets'
+import useTransactions from '../utils/useTransactions'
 
 
 
@@ -16,7 +16,6 @@ export default function Transactions() {
 
   // Get Context
   const user = useContext(UserContext)[0]
-  const setFlash = useContext(FlashContext)[1]
 
 
 
@@ -27,34 +26,11 @@ export default function Transactions() {
 
 
 
-  // Users Transactions
-  // Array of Objects
-  const [transactions, setTransactions] = useState([])
+ const { transactions, loadTransactions } = useTransactions({ userId : user.id })
 
 
 
-  // Get User transactions
-  const getUserTransactions = useCallback( async () => {
-
-    try {
-
-      // Get/Check/Set Transactions, set state  
-      const res = await getTransactionsAll({ userId : user.id })
-      if(res.error) throw new Error(res.error)
-      setTransactions( res )
-      
-    } catch (error) {
-
-      // Flash error message
-      setFlash({ type : 'fail', message : error.message })
-
-    }
-
-  }, [user.id, setFlash]) 
-
-
-
-  const budgets = useBudgets({ userId : user.id }).budgets
+  const { budgets } = useBudgets({ userId : user.id })
 
 
 
@@ -79,7 +55,7 @@ export default function Transactions() {
 
       <AddTransaction 
         setIsNewTransaction={ setIsNewTransaction }
-        setTransactions={ setTransactions } 
+        loadTransactions={ loadTransactions }
       />      
 
       <TransactionsMonthList 
@@ -89,7 +65,7 @@ export default function Transactions() {
 
 
       <ViewTransactions 
-        getUserTransactions={ getUserTransactions }
+        loadTransactions={ loadTransactions }
         isNewTransaction={ isNewTransaction }
         transactions={ transactions }
         budgets={ budgets }

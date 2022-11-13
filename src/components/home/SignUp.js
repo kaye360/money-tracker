@@ -11,24 +11,18 @@ export default function SignUp() {
     e.preventDefault()
 
     try{
-      const res = await signUp({
-        username : e.target[0].value,
-        password : e.target[1].value,
-        confirmPassword : e.target[2].value
-      })   
 
+      // Sign up Response
+      const res = await signUp({ username : e.target[0].value, password : e.target[1].value, confirmPassword : e.target[2].value })   
       if(res.error) throw new Error(res.error)
 
-      
-      setFlash({
-        type : 'success',
-        message : `You have succesfully signed up as ${e.target[0].value}`
-      })
+      // Success Flash Message
+      setFlash({ type : 'success', message : `You have succesfully signed up as ${e.target[0].value}` })
+
     } catch (error) {
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
+      
+      // Error Flash Message
+      setFlash({ type : 'fail', message : error.message })
     }
   }
 

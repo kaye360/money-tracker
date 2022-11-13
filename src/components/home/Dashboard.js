@@ -1,46 +1,27 @@
 import { Style } from 'react-style-tag'
-import { useContext, useCallback, useState } from 'react'
-import { FlashContext, UserContext } from '../../App'
+import { useContext } from 'react'
+import { UserContext } from '../../App'
 import ViewBudget from '../budgets/ViewBudget'
 import ViewTransactions from '../transactions/ViewTransactions'
-import { getTransactionsAll } from '../../model/transactions.model'
 import useBudgets from '../../utils/useBudgets'
+import useTransactions from '../../utils/useTransactions'
 
 export default function Dashboard() {
 
-  const user = useContext(UserContext)[0]
-  const setFlash = useContext(FlashContext)[1]
+
+  // Context
+  const [ user ] = useContext(UserContext)
 
 
   
-  const budgets = useBudgets({ userId : user.id }).budgets
+  // Get Budgets
+  const { budgets } = useBudgets({ userId : user.id })
   
     
-
-  // Users Transactions
-  // Array of Objects
-  const [transactions, setTransactions] = useState([])
-
-
-
-  // Get User transactions
-  const getUserTransactions = useCallback( async () => {
-
-    try {
-
-      // Get/Check/Set Transactions, set state  
-      const res = await getTransactionsAll({ userId : user.id })
-      if(res.error) throw new Error(res.error)
-      setTransactions( res )
-      
-    } catch (error) {
-
-      // Flash error message
-      setFlash({ type : 'fail', message : error.message })
-
-    }
-
-  }, [user.id, setFlash]) 
+  
+  // Get Transactions
+  const { transactions, loadTransactions } = useTransactions({ userId : user.id })
+  
 
 
   return(
@@ -82,7 +63,7 @@ export default function Dashboard() {
       />
       
       <ViewTransactions
-        getUserTransactions={ getUserTransactions }
+        loadTransactions={ loadTransactions }
         isNewTransaction={ false }
         transactions={ transactions }
         budgets={ budgets }

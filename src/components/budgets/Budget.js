@@ -3,11 +3,11 @@ import { Style } from 'react-style-tag'
 import { deleteBudget, editBudget } from '../../model/budgets.model'
 import { FlashContext, UserContext } from '../../App'
 
-export default function Budget({ name, amount, spent, loadBudgets, showProgressBar, showButtons = true }) {
+export default function Budget({ name, amount, spent, loadBudgets, showProgressBar = false , showButtons = true }) {
 
   // Context
-  const user = useContext(UserContext)[0]
-  const setFlash = useContext(FlashContext)[1]
+  const [ user ] = useContext(UserContext)
+  const [ setFlash ] = useContext(FlashContext)
 
   
 
@@ -46,12 +46,7 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
     try {
 
       // Get response
-      const res = await editBudget({
-        userId : user.id,
-        oldName : name,
-        newName : nameInput,
-        newAmount : amountInput
-      })
+      const res = await editBudget({ userId : user.id, oldName : name, newName : nameInput, newAmount : amountInput })
 
       // Check/Set reponse
       if(res.error) throw new Error(res.error)
@@ -61,7 +56,7 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
     } catch (error) {
 
       // Flash Error message
-    setFlash({ type : 'fail',  message : error.message })
+      setFlash({ type : 'fail',  message : error.message })
     
     }
 
@@ -69,10 +64,10 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
 
 
 
-  // CSS variable
+  // CSS variables
   const progressBarWidth = spent / amountInput * 100
   const cssClassName = name.replace(/\s+/g, '')
-
+  const budgetButtonsDisplay = showButtons ? 'flex' : 'none'
   let progressBarColor
 
   switch (true) {
@@ -82,8 +77,7 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
   }
 
 
-  // CSS variables
-  const budgetButtonsDisplay = showButtons ? 'flex' : 'none'
+
 
   return(
     <>

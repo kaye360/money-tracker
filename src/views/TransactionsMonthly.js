@@ -8,6 +8,7 @@ import { getTransactionsInMonth } from '../model/transactions.model'
 import { getBudgets } from '../model/budgets.model'
 import { useState } from 'react'
 import TransactionsMonthList from '../components/transactions/TransactionsMonthList'
+import useBudgets from '../utils/useBudgets'
 
 export default function TransactionsMonthly() {
 
@@ -22,7 +23,6 @@ export default function TransactionsMonthly() {
 
   // Require Login for this page
   const navigate = useNavigate()
-
   useEffect( () => { !user && navigate('/req-login') }, [navigate, user])
 
 
@@ -63,36 +63,7 @@ export default function TransactionsMonthly() {
 
 
 
-  // Users Budgets
-  // Array of objects {name, amount} or false
-  const [budgets, setBudgets] = useState([])  
-
-
-
-  // Get User Budgets - For Add/Edit Transaction form
-  const getUserBudgets = useCallback( async () => {
-
-    try {
-
-      // Get/Check budgets, set budgets to rewsponse value
-      const res = await getBudgets({ 'userId' : user.id })
-      if(res.error) throw new Error(res.error)
-      setBudgets( res )
-      
-    } catch (error) {
-
-       // Display error message
-       setFlash({ type : 'fail', message : error.message })
-
-    }
-  }, [user.id, setFlash])
-
-
-
-  // load Budgets
-  useEffect( () => { 
-    try { getUserBudgets() } catch(error) {} }, [getUserBudgets]
-  )
+  const { budgets } = useBudgets({ userId : user.id })
 
 
   return(

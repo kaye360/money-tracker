@@ -1,31 +1,9 @@
 import { Style } from 'react-style-tag'
-import { useEffect, useContext } from 'react'
-import { FlashContext } from '../../App'
 import Transaction from './Transaction'
 
 
-export default function ViewTransactions({ getUserTransactions, isNewTransaction, transactions, getUserBudgets, budgets, maxCount = false }) {
+export default function ViewTransactions({ loadTransactions, isNewTransaction, transactions, budgets, maxCount = false }) {
 
-  // Get Context
-  const setFlash = useContext(FlashContext)[1]
-
-
-
-  // load Transactions
-  useEffect( () => {
-    try {
-      getUserTransactions()
-    } catch (error) {
-      setFlash({ type : 'fail', message : error.message })
-    }
-  }, [getUserTransactions, setFlash])
-
-
-
-  // load Budgets
-  useEffect( () => { 
-    try { getUserBudgets() } catch(error) {} }, [getUserBudgets]
-  )
 
 
 
@@ -93,7 +71,7 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
                       key={ transaction.transaction_id }
 
                       isNewTransaction = { transaction.transaction_id === isNewTransaction }
-                      getUserTransactions={ getUserTransactions }
+                      loadTransactions={ loadTransactions }
                       budgets={ budgets }
                       />
                   : <tr key={ transaction.transaction_id }></tr>
@@ -119,7 +97,7 @@ export default function ViewTransactions({ getUserTransactions, isNewTransaction
                     key={ transaction.transaction_id }
 
                     isNewTransaction = { transaction.transaction_id === isNewTransaction }
-                    getUserTransactions={ getUserTransactions }
+                    loadTransactions={ loadTransactions }
                     budgets={ budgets }
                     />
                 )

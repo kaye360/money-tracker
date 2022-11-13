@@ -4,17 +4,16 @@ import { FlashContext, UserContext } from '../../App'
 import { addTransaction } from '../../model/transactions.model'
 import useBudgets from '../../utils/useBudgets'
 
-export default function Base({ setIsNewTransaction }) {
+export default function Base({ setIsNewTransaction, loadTransactions }) {
 
   // Get Context
   const user = useContext(UserContext)[0]
   const setFlash = useContext(FlashContext)[1]
 
 
+  // Get Budgets
   const budgets = useBudgets({ userId : user.id }).budgets
   
-
-
 
 
   // Add Transaction handler
@@ -33,7 +32,7 @@ export default function Base({ setIsNewTransaction }) {
 
       // Check/Set user transactions
       if (res.error) throw new Error(res.error)
-      // getUserTransactions()
+      loadTransactions({ userId : user.id })
 
       // Flash New Transaction
       setIsNewTransaction(res.transaction_id)
