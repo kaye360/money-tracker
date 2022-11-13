@@ -9,9 +9,9 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
 
   // Context
   const [ user ] = useContext(UserContext)
-  const [ setFlash ] = useContext(FlashContext)
+  const [ , setFlash ] = useContext(FlashContext)
   const month = parseMonth( useParams().month )
-
+  console.log(setFlash)
   
 
   // Edit mode
@@ -30,10 +30,12 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
       // Get/Check/Set response
       const res = await deleteBudget({ userId : user.id, budgetName : e.target.id })
       if (res.error) throw new Error(res.error)
-      
+
       month.asNumber 
       ? loadBudgets({ userId : user.id, month : month.asNumber })
       : loadBudgets({ userId : user.id })
+
+      setFlash({type : 'success', message : `Succesfully deleted ${e.target.id}`})
 
     } catch (error) {
 

@@ -9,7 +9,7 @@ export default function Transaction({
 
 
   // Get Context
-  const [ setFlash ] = useContext(FlashContext)
+  const [ , setFlash ] = useContext(FlashContext)
   const [ user ] = useContext(UserContext)
 
 
