@@ -1,23 +1,20 @@
 import { Style } from 'react-style-tag'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { FlashContext, UserContext } from '../../App'
 import { addTransaction } from '../../model/transactions.model'
+import useBudgets from '../../utils/useBudgets'
 
-export default function Base({ getUserTransactions, setIsNewTransaction, getUserBudgets, budgets }) {
+export default function Base({ setIsNewTransaction }) {
 
   // Get Context
   const user = useContext(UserContext)[0]
   const setFlash = useContext(FlashContext)[1]
 
 
-  // Load User Budgets
-  useEffect( () => {
-    try {
-      getUserBudgets()
-    } catch(error) {
-    }
-  }, [getUserBudgets])
+  const budgets = useBudgets({ userId : user.id }).budgets
   
+
+
 
 
   // Add Transaction handler
@@ -36,7 +33,7 @@ export default function Base({ getUserTransactions, setIsNewTransaction, getUser
 
       // Check/Set user transactions
       if (res.error) throw new Error(res.error)
-      getUserTransactions()
+      // getUserTransactions()
 
       // Flash New Transaction
       setIsNewTransaction(res.transaction_id)

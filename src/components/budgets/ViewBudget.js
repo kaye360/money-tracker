@@ -1,7 +1,10 @@
 import { Style } from 'react-style-tag'
 import Budget from './Budget'
 
-export default function ViewBudget({ budgets, loadUserBudgets, showProgressBar, showButtons = true }) {
+export default function ViewBudget({ budgets, loadBudgets, showProgressBar = true , showButtons = true }) {
+
+
+  
 
 
   return(
@@ -30,9 +33,11 @@ export default function ViewBudget({ budgets, loadUserBudgets, showProgressBar, 
             amount={ budget.amount }
             spent={ budget.spent }
             key={ budget.name } 
-            loadUserBudgets={ loadUserBudgets }
+
             showProgressBar={ showProgressBar }
             showButtons={ showButtons }
+
+            loadBudgets={ loadBudgets }
           />
         )
       })

@@ -7,8 +7,8 @@ import AddBudget from '../components/budgets/AddBudget'
 import ViewBudget from '../components/budgets/ViewBudget'
 import TransactionsMonthList from '../components/transactions/TransactionsMonthList'
 
-import { getBudgets } from '../model/budgets.model'
 import { getTransactionsAll } from '../model/transactions.model'
+import useBudgets from '../utils/useBudgets'
 
 
 export default function Budgets() {
@@ -22,47 +22,13 @@ export default function Budgets() {
   // Require Login for this page
   const navigate = useNavigate()
   useEffect( () => { !user && navigate('/req-login') }, [navigate, user])
-  
 
 
-
-  // Load User Budgets or Flash error
-  const loadUserBudgets = useCallback( async () => {
-
-    try {
-
-      // Get/Check/Set Budgets
-      const budgetRes = await getBudgets({ 'userId' : user.id })
-      if(budgetRes.error) throw new Error(budgetRes.error)
-
-      // Set Budget State
-      setBudgets( budgetRes )
-      
-    } catch (error) {
-
-      // Flash Error message
-      setFlash({ type : 'fail', message : error.message })
-
-    }
-  }, [user.id, setFlash])
-
-
-  
 
   // Users Budgets
   // Array of objects {name, amount} or false
-  const [budgets, setBudgets] = useState([])
+  const {budgets, loadBudgets } = useBudgets({userId : user.id})
   
-  // load budgets
-  useEffect( () => {
-    try {
-      loadUserBudgets()
-    } catch(error) {
-      setFlash({ type : 'fail', message : error.message })
-    }
-  }, [loadUserBudgets, setFlash])
-
-
 
 
   // Total amount of all Budgets. Number
@@ -134,13 +100,14 @@ export default function Budgets() {
       />
 
       <ViewBudget 
+        userId={ user.id }
         budgets={ budgets }
-        loadUserBudgets={ loadUserBudgets }
+        loadBudgets={ loadBudgets }
         showProgressBar={ false }
       />
 
-      <AddBudget
-        loadUserBudgets={ loadUserBudgets }
+      <AddBudget 
+        loadBudgets={ loadBudgets }
       />
     
     </div>

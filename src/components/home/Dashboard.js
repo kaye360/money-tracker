@@ -1,10 +1,10 @@
 import { Style } from 'react-style-tag'
-import { useContext, useCallback, useState, useEffect } from 'react'
+import { useContext, useCallback, useState } from 'react'
 import { FlashContext, UserContext } from '../../App'
 import ViewBudget from '../budgets/ViewBudget'
-import { getBudgets } from '../../model/budgets.model'
 import ViewTransactions from '../transactions/ViewTransactions'
 import { getTransactionsAll } from '../../model/transactions.model'
+import useBudgets from '../../utils/useBudgets'
 
 export default function Dashboard() {
 
@@ -12,42 +12,9 @@ export default function Dashboard() {
   const setFlash = useContext(FlashContext)[1]
 
 
-  // Load User Budgets or Flash error
-  const loadUserBudgets = useCallback( async () => {
-
-    try {
-
-      // Get/Check/Set Budgets
-      const budgetRes = await getBudgets({ 'userId' : user.id })
-      if(budgetRes.error) throw new Error(budgetRes.error)
-
-      // Set Budget State
-      setBudgets( budgetRes )
-      
-    } catch (error) {
-
-      // Flash Error message
-      setFlash({ type : 'fail', message : error.message })
-
-    }
-  }, [user.id, setFlash])
-
-
   
-
-  // Users Budgets
-  // Array of objects {name, amount} or false
-  const [budgets, setBudgets] = useState([])
+  const budgets = useBudgets({ userId : user.id }).budgets
   
-  // load budgets
-  useEffect( () => {
-    try {
-      loadUserBudgets()
-    } catch(error) {
-      setFlash({ type : 'fail', message : error.message })
-    }
-  }, [loadUserBudgets, setFlash])
-
     
 
   // Users Transactions
@@ -106,16 +73,18 @@ export default function Dashboard() {
       </div>
 
       <div className='dashboard-items'>
+
       <ViewBudget 
         budgets={ budgets }
+        userId={ user.id }
         showButtons={ false }
+        showProgressBar={ false }
       />
       
       <ViewTransactions
         getUserTransactions={ getUserTransactions }
         isNewTransaction={ false }
         transactions={ transactions }
-        loadUserBudgets={ loadUserBudgets }
         budgets={ budgets }
         maxCount="5"
       />

@@ -4,11 +4,11 @@ import { useContext, useEffect, useState, useCallback } from 'react'
 
 import { FlashContext, UserContext } from '../App'
 import { getTransactionsAll } from '../model/transactions.model'
-import { getBudgets } from '../model/budgets.model'
 
 import AddTransaction from '../components/transactions/AddTransaction'
 import ViewTransactions from '../components/transactions/ViewTransactions'
 import TransactionsMonthList from '../components/transactions/TransactionsMonthList'
+import useBudgets from '../utils/useBudgets'
 
 
 
@@ -54,29 +54,7 @@ export default function Transactions() {
 
 
 
-  // Users Budgets
-  // Array of objects {name, amount} or false
-  const [budgets, setBudgets] = useState([])  
-
-
-
-  // Get User Budgets - For Add/Edit Transaction form
-  const getUserBudgets = useCallback( async () => {
-
-    try {
-
-      // Get/Check budgets, set budgets to rewsponse value
-      const res = await getBudgets({ 'userId' : user.id })
-      if(res.error) throw new Error(res.error)
-      setBudgets( res )
-      
-    } catch (error) {
-
-       // Display error message
-       setFlash({ type : 'fail', message : error.message })
-
-    }
-  }, [user.id, setFlash])
+  const budgets = useBudgets({ userId : user.id }).budgets
 
 
 
@@ -100,11 +78,8 @@ export default function Transactions() {
 
 
       <AddTransaction 
-        getUserTransactions={ getUserTransactions }
         setIsNewTransaction={ setIsNewTransaction }
         setTransactions={ setTransactions } 
-        getUserBudgets={ getUserBudgets }
-        budgets={ budgets }
       />      
 
       <TransactionsMonthList 
@@ -117,7 +92,6 @@ export default function Transactions() {
         getUserTransactions={ getUserTransactions }
         isNewTransaction={ isNewTransaction }
         transactions={ transactions }
-        getUserBudgets={ getUserBudgets }
         budgets={ budgets }
       />
 

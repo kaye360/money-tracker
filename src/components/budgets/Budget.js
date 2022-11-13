@@ -3,7 +3,7 @@ import { Style } from 'react-style-tag'
 import { deleteBudget, editBudget } from '../../model/budgets.model'
 import { FlashContext, UserContext } from '../../App'
 
-export default function Budget({ name, amount, spent, loadUserBudgets, showProgressBar, showButtons = true }) {
+export default function Budget({ name, amount, spent, loadBudgets, showProgressBar, showButtons = true }) {
 
   // Context
   const user = useContext(UserContext)[0]
@@ -27,7 +27,7 @@ export default function Budget({ name, amount, spent, loadUserBudgets, showProgr
       // Get/Check/Set response
       const res = await deleteBudget({ userId : user.id, budgetName : e.target.id })
       if (res.error) throw new Error(res.error)
-      loadUserBudgets()
+      loadBudgets({userId : user.id})
 
     } catch (error) {
 
@@ -56,7 +56,7 @@ export default function Budget({ name, amount, spent, loadUserBudgets, showProgr
       // Check/Set reponse
       if(res.error) throw new Error(res.error)
       setIsEditMode(!isEditMode)
-      loadUserBudgets()
+      loadBudgets({ userId : user.id })
 
     } catch (error) {
 

@@ -3,11 +3,13 @@ import { Style } from 'react-style-tag'
 import { FlashContext, UserContext } from '../../App'
 import { addBudget } from '../../model/budgets.model'
 
-export default function AddBudget({loadUserBudgets}) {
+export default function AddBudget({ loadBudgets }) {
 
   // Get Context
   const user = useContext(UserContext)[0]
   const setFlash = useContext(FlashContext)[1]
+
+
 
 
 
@@ -31,7 +33,7 @@ export default function AddBudget({loadUserBudgets}) {
       // Check/Set response
       if(res.error) throw new Error(res.error)
       setFlash({ type : 'success', message : `Budget ${e.target[0].value} was added successfully` })
-      loadUserBudgets()
+      loadBudgets({userId : user.id})
 
     } catch (error) {
 
