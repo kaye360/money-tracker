@@ -7,11 +7,11 @@ import { parseMonth } from '../../utils/date'
 
 export default function Budget({ name, amount, spent, loadBudgets, showProgressBar = false , showButtons = true }) {
 
-  // Context
+  // Context/Params
   const [ user ] = useContext(UserContext)
   const [ , setFlash ] = useContext(FlashContext)
   const month = parseMonth( useParams().month )
-  console.log(setFlash)
+  
   
 
   // Edit mode
@@ -31,10 +31,12 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
       const res = await deleteBudget({ userId : user.id, budgetName : e.target.id })
       if (res.error) throw new Error(res.error)
 
+      // ReRender with new Budgets
       month.asNumber 
       ? loadBudgets({ userId : user.id, month : month.asNumber })
       : loadBudgets({ userId : user.id })
 
+      // Flash Success
       setFlash({type : 'success', message : `Succesfully deleted ${e.target.id}`})
 
     } catch (error) {
@@ -60,6 +62,7 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
       if(res.error) throw new Error(res.error)
       setIsEditMode(!isEditMode)
       
+      // ReRender with new Budgets
       month.asNumber 
         ? loadBudgets({ userId : user.id, month : month.asNumber })
         : loadBudgets({ userId : user.id })
