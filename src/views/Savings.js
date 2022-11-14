@@ -22,6 +22,8 @@ export default function Savings() {
     
     <div>
       <h1>Savings</h1>
+
+      <p className='my2'>Coming soon in the next version!</p> 
     
     </div>
     </>

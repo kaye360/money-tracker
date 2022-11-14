@@ -9,6 +9,9 @@
 .fs6 { font-size : var(--font-size-6); }
 .fs7 { font-size : var(--font-size-7); }
 
+.font-brand { font-family : Pacifico, Inter, Arial, sans-serif; letter-spacing: 0.3rem;}
+.clr-primary { color : var(--clr-primary-4); }
+
 .clr-pri-1 { color : hsl( var(--clr-pri-1) ); }
 .clr-pri-2 { color : hsl( var(--clr-pri-2) ); }
 .clr-pri-3 { color : hsl( var(--clr-pri-3) ); }

@@ -1,7 +1,7 @@
 import { Style } from 'react-style-tag'
-import SignUp from '../components/home/SignUp'
-import Login from '../components/home/Login'
 import Dashboard from '../components/home/Dashboard'
+import Landing from '../components/home/Landing'
+import Login from '../components/home/Login'
 import { useContext } from 'react'
 import { UserContext } from '../App'
 
@@ -19,17 +19,13 @@ export default function Home() {
     
     <div>
       
-      <h1>Home</h1>
-
       {
         user 
           ?<Dashboard />
-          : <>
-              <Login />
-              <SignUp />
-            </>
+          : <Landing />
       }
 
+      <Login />
     </div>
     </>
   )

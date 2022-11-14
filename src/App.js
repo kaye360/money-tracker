@@ -19,11 +19,13 @@ import PageNotFound from "./views/PageNotFound";
 import ReqLogin from "./views/ReqLogin";
 
 //Sub Views
+import SignUp from "./views/SignUp"
+import SignIn from "./views/SignIn"
 import TransactionsMonthly from "./views/TransactionsMonthly";
 import BudgetsMonthly from "./views/BudgetsMonthly";
 
 // Assets
-import './assets/css/main.css'
+import './assets/css/main.css';
 
 export const UserContext = createContext()
 export const FlashContext = createContext()
@@ -43,10 +45,8 @@ function App() {
 
     <Style>
     {`
-      .main-layout {
-        display : grid;
-        grid-template-columns : 200px 1fr;
-        margin-top : 1rem;
+      main {
+        margin-left : 260px;
       }
     `}
     </Style>
@@ -62,7 +62,7 @@ function App() {
       }
 
       
-      <div className="main-layout container">
+      <div className="container">
 
         <SideBar />
 
@@ -70,6 +70,10 @@ function App() {
           <Routes>
 
             <Route path="/" element={ <Home /> } />
+
+            <Route path="/sign-up" element={ <SignUp /> } />
+
+            <Route path="/sign-in" element={ <SignIn /> } />
 
             <Route path="/forecast" element={ <Forecast /> } />
         

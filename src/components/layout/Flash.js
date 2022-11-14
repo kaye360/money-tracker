@@ -20,7 +20,7 @@ export default function Flash() {
         padding : 1rem;
       }
       .flash {
-        padding : 1rem;
+        padding : 1rem 300px;
         border : 1px solid #333;
         background-color : ${ type === 'success' ? '#C6FCC5' : '#FCC5CF' };
       }

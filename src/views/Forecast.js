@@ -21,7 +21,7 @@ export default function Forecast() {
     <div>
       <h1>Forecast</h1>
     
-      
+      <p className='my2'>Coming soon in the next version!</p> 
      
 
 

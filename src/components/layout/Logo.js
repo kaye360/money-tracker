@@ -1,5 +1,6 @@
+import { Link } from 'react-router-dom'
 import { Style } from 'react-style-tag'
-import logo from '../../assets/img/logo.svg'
+import spendly from '../../assets/img/spendly.svg'
 
 export default function Logo() {
 
@@ -16,8 +17,9 @@ export default function Logo() {
     </Style>
     
     <div className='Logo'>
-      <img src={ logo } alt="Logo" />
-      <span>MoneyApp</span>
+      <Link to='/'>
+        <img src={ spendly } alt="Spendly" />
+      </Link>
     </div>
     </>
   )

@@ -15,21 +15,22 @@ import useTransactions from '../utils/useTransactions'
 export default function Transactions() {
 
   // Get Context
-  const user = useContext(UserContext)[0]
+  const [ user ] = useContext(UserContext)
 
 
 
   // Require Login for this page
   const navigate = useNavigate()
-
   useEffect( () => { !user && navigate('/req-login') }, [navigate, user])
 
 
 
- const { transactions, loadTransactions } = useTransactions({ userId : user.id })
+  // Get Transactions 
+  const { transactions, loadTransactions } = useTransactions({ userId : user.id })
 
 
 
+  // Get Budgets
   const { budgets } = useBudgets({ userId : user.id })
 
 
