@@ -16,6 +16,8 @@ export default function SideBar() {
 
   const [user, setUser] = useContext(UserContext)
 
+
+
   return(
     <>
     <Style>
@@ -117,11 +119,10 @@ export default function SideBar() {
             <img src={ sidebarIconUser } alt="User" />
             {user.name}
           </span>
-          <Link onClick={ () => setUser(false) }>
+          <Link to="/" onClick={ () => setUser(false) }>
             <img src={ sidebarIconSignOut } alt="Sign Out" />
             Sign out
           </Link>
-            {/* <button onClick={ () => setUser(false) }>Sign out</button> */}
         </nav>
       }
     

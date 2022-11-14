@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import { useContext } from 'react'
 import { FlashContext, UserContext } from '../App'
@@ -12,32 +12,29 @@ export default function SignIn() {
   const setUser = useContext(UserContext)[1]
   const setFlash = useContext(FlashContext)[1]
 
+  const navigate = useNavigate()
+
 
   async function handleLogin(e) {
     e.preventDefault()
 
     try {
-      const res = await login({
-        username : e.target[0].value,
-        password : e.target[1].value
-      })
 
+      // Get/Check response
+      const res = await login({ username : e.target[0].value, password : e.target[1].value })
       if(res.error) throw new Error(res.error)
 
       // set user to logged in
-      setUser({
-        'name' : res[0],
-        'id' : res[1]
-      })
-      setFlash({
-        type : 'success',
-        message : `You are now logged in as ${res[0]}`
-      })
+      setUser({ 'name' : res[0], 'id' : res[1] })
+
+      // Success message and redirect to dashboard
+      setFlash({ type : 'success', message : `You are now logged in as ${res[0]}` })
+      navigate("/")
+
     } catch (error) {
-      setFlash({
-        type : 'fail',
-        message : error.message
-      })
+      
+      setFlash({ type : 'fail', message : error.message })
+      
     }
   }
 
