@@ -40,6 +40,9 @@ function App() {
   // Obj {type, message, link, linkText} or False
   const [flash, setFlash] = useState(false)
 
+
+  document.title = 'Spendly: Money tracking app'
+
   return (
     <>
 
@@ -58,7 +61,7 @@ function App() {
     <div className="App">
 
       {
-      flash && <Flash />
+      flash && <Flash type="success" message="Test" />
       }
 
       

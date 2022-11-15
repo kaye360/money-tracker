@@ -46,7 +46,7 @@ export default function SideBar() {
         margin-block : 0.5rem;
 
         border-radius : 0.5rem;
-        color : #E7FEF3;
+        color : var(--clr-primary-1);
         font-size : 1.2rem;
         text-decoration : none;
 
@@ -57,6 +57,7 @@ export default function SideBar() {
       .Sidebar span:hover {
         padding-left : 15px;
         background-color : #222;
+        color : var(--clr-primary-2);
       }
 
       .Sidebar .sec-nav {
