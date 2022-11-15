@@ -1,13 +1,13 @@
 
 
 /* Text Classes */
-.fs1 { font-size : var(--font-size-1); }
-.fs2 { font-size : var(--font-size-2); }
-.fs3 { font-size : var(--font-size-3); }
-.fs4 { font-size : var(--font-size-4); }
-.fs5 { font-size : var(--font-size-5); }
-.fs6 { font-size : var(--font-size-6); }
-.fs7 { font-size : var(--font-size-7); }
+.fs1 { font-size : 0.8rem; }
+.fs2 { font-size : 1.2rem; }
+.fs3 { font-size : 2rem; }
+.fs4 { font-size : 2.5rem; }
+.fs5 { font-size : 3rem; }
+.fs6 { font-size : 4rem; }
+.fs7 { font-size : 5rem; }
 
 .font-brand { font-family : Pacifico, Inter, Arial, sans-serif; letter-spacing: 0.3rem;}
 .clr-primary { color : var(--clr-primary-4); }

@@ -19,7 +19,7 @@ export default function About() {
     `}
     </Style>
     
-    <div className='about pb2'>
+    <div className='about py2'>
       <h1>About</h1>
 
       <p>MoneyApp is an app to keep track of your finances. Here is a little bit of info about the app.</p>

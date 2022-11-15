@@ -10,6 +10,7 @@ import TransactionsMonthList from '../components/transactions/TransactionsMonthL
 import { getTransactionsAll } from '../model/transactions.model'
 import { parseMonth } from '../utils/date'
 import useBudgets from '../utils/useBudgets'
+import useTransactions from '../utils/useTransactions'
 
 export default function BudgetsMonthly() {
 
@@ -42,33 +43,9 @@ export default function BudgetsMonthly() {
 
   // Users Transactions
   // Array of Objects
-  const [transactions, setTransactions] = useState([])
+  const { transactions } = useTransactions({ userId: user.id, month: month.asNumber })
 
 
-
-  // Get User transactions
-  const getUserTransactions = useCallback( async () => {
-
-    try {
-
-      // Get/Check/Set Transactions, set state  
-      const res = await getTransactionsAll({ userId : user.id })
-      if(res.error) throw new Error(res.error)
-      setTransactions( res )
-      
-    } catch (error) {
-
-      // Flash error message
-      setFlash({ type : 'fail', message : error.message })
-
-    }
-
-  }, [user.id, setFlash]) 
-
-
-
-  // Load Transactions
-  useEffect( () => { getUserTransactions() }, [getUserTransactions])
 
 
   
@@ -89,7 +66,7 @@ export default function BudgetsMonthly() {
     `}
     </Style>
     
-    <div className='budgets'>
+    <div className='budgets py2'>
       <h1 className='px1'>
         Budgets hi
         <span className='budgets-total-amount'>Total ${ totalBudgetsAmount() }/month</span>

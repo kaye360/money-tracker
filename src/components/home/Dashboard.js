@@ -46,11 +46,11 @@ export default function Dashboard() {
     `}
     </Style>
     
-    <div className='dashboard'>
+    <div className='dashboard py2'>
       <h2 className='mb3'>Dashboard</h2>
       
-      <div className=''>
-        Welcome { user.name }
+      <div className='fs3'>
+        Welcome, { user.name }
       </div>
 
       <div className='dashboard-items'>
@@ -67,7 +67,7 @@ export default function Dashboard() {
         isNewTransaction={ false }
         transactions={ transactions }
         budgets={ budgets }
-        maxCount="5"
+        maxCount="7"
       />
 
       

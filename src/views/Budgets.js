@@ -39,7 +39,7 @@ export default function Budgets() {
   
 
   // Users Transactions
-  const { transactions } = useTransactions()
+  const { transactions } = useTransactions({ userId: user.id })
 
 
   
@@ -60,7 +60,7 @@ export default function Budgets() {
     `}
     </Style>
     
-    <div className='budgets'>
+    <div className='budgets py2'>
       <h1 className='px1'>
         Budgets
         <span className='budgets-total-amount'>Total ${ totalBudgetsAmount() }/month</span>
