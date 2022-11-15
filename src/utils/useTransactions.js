@@ -5,23 +5,31 @@
 
 
 import { useState, useEffect } from "react";
-import { getTransactionsAll } from "../model/transactions.model";
+import { getTransactionsAll, getTransactionsInMonth } from "../model/transactions.model";
 
-export default function useTransactions({ userId = false } = {} ) {
+export default function useTransactions({ userId = false, month = false } = {} ) {
   
   const [transactions, setTransactions] = useState([])
   const [transactionsError, setTransactionsError] = useState(false)
 
 
 
-  async function loadTransactions({ userId }) {
+  async function loadTransactions({ userId, month }) {
     try {
 
       // Check if user id is given
       if(!userId) throw new Error('No user specified')
-
+      
       // Get/Check Transactions\
-      const res = await getTransactionsAll({ userId : userId })
+      // If month param is given, get transactions for that month only. Else get all transactions
+      let res
+      if(month) {
+        res = await getTransactionsInMonth({ userId : userId, month : month })
+      } else {
+        res = await getTransactionsAll({ userId : userId })
+      }
+
+      // Check for errors on response
       if(res.error) throw new Error(res.error)
 
       // Set States
@@ -37,8 +45,8 @@ export default function useTransactions({ userId = false } = {} ) {
 
 
   useEffect( () => {
-    loadTransactions({ userId : userId })
-  }, [ userId ])
+    loadTransactions({ userId : userId, month : month })
+  }, [ userId, month ])
 
 
 

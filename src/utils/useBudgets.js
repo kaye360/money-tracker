@@ -36,7 +36,7 @@ export default function useBudgets( { userId = false, month = false } = {} ) {
       const budgetRes = await getBudgets({userId : userId})
       if(budgetRes.error) throw new Error(budgetRes.error)
 
-      // If month param is given, 
+      // If month param is given, get monthly spending totals and append to each budget
       if(month) {
         const spentRes = await(getMontlySpendingTotals({ userId : userId, month : month  }))
         if(spentRes.error) throw new Error(spentRes.error)

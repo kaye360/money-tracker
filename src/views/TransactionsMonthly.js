@@ -1,13 +1,12 @@
-import { useContext, useEffect, useCallback } from 'react'
+import { useContext, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Style } from 'react-style-tag'
-import { UserContext, FlashContext } from '../App'
+import { UserContext } from '../App'
 import { parseMonth } from '../utils/date'
 import Transaction from '../components/transactions/Transaction'
-import { getTransactionsInMonth } from '../model/transactions.model'
-import { useState } from 'react'
 import TransactionsMonthList from '../components/transactions/TransactionsMonthList'
 import useBudgets from '../utils/useBudgets'
+import useTransactions from '../utils/useTransactions'
 
 export default function TransactionsMonthly() {
 
@@ -15,7 +14,6 @@ export default function TransactionsMonthly() {
 
   // Context/Params
   const user = useContext(UserContext)[0]
-  const setFlash = useContext(FlashContext)[1]
   const month = parseMonth( useParams().month )
 
 
@@ -25,41 +23,9 @@ export default function TransactionsMonthly() {
   useEffect( () => { !user && navigate('/req-login') }, [navigate, user])
 
 
-  // Users transactions in one month
-  const [transactions, setTransactions] = useState([])
-
-
-
-  // Get user transactions for 1 month
-  const getUserTransactionsInMonth = useCallback( async () => {
-
-    try {
-
-      // Get/Check/Set Transactions, set state  
-      const res = await getTransactionsInMonth({ userId : user.id, month : month.asNumber })
-      if(res.error) throw new Error(res.error)
-      setTransactions( res )
-      
-    } catch (error) {
-
-      // Flash error message
-      setFlash({ type : 'fail', message : error.message })
-
-    }
-
-  }, [setFlash, month.asNumber, user.id]) 
   
-
-
-  // load Transactions
-  useEffect( () => {
-    try {
-      getUserTransactionsInMonth()
-    } catch (error) {
-      setFlash({ type : 'fail', message : error.message })
-    }
-  }, [getUserTransactionsInMonth, setFlash])
-
+  // Get monthly transations
+  const { transactions } = useTransactions({ userId : user.id, month : month.asNumber })
 
 
   const { budgets } = useBudgets({ userId : user.id })
@@ -131,7 +97,6 @@ export default function TransactionsMonthly() {
                     transactionId={ transaction.transaction_id }
                     key={ transaction.transaction_id }
 
-                    getUserTransactions={ getUserTransactionsInMonth }
                     budgets={ budgets }
                     />
                     )
