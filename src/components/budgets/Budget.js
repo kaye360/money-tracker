@@ -97,32 +97,10 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
     <>
     <Style>
     {`
-      .budget {
-        display : flex;
-        column-gap : 1rem;
-        row-gap : 0.5rem;
-        width : 100%;
-      }
-
       .budget-buttons {
         display : ${ budgetButtonsDisplay };
         gap : 0.5rem;
         margin-left : auto;
-      }
-
-      .budget-progress-bar-wrapper {
-        width : 100%;
-        height : 15px;
-        margin-top : 0.5rem;
-        border : 1px solid #aaa;
-        overflow : hidden;
-      }
-
-      .budget-progress-bar {
-        width : 0%;
-        height : 15px;
-        transform-origin : left center;
-        animation : budget-progress-bar 1.5s ease-out both;
       }
       
       div.budget-progress-bar-${cssClassName} {
@@ -130,10 +108,6 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
         width : ${ progressBarWidth }%;
       }
 
-      @keyframes budget-progress-bar {
-        from { transform : scaleX(0); opacity : 0; }
-        to { transform : scaleX(1); opacity : 1; }
-      }
     `}
     </Style>
     
@@ -144,7 +118,7 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
         ? 
         
         <form onSubmit={ handleEdit } >
-        <div className='budget my2'>
+        <div className='budget px1 py1'>
           <input 
             type="text" 
             name="name" 
@@ -167,8 +141,8 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
         </form>
 
         : // Not Edit Mode
-        <div className='budget mt1'>
-          <span>{ nameInput } : { showProgressBar && `$${spent} / `} ${ amountInput }</span>
+        <div className='budget px1 py1'>
+          <span><strong>{ nameInput } :</strong> { showProgressBar && `$${spent} / `} ${ amountInput }</span>
 
           <div className='budget-buttons'>
             <button className='budget-edit-btn' onClick = { () => setIsEditMode(!isEditMode) } >Edit</button>

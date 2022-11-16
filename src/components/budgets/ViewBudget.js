@@ -9,8 +9,44 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
     {`
       .view-budgets {
         padding : 1rem;
-        border : 1px solid #333;
       }
+
+      .view-budgets h2 {
+        margin-block : 1rem;
+      }
+
+      .budget {
+        display : flex;
+        align-items : center;
+        column-gap : 1rem;
+        width : 100%;
+      }
+
+      .budget:nth-child(2n) {
+        background-color : var(--clr-primary-1);
+      }
+
+      .budget-progress-bar-wrapper {
+        width : 100%;
+        height : 15px;
+        margin-top : 0.5rem;
+        border : 1px solid #aaa;
+        overflow : hidden;
+      }
+
+      .budget-progress-bar {
+        width : 0%;
+        height : 15px;
+        transform-origin : left center;
+        animation : budget-progress-bar 1.5s ease-out both;
+      }
+
+      @keyframes budget-progress-bar {
+        from { transform : scaleX(0); opacity : 0; }
+        to { transform : scaleX(1); opacity : 1; }
+      }
+
+      
     `}
     </Style>
     

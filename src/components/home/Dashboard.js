@@ -13,9 +13,10 @@ export default function Dashboard() {
   const [ user ] = useContext(UserContext)
 
 
-  
+  let month = new Date()
+  month = `${month.getFullYear()}-${month.getMonth() + 1}`
   // Get Budgets
-  const { budgets } = useBudgets({ userId : user.id })
+  const { budgets } = useBudgets({ userId : user.id, month : month })
   
     
   
@@ -59,7 +60,6 @@ export default function Dashboard() {
         budgets={ budgets }
         userId={ user.id }
         showButtons={ false }
-        showProgressBar={ false }
       />
       
       <ViewTransactions
