@@ -27,8 +27,12 @@ export default function TransactionsMonthly() {
   // Get monthly transations
   const { transactions } = useTransactions({ userId : user.id, month : month.asNumber })
 
+  
 
+  // Get User budgets
   const { budgets } = useBudgets({ userId : user.id })
+
+
 
 
   return(

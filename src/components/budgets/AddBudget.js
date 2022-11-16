@@ -86,6 +86,7 @@ export default function AddBudget({ loadBudgets }) {
           <span className="add-budget-label">Type</span>
           <select>
             <option value="bill">Bill</option>
+            <option value="savings">Savings</option>
             <option value="paycheck">Paycheck</option>
           </select>
         </label>

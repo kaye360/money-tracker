@@ -16,6 +16,12 @@
   --clr-secondary-3 : hsl(187, 90%, 60%);
   --clr-secondary-4 : hsl(187, 90%, 40%);
   --clr-secondary-5 : hsl(187, 90%, 15%);
+
+  --clr-success-light : hsl(119, 90%, 95%);
+  --clr-success-dark : hsl(119, 90%, 75%);
+  --clr-error-light : hsl(349, 90%, 95%);
+  --clr-error-dark : hsl(349, 90%, 75%);
+
 }
 
 * {

@@ -19,27 +19,39 @@ export default function Flash() {
     {`
       .flash-wrapper {
         position : fixed;
-        inset : 0;
+        inset : 0 0 50% 0;
         z-index : 9999;
 
         display : grid;
         place-items : center;
-        background-color : hsla(0, 0%, 0%, 0.678);
-        padding : 1rem;
-
-        animation : flash-wrapper 5s ease-in-out both;
       }
 
       .flash {
+        --animation-duration : 4s;
+
         position : relative;
         z-index : 99999;
         padding : 1rem;
         width : 100%;
         max-width : 600px;
-        border : 1px solid #333;
-        background-color : ${ type === 'success' ? '#C6FCC5' : '#FCC5CF' };
+        border : 1px solid #aaa;
+        background-color : ${ type === 'success' ? 'var(--clr-success-light)' : 'var(--clr-error-light)' };
 
-        animation : flash 5s ease-in-out both;
+        animation : flash var(--animation-duration) ease-in-out both;
+      }
+
+      .flash::after {
+        content : '';
+        position : absolute;
+        bottom : 0;
+        left : 0;
+
+        width : 0%;
+        height : 5px;
+
+        background-color : ${ type === 'success' ? 'var(--clr-success-dark)' : 'var(--clr-error-dark)' };
+
+        animation : flash-after var(--animation-duration) linear both;
       }
 
       .flash-close {
@@ -49,18 +61,19 @@ export default function Flash() {
         transform : translateY(-50%);
       }
   
-      @keyframes flash-wrapper {
-        from { opacity :0; }
-        10% { opacity : 1; }
-        80% { opacity  : 1; }
-        to { opacity : 0; }
+      @keyframes flash {
+        from { transform : translateY(-1000px); }
+        10% { transform : translateY(100px); }
+        15% { transform : translateY(0); }
+        80% { opacity : 1; }
+        to { transform : translateY(0); opacity : 0; }
       }
 
-      @keyframes flash {
-        from { opacity : 1; }
-        75% { opacity : 1; }
-        to { opacity : 0; }
+      @keyframes flash-after {
+        from { width : 0%; }
+        to { width : 100%; }
       }
+
 
     `}
     </Style>
