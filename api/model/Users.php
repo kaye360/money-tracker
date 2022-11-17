@@ -1,5 +1,18 @@
 <?php
 
+
+// Class Users
+// Methods relating to user actions
+
+// Methods:
+
+// signUp
+// logIn
+// logOut
+// getUserById
+// getUserByUsername
+// getUserIncome
+
 class Users {
 
   private $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
@@ -117,5 +130,26 @@ class Users {
 
 
 
+
+  public function getUserIncome($id) {
+
+    // Format data
+    $id = rtrim($id);
+    $id = filter_var($id, FILTER_SANITIZE_URL); 
+    $error = ['error' => 'No Income found'];
+
+    // Prepare stmt
+    $this->stmt = $this->dbh->prepare('SELECT income FROM users WHERE user_id = :user_id');
+    $this->stmt->bindValue(':user_id', $id);
+
+    // Execute and return
+    if( $this->stmt->execute() ) {
+      $income = $this->stmt->fetch(PDO::FETCH_ASSOC);
+      return !empty($income) ? $income : $error; 
+    } else {
+      return $error;
+    }
+
+  }
 
 }

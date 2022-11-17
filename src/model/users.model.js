@@ -49,3 +49,20 @@ export async function login({username, password}) {
   // Return success or fail
   return loginRes.json()
 }
+
+
+
+
+export async function getUserIncome({ userId }) {
+
+  // Fetch Data
+  const getIncomeRes = await fetch(`${UserAPIURL}/getUserIncome/${userId}`)
+  if (!getIncomeRes.ok) throw new Error('Error with fetching User income')
+
+  // Check for error
+  const getIncomeSuccess = await getIncomeRes.json()
+  if (getIncomeSuccess.error) throw new Error(getIncomeSuccess.error)
+
+  // Return Success or fail 
+  return getIncomeSuccess
+}

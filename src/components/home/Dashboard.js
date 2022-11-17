@@ -37,7 +37,7 @@ export default function Dashboard() {
       .dashboard-items {
         display : grid;
         align-items : stretch;
-        gap : 1rem;
+        gap : 2rem;
         grid-template-columns : 1fr 2fr;
       }
 

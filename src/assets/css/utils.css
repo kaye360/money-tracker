@@ -9,6 +9,8 @@
 .fs6 { font-size : 4rem; }
 .fs7 { font-size : 5rem; }
 
+.bold { font-weight: 900; }
+
 .font-brand { font-family : Pacifico, Inter, Arial, sans-serif; letter-spacing: 0.3rem;}
 .clr-primary { color : var(--clr-primary-4); }
 

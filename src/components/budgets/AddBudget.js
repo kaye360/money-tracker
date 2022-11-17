@@ -18,8 +18,7 @@ export default function AddBudget({ loadBudgets }) {
     e.preventDefault()
 
     // Format inputs
-    const type = e.target[2].value
-    const amount = (type === 'paycheck') ? Number(e.target[1].value) * -1 : Number(e.target[1].value)
+    const amount = Number(e.target[1].value)
     const name = e.target[0].value
 
     // Get Response
@@ -80,15 +79,6 @@ export default function AddBudget({ loadBudgets }) {
         <label>
           <span className="add-budget-label">Budget Amount:</span>
           <input type="text" name="budgetAmount" />
-        </label>
-
-        <label>
-          <span className="add-budget-label">Type</span>
-          <select>
-            <option value="bill">Bill</option>
-            <option value="savings">Savings</option>
-            <option value="paycheck">Paycheck</option>
-          </select>
         </label>
 
         <div>

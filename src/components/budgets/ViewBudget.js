@@ -1,18 +1,63 @@
 import { Style } from 'react-style-tag'
+import { useEffect, useState } from 'react'
 import Budget from './Budget'
+import { getUserIncome } from '../../model/users.model'
+import { useContext } from 'react'
+import { UserContext } from '../../App'
+import iconEditSmall from '../../assets/img/icon-edit-small.svg'
 
 export default function ViewBudget({ budgets, loadBudgets, showProgressBar = true , showButtons = true }) {
+
+
+  // User context
+  const [ user ] = useContext(UserContext)
+
+
+  
+  // Total amount of all Budgets. Number
+  function  totalBudgetsAmount(total=0) {
+    budgets.forEach( (budget) => total += Number(budget.amount) )
+    return total
+  }
+  
+    
+  // Users Monthly income
+  const [incomeAmount, setIncomeAmount] = useState(10)
+
+  useEffect( () => {
+    ( async () => {
+      try {
+
+        // fetch response
+        const res = await getUserIncome({ userId : user.id })
+
+        // Check/set income
+        if (res.error) throw new Error(res.error)
+        setIncomeAmount(res.income)
+        
+      } catch (error) {}
+    })()
+  }, [user])
+
 
   return(
   <>
     <Style>
     {`
       .view-budgets {
-        padding : 1rem;
+      }
+      
+      .budgets-heading {
+        display : flex;
+        justify-content : space-between;
+        align-items : flex-end;
+        width : 100%;
       }
 
-      .view-budgets h2 {
-        margin-block : 1rem;
+      .budgets-total-amount {
+        display : block;
+        font-size : 1.2rem;
+        width : max-content;
       }
 
       .budget {
@@ -46,12 +91,26 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
         to { transform : scaleX(1); opacity : 1; }
       }
 
-      
+      .grey { color : #aaa; font-size : 0.8rem; }
     `}
     </Style>
     
     <div className='view-budgets my2'>
-      <h2>Budgets </h2>
+
+    <div className="budgets-heading px1 mb1">
+        <h2>Budgets </h2>
+
+        <div>
+          <span className='budgets-total-amount'>
+            Income: ${ incomeAmount }/month 
+            <button>
+              <img src={ iconEditSmall } className="" alt="Edit Income" />
+            </button>
+          </span>
+          <span className='budgets-total-amount'>Total: ${ totalBudgetsAmount() }/month</span>
+          <span className='budgets-total-amount bold'>Net: ${ incomeAmount - totalBudgetsAmount() }/month</span>
+        </div>
+      </div>
 
       {
       budgets.length === 0 && 'You haven\'t added any budgets yet'

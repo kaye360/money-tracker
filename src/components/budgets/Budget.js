@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom'
 import { deleteBudget, editBudget } from '../../model/budgets.model'
 import { FlashContext, UserContext } from '../../App'
 import { parseMonth } from '../../utils/date'
+import iconDelete from '../../assets/img/icon-delete.svg'
+import iconEdit from '../../assets/img/icon-edit.svg'
+import iconSave from '../../assets/img/icon-save.svg'
 
 export default function Budget({ name, amount, spent, loadBudgets, showProgressBar = false , showButtons = true }) {
 
@@ -99,10 +102,23 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
     {`
       .budget-buttons {
         display : ${ budgetButtonsDisplay };
+        align-items : center;
         gap : 0.5rem;
         margin-left : auto;
       }
-      
+
+      .budget-save-btn {
+        min-width : 25px;
+        min-height : 20px;
+        padding : 0.7rem 1rem;
+        border : 0;
+        outline : 0;
+        background-color : transparent;
+        background-image : url(${iconSave});
+        background-repeat : no-repeat;
+        background-position : center;
+      }
+
       div.budget-progress-bar-${cssClassName} {
         background-color : ${progressBarColor};
         width : ${ progressBarWidth }%;
@@ -134,8 +150,11 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
           />
 
           <div className='budget-buttons'>
-            <input type="submit" value="Save" className='budget-edit-btn' />
-            <button onClick={ handleDeleteBudget } id={ name }>Delete</button>
+            <input type="submit" value="" className='btn budget-save-btn' />
+
+            <button onClick={ handleDeleteBudget } id={ name }>
+              <img src={ iconDelete } alt="Delete Budget" />
+            </button>
           </div>
         </div>
         </form>
@@ -145,8 +164,12 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
           <span><strong>{ nameInput } :</strong> { showProgressBar && `$${spent} / `} ${ amountInput }</span>
 
           <div className='budget-buttons'>
-            <button className='budget-edit-btn' onClick = { () => setIsEditMode(!isEditMode) } >Edit</button>
-            <button onClick={ handleDeleteBudget } id={ name }>Delete</button>
+            <button className='budget-edit-btn' onClick = { () => setIsEditMode(!isEditMode) } >
+              <img src={ iconEdit } alt="Edit Budget" />
+            </button>
+            <button onClick={ handleDeleteBudget } id={ name }>
+              <img src={ iconDelete } alt="Delete Budget" />
+            </button>
           </div>
         </div>
       }

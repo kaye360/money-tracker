@@ -62,7 +62,7 @@ export default function ViewTransactions({ loadTransactions, isNewTransaction, t
                 <>
                 { 
                 index < maxCount
-                  ? <Transaction 
+                  && <Transaction 
                       name={ transaction.name }
                       budget={ transaction.budget }
                       amount={ transaction.amount }
@@ -74,7 +74,6 @@ export default function ViewTransactions({ loadTransactions, isNewTransaction, t
                       loadTransactions={ loadTransactions }
                       budgets={ budgets }
                       />
-                  : <tr key={ transaction.transaction_id }></tr>
 
                 }
                     

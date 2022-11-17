@@ -30,16 +30,10 @@ export default function Budgets() {
   
 
 
-  // Total amount of all Budgets. Number
-  function  totalBudgetsAmount(total=0) {
-    budgets.forEach( (budget) => total += Number(budget.amount) )
-    return total
-  }
-  
-  
-
   // Users Transactions
   const { transactions } = useTransactions({ userId: user.id })
+
+
 
 
   
@@ -47,24 +41,13 @@ export default function Budgets() {
     <>
     <Style>
     {`
-      .budgets h1 {
-        display : flex;
-        justify-content : space-between;
-        align-items : flex-end;
-        width : 100%;
-      }
 
-      .budgets h1 span {
-        font-size : 1.2rem;
-      }
     `}
     </Style>
     
     <div className='budgets py2'>
-      <h1 className='px1'>
-        Budgets
-        <span className='budgets-total-amount'>Total ${ totalBudgetsAmount() }/month</span>
-      </h1>
+
+      <h1>Your Budgets</h1>
 
       <TransactionsMonthList 
         transactions={ transactions } 
