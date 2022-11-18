@@ -66,3 +66,18 @@ export async function getUserIncome({ userId }) {
   // Return Success or fail 
   return getIncomeSuccess
 }
+
+
+
+
+
+export async function setUserIncome({ userId, amount }) {
+
+  // Fetch call
+  const setUserIncomeRes = await fetch(`${UserAPIURL}/setUserIncome`, postReqOptions({ userId, amount }))
+  if(!setUserIncomeRes.ok) throw new Error('Error with setting User Income')
+
+  // Return json response
+  return setUserIncomeRes.json()
+
+}

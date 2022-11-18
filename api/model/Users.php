@@ -152,4 +152,12 @@ class Users {
 
   }
 
+
+
+
+
+  public function setUserIncome() {
+    
+  }
+
 }

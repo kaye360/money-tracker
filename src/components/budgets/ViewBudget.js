@@ -1,10 +1,10 @@
 import { Style } from 'react-style-tag'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import Budget from './Budget'
 import { getUserIncome } from '../../model/users.model'
-import { useContext } from 'react'
 import { UserContext } from '../../App'
 import iconEditSmall from '../../assets/img/icon-edit-small.svg'
+import iconSave from '../../assets/img/icon-save.svg'
 
 export default function ViewBudget({ budgets, loadBudgets, showProgressBar = true , showButtons = true }) {
 
@@ -28,10 +28,8 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
     ( async () => {
       try {
 
-        // fetch response
+        // fetch/check response, set income state
         const res = await getUserIncome({ userId : user.id })
-
-        // Check/set income
         if (res.error) throw new Error(res.error)
         setIncomeAmount(res.income)
         
@@ -39,6 +37,24 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
     })()
   }, [user])
 
+
+  
+  // Handle Income Change Input
+  function handleIncomeInput(e) {
+    setIncomeAmount(e.target.value)
+  }
+
+
+
+  // Income form is editable or not
+  const [incomeIsEditable, setIncomeIsEditable] = useState(false) 
+
+
+
+  // Handle Income Change Form
+  async function handleChangeIncome(e) {
+    console.log('form submit', incomeAmount)
+  }
 
   return(
   <>
@@ -49,8 +65,10 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
       
       .budgets-heading {
         display : flex;
+        flex-wrap : wrap;
         justify-content : space-between;
         align-items : flex-end;
+        row-gap : 1rem;
         width : 100%;
       }
 
@@ -102,10 +120,25 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
 
         <div>
           <span className='budgets-total-amount'>
-            Income: ${ incomeAmount }/month 
-            <button>
-              <img src={ iconEditSmall } className="" alt="Edit Income" />
-            </button>
+            {
+              incomeIsEditable
+                ? <form onSubmit={ handleChangeIncome } id="edit-income-form">
+                    <input type="number" value={ incomeAmount } onChange={ handleIncomeInput } />
+                    <button type="button" onClick={ (e) => {
+                        handleChangeIncome(e)
+                        setIncomeIsEditable(!incomeIsEditable) 
+                    } } >
+                      <img src={ iconSave } alt="Save Income" />
+                    </button>
+                  </form> 
+                  
+                : <>
+                    Income: ${ incomeAmount }/month
+                    <button onClick={ () => setIncomeIsEditable(!incomeIsEditable) }>
+                      <img src={ iconEditSmall }alt="Edit Income" />
+                    </button>
+                  </>
+            }
           </span>
           <span className='budgets-total-amount'>Total: ${ totalBudgetsAmount() }/month</span>
           <span className='budgets-total-amount bold'>Net: ${ incomeAmount - totalBudgetsAmount() }/month</span>
