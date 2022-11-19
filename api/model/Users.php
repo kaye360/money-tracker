@@ -157,7 +157,19 @@ class Users {
 
 
   public function setUserIncome() {
-    
+
+    // Get Post data
+    // $post_data[userId, amount]
+    $post_data = json_decode( file_get_contents("php://input"), true );
+
+    $this->stmt = $this->dbh->prepare('UPDATE users SET income = :income WHERE user_id = :user_id');
+    $this->stmt->bindValue(':income', $post_data['amount']);
+    $this->stmt->bindValue(':user_id', $post_data['userId']);
+
+    // Execute and return stmt
+    return $this->stmt->execute()
+     ? ['income' => $post_data['amount'] ]
+     : ['error' => 'Error executing fetch'];
   }
 
 }

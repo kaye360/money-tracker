@@ -1,8 +1,8 @@
 import { Style } from 'react-style-tag'
 import { useEffect, useState, useContext } from 'react'
+import { getUserIncome, setUserIncome } from '../../model/users.model'
+import { FlashContext, UserContext } from '../../App'
 import Budget from './Budget'
-import { getUserIncome } from '../../model/users.model'
-import { UserContext } from '../../App'
 import iconEditSmall from '../../assets/img/icon-edit-small.svg'
 import iconSave from '../../assets/img/icon-save.svg'
 
@@ -11,7 +11,7 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
 
   // User context
   const [ user ] = useContext(UserContext)
-
+  const [ , setFlash ] = useContext(FlashContext)
 
   
   // Total amount of all Budgets. Number
@@ -53,7 +53,19 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
 
   // Handle Income Change Form
   async function handleChangeIncome(e) {
-    console.log('form submit', incomeAmount)
+    e.preventDefault()
+
+    try {
+
+      const res = await setUserIncome({ userId : user.id, amount : incomeAmount })
+      setIncomeIsEditable(false)
+      console.log(res)
+      
+    } catch (error) {
+      
+      // Flash Error message
+      setFlash({ type : 'error', message : error.message })
+    }
   }
 
   return(
