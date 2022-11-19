@@ -102,6 +102,15 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
         background-color : var(--clr-primary-1);
       }
 
+      .budget-title-link {
+        color : #333;
+        font-weight : 600;
+      }
+
+      .budget-title-link:hover {
+        text-decoration : underline;
+      }
+
       .budget-progress-bar-wrapper {
         width : 100%;
         height : 15px;

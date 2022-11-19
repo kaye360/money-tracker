@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react'
 import { Style } from 'react-style-tag'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { deleteBudget, editBudget } from '../../model/budgets.model'
 import { FlashContext, UserContext } from '../../App'
 import { parseMonth } from '../../utils/date'
@@ -163,7 +163,12 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
 
         : // Not Edit Mode
         <div className='budget px1 py1'>
-          <span><strong>{ nameInput } :</strong> { showProgressBar && `$${spent} / `} ${ amountInput }</span>
+          <span>
+            <Link to={ `/transactions/${ month.asNumber }` } className='budget-title-link' title='View Transactions for this month'>
+              { nameInput }: 
+            </Link>&nbsp;
+            { showProgressBar && `$${spent} / `} ${ amountInput }
+          </span>
 
           <div className='budget-buttons'>
             <button className='budget-edit-btn' onClick = { () => setIsEditMode(!isEditMode) } >
