@@ -92,21 +92,20 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
 
       .budget {
         display : flex;
+        flex-wrap : wrap;
         align-items : center;
         column-gap : 1rem;
         width : 100%;
       }
 
-      .budget:nth-child(4n-2) {
+      .budget:nth-child(2n) {
         background-color : var(--clr-primary-1);
       }
 
       .budget-progress-bar-wrapper {
         width : 100%;
         height : 15px;
-        // margin-top : 0.5rem;
-        // border : 1px solid #bbb;
-        background-color : var(--clr-primary-1);
+        background-color : none;
         overflow : hidden;
       }
 
@@ -128,7 +127,7 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
     
     <div className='view-budgets my2'>
 
-    <div className="budgets-heading px1 mb1">
+    <div className="budgets-heading px1 mb2">
         <h2>Budgets </h2>
 
         <div>

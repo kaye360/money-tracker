@@ -69,7 +69,7 @@ function App() {
 
         <SideBar />
 
-        <main>
+        <main className="">
           <Routes>
 
             <Route path="/" element={ <Home /> } />

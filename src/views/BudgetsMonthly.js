@@ -101,7 +101,7 @@ export default function BudgetsMonthly() {
 
       {
         transactionsWithoutBudget.length !== 0 &&
-          <div className='my2'>f
+          <div className='my2'>
             <h3>UnBudgeted Transactions This Month</h3>
 
             <table className='budgets-monthly-transactions-table'>
@@ -127,6 +127,7 @@ export default function BudgetsMonthly() {
       }
 
       <AddBudget
+        loadBudgets={ loadBudgets }
       />
     
     </div>

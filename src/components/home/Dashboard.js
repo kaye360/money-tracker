@@ -47,10 +47,10 @@ export default function Dashboard() {
     `}
     </Style>
     
-    <div className='dashboard py2'>
-      <h2 className='mb3'>Dashboard</h2>
+    <div className='dashboard px2 py2'>
+      <h2 className='px1 mb3'>Dashboard</h2>
       
-      <div className='fs3'>
+      <div className='px1 fs3'>
         Welcome, { user.name }
       </div>
 

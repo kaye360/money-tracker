@@ -49,7 +49,7 @@ export default function Transactions() {
     `}
     </Style>
     
-    <div className="transactions">
+    <div className="transactions px2">
       <h1 className="px1">Transactions</h1>
 
 

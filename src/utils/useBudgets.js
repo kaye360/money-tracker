@@ -16,6 +16,7 @@
 
 
 
+import { useCallback } from "react"
 import { useEffect, useState } from "react"
 import { getBudgets, getMontlySpendingTotals } from "../model/budgets.model"
 
@@ -25,8 +26,7 @@ export default function useBudgets( { userId = false, month = false } = {} ) {
   const [budgetsError, setBudgetsError] = useState(false)
 
 
-
-  async function loadBudgets({ userId, month }) {
+  const loadBudgets = useCallback( async () => {
     try{
       
       // Check if ID is given
@@ -56,34 +56,16 @@ export default function useBudgets( { userId = false, month = false } = {} ) {
       setBudgetsError (error.message)
 
     }
-  }
+  }, [month, userId])
 
   
   
   useEffect( () => {
-    loadBudgets({userId : userId, month : month})
-  }, [ userId, month ])
+    loadBudgets()
+  }, [ userId, month, loadBudgets])
 
 
   
   return { budgets, loadBudgets, budgetsError }
 }
 
-
-
-
-// If month is set, append the amount spent that month to each budget object
-// if(month) {
-//   console.log(month)
-//   // Get/Check Monthly spending totals
-//   const spentRes = await(getMontlySpendingTotals({ userId : userId, month : month.asNumber  }))
-//     console.log('asfdasdf', spentRes)
-//     if(spentRes.error) throw new Error(spentRes.error)
-
-//     // Add monthly spending total to budgets array
-//     budgetRes.forEach( (budget, index) => {
-//       budgetRes[index].spent = spentRes[budget.name] ? parseInt(spentRes[budget.name]) : 0
-//     })
-// // }
-
-// console.log(budgetRes)

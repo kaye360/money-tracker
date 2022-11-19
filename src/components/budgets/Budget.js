@@ -136,7 +136,7 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
         ? 
         
         <form onSubmit={ handleEdit } >
-        <div className='budget px1 py1'>
+        <div className='budget px1'>
           <input 
             type="text" 
             name="name" 
@@ -173,10 +173,11 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
               <img src={ iconDelete } alt="Delete Budget" />
             </button>
           </div>
+
+          { showProgressBar && <ProgressBar cssClassName={ cssClassName } /> }
         </div>
       }
       
-      { showProgressBar && <ProgressBar cssClassName={ cssClassName } /> }
 
 
     </>

@@ -45,7 +45,7 @@ export default function Budgets() {
     `}
     </Style>
     
-    <div className='budgets py2'>
+    <div className='budgets px2 py2'>
 
       <h1>Your Budgets</h1>
 
