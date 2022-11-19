@@ -8,8 +8,8 @@ import iconDelete from '../../assets/img/icon-delete.svg'
 import iconEdit from '../../assets/img/icon-edit.svg'
 import iconSave from '../../assets/img/icon-save.svg'
 
-export default function Budget({ name, amount, spent, loadBudgets, showProgressBar = false , showButtons = true }) {
-
+export default function Budget({ name, amount, spent, loadBudgets, showProgressBar = false , showButtons = true }) {  
+  
   // Context/Params
   const [ user ] = useContext(UserContext)
   const [ , setFlash ] = useContext(FlashContext)
@@ -31,7 +31,7 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
     try {
 
       // Get/Check/Set response
-      const res = await deleteBudget({ userId : user.id, budgetName : e.target.id })
+      const res = await deleteBudget({ userId : user.id, budgetName : name })
       if (res.error) throw new Error(res.error)
 
       // ReRender with new Budgets
