@@ -7,6 +7,7 @@ import { parseMonth } from '../../utils/date'
 import iconDelete from '../../assets/img/icon-delete.svg'
 import iconEdit from '../../assets/img/icon-edit.svg'
 import iconSave from '../../assets/img/icon-save.svg'
+import ProgressBar from './ProgressBar'
 
 export default function Budget({ name, amount, spent, loadBudgets, showProgressBar = false , showButtons = true }) {  
   
@@ -88,9 +89,9 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
   let progressBarColor
 
   switch (true) {
-    case (progressBarWidth > 100): progressBarColor = '#FFB8B8'; break
-    case (progressBarWidth > 90) && (progressBarWidth <=100): progressBarColor = '#FFE3B8'; break
-    default: progressBarColor = '#C5FCE1'
+    case (progressBarWidth > 100): progressBarColor = 'var(--clr-error-dark)'; break
+    case (progressBarWidth > 90) && (progressBarWidth <=100): progressBarColor = 'var(--clr-error-light)'; break
+    default: progressBarColor = 'var(--clr-primary-3)'
   }
 
 
@@ -117,6 +118,7 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
         background-image : url(${iconSave});
         background-repeat : no-repeat;
         background-position : center;
+        cursor : pointer;
       }
 
       div.budget-progress-bar-${cssClassName} {
@@ -174,14 +176,9 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
         </div>
       }
       
+      { showProgressBar && <ProgressBar cssClassName={ cssClassName } /> }
 
 
-      {
-      showProgressBar &&
-        <div className='budget-progress-bar-wrapper mb1'>
-          <div className={`budget-progress-bar budget-progress-bar-${cssClassName}`}></div>
-        </div>
-      }
     </>
   )
 }

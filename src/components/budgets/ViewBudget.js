@@ -97,15 +97,16 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
         width : 100%;
       }
 
-      .budget:nth-child(2n) {
+      .budget:nth-child(4n-2) {
         background-color : var(--clr-primary-1);
       }
 
       .budget-progress-bar-wrapper {
         width : 100%;
         height : 15px;
-        margin-top : 0.5rem;
-        border : 1px solid #aaa;
+        // margin-top : 0.5rem;
+        // border : 1px solid #bbb;
+        background-color : var(--clr-primary-1);
         overflow : hidden;
       }
 

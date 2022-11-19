@@ -1,10 +1,11 @@
-import { useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import { UserContext } from '../App'
 
 import AddBudget from '../components/budgets/AddBudget'
 import ViewBudget from '../components/budgets/ViewBudget'
+import Transaction from '../components/transactions/Transaction'
 import TransactionsMonthList from '../components/transactions/TransactionsMonthList'
 
 import { parseMonth } from '../utils/date'
@@ -41,9 +42,19 @@ export default function BudgetsMonthly() {
 
   // Users Transactions
   // Array of Objects
-  const { transactions } = useTransactions({ userId: user.id, month: month.asNumber })
+  const { transactions, loadTransactions } = useTransactions({ userId: user.id, month: month.asNumber })
 
 
+
+  // Users Transactions without an active budget (previously deleted)
+  const transactionsWithoutBudget = transactions.filter( transaction => {
+
+    // Check if transaction.budget is in budgets[#].name
+    return !budgets.some( budget => {
+      return budget.name === transaction.budget
+    } )
+
+  } )
 
 
   
@@ -61,12 +72,16 @@ export default function BudgetsMonthly() {
       .budgets h1 span {
         font-size : 1.2rem;
       }
+
+      .budgets-monthly-transactions-table {
+        width : 100%;
+      }
     `}
     </Style>
     
     <div className='budgets py2'>
       <h1 className='px1'>
-        Budgets hi
+        Budgets
         <span className='budgets-total-amount'>Total ${ totalBudgetsAmount() }/month</span>
       </h1>
 
@@ -83,6 +98,33 @@ export default function BudgetsMonthly() {
         budgets={ budgets }
         loadBudgets={ loadBudgets }
       />
+
+      {
+        transactionsWithoutBudget.length !== 0 &&
+          <div className='my2'>
+            <h3>UnBudgeted Transactions This Month</h3>
+
+            <table className='budgets-monthly-transactions-table'>
+              {
+                transactionsWithoutBudget.map( (transaction, index) => {
+                  return( 
+                    <Transaction
+                      name={ transaction.name }
+                      budget={ transaction.budget }
+                      amount={ transaction.amount }
+                      date={ transaction.date }
+                      transactionId={ transaction.transaction_id }
+                      isNewTransaction={ false }
+                      loadTransactions={ loadTransactions }
+                      budgets={ budgets }
+                      key={ transaction.transaction_id }
+                    />
+                  )
+                } )
+              }
+            </table>
+          </div>
+      }
 
       <AddBudget
       />

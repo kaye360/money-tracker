@@ -2,6 +2,9 @@ import { useContext, useState } from 'react'
 import { Style } from 'react-style-tag'
 import { FlashContext, UserContext } from '../../App'
 import { deleteTransaction, editTransaction, } from '../../model/transactions.model'
+import  iconDelete  from '../../assets/img/icon-delete.svg'
+import  iconEdit  from '../../assets/img/icon-edit.svg'
+import  iconSave  from '../../assets/img/icon-save.svg'
 
 export default function Transaction({
   name, budget, amount, date, transactionId,
@@ -48,7 +51,7 @@ export default function Transaction({
   // Handle Edit Transaction
   async function handleEditTransaction(e) {
     e.preventDefault()
-    
+
     // Get response
     try {
       const res = await editTransaction({
@@ -65,7 +68,7 @@ export default function Transaction({
       loadTransactions({ userId : user.id })
       
     } catch (error) {
-
+      console.log(error)
       // Flash error message
       setFlash({ type : 'fail', message : error.message })
 
@@ -77,7 +80,25 @@ export default function Transaction({
     <>
     <Style>
     {`
+      .budget-buttons {
+        display : flex;
+        align-items : center;
+        gap : 0rem;
+        margin-left : auto;
+      }
 
+      .budget-save-btn {
+        min-width : 25px;
+        min-height : 20px;
+        padding : 0.7rem 1rem;
+        border : 0;
+        outline : 0;
+        background-color : transparent;
+        background-image : url(${iconSave});
+        background-repeat : no-repeat;
+        background-position : center;
+        cursor : pointer;
+      }
     
       .new-transaction {
         animation : new-transaction 1s linear;
@@ -143,10 +164,12 @@ export default function Transaction({
       </td>
       <td>
         <form onSubmit={ handleEditTransaction } id={ transactionId } name={ transactionId } >
-          <input type="submit" value="Save" />
-        <button onClick={ handleDeleteTransaction }>
-            DD
-        </button>
+          <div className='budget-buttons'>
+            <input type="submit" value="" className='budget-save-btn' />
+            <button onClick={ handleDeleteTransaction }>
+              <img src={ iconDelete } alt="Delete" />
+            </button>
+          </div>
         </form>
       </td>
     </tr>
@@ -159,10 +182,10 @@ export default function Transaction({
       <td>{amount}</td>
       <td>
         <button onClick={ () => setIsEditMode(!isEditMode) }>
-          EE
+          <img src={ iconEdit } alt="Edit" />
         </button>
         <button onClick={ handleDeleteTransaction }>
-          DD
+          <img src={ iconDelete } alt="Delete" />
         </button>
       </td>
 
