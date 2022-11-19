@@ -14,8 +14,5 @@ This will be a money tracking app. Lots of plans to come...
 - /src/views -> App pages
 
 # TODO
-- Upcoming page?
-- when viewing a budget month, need to get all transactions that aren't in a users budget
-- add an income input on budgets section
 
 # Bugs

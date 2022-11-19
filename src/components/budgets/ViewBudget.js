@@ -137,7 +137,7 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
     <div className='view-budgets my2'>
 
     <div className="budgets-heading px1 mb2">
-        <h2>Budgets </h2>
+        <h2 className='my0'>Current Budgets </h2>
 
         <div>
           <span className='budgets-total-amount'>
