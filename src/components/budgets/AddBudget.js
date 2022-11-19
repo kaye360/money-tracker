@@ -53,16 +53,27 @@ export default function AddBudget({ loadBudgets, month = false }) {
     {`
       .add-budget {
         padding : 1rem;
-        border : 1px solid #333;
       }
 
-      .add-budget label {
-        display : block;
+      .add-budget-form {
+        display : flex;
+        flex-wrap : wrap;
+        align-items : center;
+        gap : 1rem;
       }
 
-      .add-budget-label {
-        display : block;
+      .add-budget-input:focus {
+        outline-color : var(--clr-primary-3);
       }
+
+      input.add-budget-submit {
+        background-color : var(--clr-primary-3);
+      }
+
+      input.add-budget-submit:hover {
+        background-color : var(--clr-secondary-3);
+      }
+
     `}
     </Style>
     
@@ -70,19 +81,18 @@ export default function AddBudget({ loadBudgets, month = false }) {
       <h2>Add a Budget</h2>
 
       <form onSubmit={ handleAddBudget } >
+        <div className="add-budget-form">
+          <label>
+            <span className="add-budget-label">Budget Name:</span>
+            <input type="text" name="budgetName" className='add-budget-input'/>
+          </label>
 
-        <label>
-          <span className="add-budget-label">Budget Name:</span>
-          <input type="text" name="budgetName" />
-        </label>
+          <label>
+            <span className="add-budget-label">Budget Amount:</span>
+            <input type="text" name="budgetAmount" className='add-budget-input'/>
+          </label>
 
-        <label>
-          <span className="add-budget-label">Budget Amount:</span>
-          <input type="text" name="budgetAmount" />
-        </label>
-
-        <div>
-          <input type="submit" value="Add Budget" />
+          <input type="submit" value="Add Budget" className='add-budget-submit' />
         </div>
 
       </form>
