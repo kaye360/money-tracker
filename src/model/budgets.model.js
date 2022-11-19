@@ -82,7 +82,7 @@ export async function getMontlySpendingTotals({ userId, month }) {
 export async function deleteBudget({ userId, budgetName }) {
 
   // Fetch delete budget
-  const deleteBudgetRes = await fetch(`${BudgetAPIURL}/delete/${ userId }:${ budgetName }`)
+  const deleteBudgetRes = await fetch(`${BudgetAPIURL}/delete/`, postReqOptions({ userId, budgetName }))
   if(!deleteBudgetRes.ok) throw new Error('Error fetching Delete function')
 
   const deleteBudgetSuccess = await deleteBudgetRes.json()

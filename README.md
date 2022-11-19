@@ -19,4 +19,3 @@ This will be a money tracking app. Lots of plans to come...
 - add an income input on budgets section
 
 # Bugs
-- Cant delete budget, transaction with space in the name

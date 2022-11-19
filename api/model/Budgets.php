@@ -79,7 +79,7 @@ class Budgets {
     // For each budget, get the total amount spent in $month
     foreach( $budgets as $name => $value ) {
 
-      // Prepeare Statment
+      // Prepare Statment
       $sql ='SELECT SUM(amount) as total FROM transactions WHERE budget = :budget AND YEAR(date) = :year AND MONTH(date) = :month';
       $this->stmt = $this->dbh->prepare($sql);
       $this->stmt->bindValue(':budget', $name);
@@ -162,26 +162,25 @@ class Budgets {
 
   public function delete($params) {
 
-    // Format params
-    $params = rtrim($params);
-    $params = filter_var($params, FILTER_SANITIZE_URL);
-    $params = explode(':', $params);
+    $post_data = json_decode( file_get_contents("php://input"), true );
 
-    // Check if both params are set
-    if( (!isset($params[0])) || (!isset($params[1])) ) return ['error' => 'Delete requires 2 params (UserId, BudgetName)'];
+    // Check/set post inputs
+    if( (!isset($post_data['userId'])) || (!isset($post_data['budgetName'])) ) {
+      return ['error' => 'Delete requires 2 post inputs (UserId, BudgetName)'];
+    }
 
-    $userId = $params[0];
-    $budgetToDelete = $params[1] ;
+    $userId = $post_data['userId'];
+    $budgetToDelete = $post_data['budgetName'] ;
 
     // Get User Budgets
     $users = new Users;
     $user = $users->getUserById($userId);
     $budgets = json_decode($user['budgets'], true);
     
-    // Check if budget to delete is in budgets
-    if( !array_key_exists($budgetToDelete, $budgets) ) return ['error' => 'Cannot delete. Budget does not exist'];
-    
-    // Find budget to delete and remove
+    // Check if budget to delete is in budgets and remove
+    if( !array_key_exists($budgetToDelete, $budgets) ) {
+      return ['error' => 'Cannot delete. Budget does not exist'];
+    }
     unset($budgets[$budgetToDelete]);
 
     // Prepare Statment
