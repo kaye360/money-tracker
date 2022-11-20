@@ -14,7 +14,7 @@ import useBudgets from '../utils/useBudgets'
 export default function Budgets() {
 
   // Get context 
-  const user = useContext(UserContext)[0]
+  const [ user, ] = useContext(UserContext)
 
 
 

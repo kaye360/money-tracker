@@ -1,3 +1,4 @@
+import React from 'react'
 import { Style } from 'react-style-tag'
 import Transaction from './Transaction'
 
@@ -59,7 +60,7 @@ export default function ViewTransactions({ loadTransactions, isNewTransaction, t
             maxCount && 
             transactions.map( (transaction, index) => {
               return(
-                <>
+                <React.Fragment key={ index }>
                 { 
                 index < maxCount
                   && <Transaction 
@@ -77,7 +78,7 @@ export default function ViewTransactions({ loadTransactions, isNewTransaction, t
 
                 }
                     
-                  </>
+                  </React.Fragment>
                 )
               }
             )

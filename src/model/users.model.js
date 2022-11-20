@@ -1,5 +1,6 @@
 import { UserAPIURL } from '../config/config'
 import { postReqOptions } from '../utils/fetch'
+import { setLoginSession } from '../utils/localStorage'
 
 
 
@@ -42,13 +43,32 @@ export async function login({username, password}) {
   // Check all inputs filled out
   if (!username || !password) throw new Error('Please fill out all fields')
 
+  // Generate Token
+  const token = Math.random().toString(36).substr(2)
+
   // Fetch
-  const loginRes = await fetch(`${UserAPIURL}/login`, postReqOptions({username, password}))
+  const loginRes = await fetch(`${UserAPIURL}/login`, postReqOptions({username, password, token}))
   if (!loginRes.ok) throw new Error('Error with fetch Login')
+  const loginSuccess = await loginRes.json()
+  
+  // Set Token
+  setLoginSession({ user : loginSuccess[0], id : loginSuccess[1], token : token})
 
   // Return success or fail
-  return loginRes.json()
+  return loginSuccess
 }
+
+
+
+
+
+export async function logout(username) {
+
+  const res = await fetch(`${UserAPIURL}/logout`, postReqOptions({username}))
+  if (!res.ok) throw new Error('Error with fetch logout')
+
+}
+
 
 
 

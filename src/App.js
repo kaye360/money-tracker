@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Style } from "react-style-tag";
 import { createContext, useState } from "react";
+import { getLoginSession } from "./utils/localStorage";
 
 // Layout
 import SideBar from "./components/layout/SideBar";
@@ -32,14 +33,25 @@ export const FlashContext = createContext()
 
 function App() {
 
+  
+  // Check for existing Login Session
+  // Gets session from local storage if present
+  // Obj {username, id, token} or false
+  const isLoggedIn = getLoginSession() 
+
+
+
   // User that is logged in. 
   // Obj {user, id} or false
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(isLoggedIn);
+  
+
 
   // Flash Message.
   // Obj {type, message, link, linkText} or False
   const [flash, setFlash] = useState(false)
 
+  
 
   document.title = 'Spendly: Money tracking app'
 

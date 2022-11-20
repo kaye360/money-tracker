@@ -109,7 +109,6 @@ export default function TransactionsMonthList({ transactions, routePath }) {
         {
         transactionMonthList.map( (month, index) => {
           month = parseMonth(month)
-          console.log(currentMonth.asNumber, month.asNumber)
           return(
             <Link 
               to={`/${routePath}/${month.asNumber}`} 

@@ -11,12 +11,20 @@ import sidebarIconForecast from '../../assets/img/sidebar-icon-forecast.svg'
 import sidebarIconAbout from '../../assets/img/sidebar-icon-about.svg'
 import sidebarIconUser from '../../assets/img/sidebar-icon-user.svg'
 import sidebarIconSignOut from '../../assets/img/sidebar-icon-sign-out.svg'
+import { endLoginSession } from '../../utils/localStorage'
+import { logout } from '../../model/users.model'
 
 export default function SideBar() {
 
   const [user, setUser] = useContext(UserContext)
 
 
+  // Logout handler
+  function handleLogout() {
+    setUser(false)
+    endLoginSession()
+    logout(user.name)
+  }
 
   return(
     <>
@@ -120,7 +128,7 @@ export default function SideBar() {
             <img src={ sidebarIconUser } alt="User" />
             {user.name}
           </span>
-          <Link to="/" onClick={ () => setUser(false) }>
+          <Link to="/" onClick={ handleLogout }>
             <img src={ sidebarIconSignOut } alt="Sign Out" />
             Sign out
           </Link>

@@ -73,11 +73,21 @@ class Users {
     if ( empty($user) ) {
       return ['error' => 'User Not Found'];
     }
+
+    // Verify Password
+    if (!password_verify($loginPostData['password'], $user->password)) {
+      return ['error' => 'User and password don\'t match'];
+    }
+
+    // Set Token
+    $sql = 'UPDATE users SET login_token = :loginToken WHERE username = :username';
+    $this->stmt = $this->dbh->prepare($sql);
+    $this->stmt->bindValue(':loginToken', $loginPostData['token']);
+    $this->stmt->bindValue(':username', $loginPostData['username']);
+    $this->stmt->execute();
     
-    // Verify Password, echo results
-    return password_verify($loginPostData['password'], $user->password)
-      ? [$user->username, $user->user_id]
-      : ['error' => 'User and password don\'t match'];
+    // Return Username and ID
+    return [$user->username, $user->user_id];
   } 
   
 
@@ -85,7 +95,18 @@ class Users {
 
 
   public function logOut() {
-    // Place holder until I figure out how to use php sessions with react. It shouldn't be that hard...
+
+    // Get/Check post data
+    $post_data = json_decode( file_get_contents("php://input"), true );
+    if (empty($post_data['username'])) return ['error' => 'No username specified'];
+
+    // Prep statement
+    $this->stmt = $this->dbh->prepare("UPDATE users SET login_token = '' WHERE username = :username");
+    $this->stmt->bindValue(':username', $post_data['username']);
+
+    return $this->stmt->execute()
+      ? ['username' => $post_data['username']]
+      : ['error' => 'Error logging out'];
   } 
 
 

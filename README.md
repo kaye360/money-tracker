@@ -14,5 +14,6 @@ This will be a money tracking app. Lots of plans to come...
 - /src/views -> App pages
 
 # TODO
+- localstorage to persist login
 
 # Bugs
