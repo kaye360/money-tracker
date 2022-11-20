@@ -6,10 +6,13 @@ export default function PageNotFound() {
     <>
     <Style>
     {`
+      .page-not-found {
+        min-height : 75vh;
+      }
     `}
     </Style>
     
-    <div>
+    <div className='page-not-found'>
       <h1>404</h1>
     
     </div>
