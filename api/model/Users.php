@@ -113,6 +113,24 @@ class Users {
 
 
 
+  public function getLoginToken() {
+
+    // Get/check post data
+    $post_data = json_decode( file_get_contents("php://input"), true );
+    if (empty($post_data['userId'])) return ['error' => 'No user id specified'];
+
+    // Prep stmt/execute
+    $this->stmt = $this->dbh->prepare('SELECT login_token from users WHERE user_id = :user_id');
+    $this->stmt->bindValue(':user_id', $post_data['userId']);
+    $this->stmt->execute();
+
+    return $this->stmt->fetch(PDO::FETCH_ASSOC);
+  }
+
+
+
+
+
   public function getUserById($id) {
 
     // Format Data

@@ -1,8 +1,9 @@
 // Dependencies
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Style } from "react-style-tag";
-import { createContext, useState } from "react";
-import { getLoginSession } from "./utils/localStorage";
+import { createContext, useEffect, useState } from "react";
+import { getLoginSession, endLoginSession } from "./utils/localStorage";
+import { getLoginToken, logout } from "./model/users.model";
 
 // Layout
 import SideBar from "./components/layout/SideBar";
@@ -37,13 +38,37 @@ function App() {
   // Check for existing Login Session
   // Gets session from local storage if present
   // Obj {username, id, token} or false
-  const isLoggedIn = getLoginSession() 
+  const loginSession = getLoginSession() 
 
-
+  
 
   // User that is logged in. 
   // Obj {user, id} or false
-  const [user, setUser] = useState(isLoggedIn);
+  const [user, setUser] = useState(loginSession);
+
+
+
+  // Check Login Token
+  useEffect(  () => {
+
+    // Logout Function if token fails
+    function logoutHandler() {
+      setUser(false)
+      endLoginSession()
+      logout(user.name)
+    }
+
+    
+    // Get/Check token
+    async function getToken() {
+      // Check that localstorage login token matches DB login Token
+      const userDBtoken = await getLoginToken({userId : user.id})
+      if(!userDBtoken.login_token || !loginSession.token) logoutHandler()
+      if(userDBtoken.login_token !== loginSession.token ) logoutHandler()
+    }
+    getToken()
+  }, [user, loginSession.token])
+
   
 
 
@@ -51,7 +76,7 @@ function App() {
   // Obj {type, message, link, linkText} or False
   const [flash, setFlash] = useState(false)
 
-  
+
 
   document.title = 'Spendly: Money tracking app'
 

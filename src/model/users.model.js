@@ -52,7 +52,7 @@ export async function login({username, password}) {
   const loginSuccess = await loginRes.json()
   
   // Set Token
-  setLoginSession({ user : loginSuccess[0], id : loginSuccess[1], token : token})
+  setLoginSession({ name : loginSuccess[0], id : loginSuccess[1], token : token})
 
   // Return success or fail
   return loginSuccess
@@ -69,6 +69,19 @@ export async function logout(username) {
 
 }
 
+
+
+
+
+export async function getLoginToken({userId}) {
+
+  const res = await fetch(`${UserAPIURL}/getLoginToken`, postReqOptions({userId : userId}))
+  if(!res.ok) throw new Error('Couldn\'t get User token')
+
+  const token = await res.json()
+  return token
+
+}
 
 
 
