@@ -54,31 +54,35 @@ export default function Base({ setIsNewTransaction, loadTransactions }) {
     {`
       .add-transaction {
         padding : 1rem 0.5rem;
-        border : 1px solid #333;
       }
 
 
       .add-transaction-form {
         display : flex;
         flex-wrap : wrap;
+        align-items : center;
         gap : 1rem;
         margin-block : 1rem;
+      }
+
+      input.add-transaction-submit {
+        background-color : var(--clr-primary-2);
       }
     `}
     </Style>
     
-    <div className='add-transaction my2'>
+    <div className='add-transaction'>
       <h2>Add a Transaction</h2>
       <form onSubmit={ handleAddTransaction }>
 
         <div className="add-transaction-form">
           <label>
-            <span className='add-transaction-label'>Transaction Name </span>
+            <span className='add-transaction-label'>Name </span>
             <input type="text" name="transactionName" />
           </label>
 
           <label>
-            <span className='add-transaction-label'>Transaction Amount </span>
+            <span className='add-transaction-label'> Amount </span>
             <input type="text" name="transactionAmount" />
           </label>
 
@@ -97,7 +101,7 @@ export default function Base({ setIsNewTransaction, loadTransactions }) {
           </label>
 
           <div>
-            <input type="submit" value="Add transaction" />
+            <input type="submit" value="Add transaction" className='add-transaction-submit' />
           </div>
         </div>
 

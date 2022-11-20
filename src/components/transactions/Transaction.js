@@ -80,14 +80,14 @@ export default function Transaction({
     <>
     <Style>
     {`
-      .budget-buttons {
+      .transaction-buttons {
         display : flex;
         align-items : center;
         gap : 0rem;
-        margin-left : auto;
+        width : fit-content;
       }
 
-      .budget-save-btn {
+      input.transaction-save-btn {
         min-width : 25px;
         min-height : 20px;
         padding : 0.7rem 1rem;
@@ -164,8 +164,8 @@ export default function Transaction({
       </td>
       <td>
         <form onSubmit={ handleEditTransaction } id={ transactionId } name={ transactionId } >
-          <div className='budget-buttons'>
-            <input type="submit" value="" className='budget-save-btn' />
+          <div className='transaction-buttons'>
+            <input type="submit" value="" className='transaction-save-btn' />
             <button onClick={ handleDeleteTransaction }>
               <img src={ iconDelete } alt="Delete" />
             </button>
