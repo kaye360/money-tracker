@@ -1,47 +1,70 @@
+// 
+// User Sign up View
+// 
+
+// Dependencies
 import { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import { FlashContext } from '../App'
+
+// Utils
 import { signUp } from '../model/users.model'
+
+// Assets
 import signUpBg from '../assets/img/bg-gradient.svg'
 import { bg } from '../assets/css/css-variables'
 
 
+
+
+
 export default function SignUp() {
 
-  const setFlash = useContext(FlashContext)[1]
-
+  // 
+  // Get Contexts/hooks
+  // 
+  const [ ,setFlash ] = useContext(FlashContext)
   const navigate = useNavigate()
 
-
-
+  // 
+  // Sign Up Handler
+  // 
   async function handleSignUp(e) {
     e.preventDefault()
 
     try{
 
-      // Sign up Response
-      const res = await signUp({ username : e.target[0].value, password : e.target[1].value, confirmPassword : e.target[2].value })   
+      const res = await signUp({
+        username : e.target[0].value, 
+        password : e.target[1].value, 
+        confirmPassword : e.target[2].value 
+      })   
       if(res.error) throw new Error(res.error)
 
-      // Success Flash Message
-      setFlash({ type : 'success', message : `You have succesfully signed up as ${e.target[0].value}. You may now log in.` })
+      setFlash({ 
+        type : 'success', 
+        message : `You have succesfully signed up as ${e.target[0].value}. You may now log in.` 
+      })
 
-      // Redirect to log in page
       navigate('/sign-in')
 
     } catch (error) {
       
-      // Error Flash Message
       setFlash({ type : 'fail', message : error.message })
     }
   }
 
 
+  // 
   // CSS variables
-
+  // 
   const inlinePadding = '150px'
 
+
+
+
+  
   return(
     <>
     <Style>

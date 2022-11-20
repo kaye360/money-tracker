@@ -1,3 +1,11 @@
+// 
+// Spendly: A monney tracking web app
+// Made by Josh Kaye
+// Check out my web dev portfolio at https://joshkaye.ca
+// 
+// Any commnets, tips, or suggestions are welcome!
+// 
+
 // Dependencies
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Style } from "react-style-tag";
@@ -29,56 +37,67 @@ import BudgetsMonthly from "./views/BudgetsMonthly";
 // Assets
 import './assets/css/main.css';
 
+// Contexts
 export const UserContext = createContext()
 export const FlashContext = createContext()
 
 function App() {
 
-  
+  //
   // Check for existing Login Session
-  // Gets session from local storage if present
+  // Gets session data from local storage if present
   // Obj {username, id, token} or false
+  //
   const loginSession = getLoginSession() 
 
-  
-
+  //
   // User that is logged in. 
   // Obj {user, id} or false
+  //
   const [user, setUser] = useState(loginSession);
 
-
-
+  //
   // Check Login Token
+  // If Token auth is successful, do nothing as state is already set
+  // Call logoutHandler() if Token Auth fails
+  //
   useEffect(  () => {
 
-    // Logout Function if token fails
     function logoutHandler() {
+
       setUser(false)
       endLoginSession()
       logout(user.name)
-    }
 
+    }
     
-    // Get/Check token
-    async function getToken() {
-      // Check that localstorage login token matches DB login Token
+    async function getUserDbToken() {
+
       const userDBtoken = await getLoginToken({userId : user.id})
       if(!userDBtoken.login_token || !loginSession.token) logoutHandler()
       if(userDBtoken.login_token !== loginSession.token ) logoutHandler()
+
     }
-    getToken()
+
+    getUserDbToken()
+
   }, [user, loginSession.token])
 
-  
-
-
-  // Flash Message.
+  //
+  // Flash Message
+  // Displays Temporary Success or Error messages
   // Obj {type, message, link, linkText} or False
+  //
   const [flash, setFlash] = useState(false)
 
-
-
+  //
+  // Set the document title
+  // 
   document.title = 'Spendly: Money tracking app'
+
+
+
+
 
   return (
     <>

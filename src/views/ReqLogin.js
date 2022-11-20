@@ -1,5 +1,16 @@
+// 
+// Require Log in page
+// 
+
+// Dependencies
 import { Style } from 'react-style-tag'
+
+// Components
 import { Link } from 'react-router-dom'
+
+
+
+
 
 export default function ReqLogin() {
 

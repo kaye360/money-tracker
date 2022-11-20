@@ -1,4 +1,13 @@
+// 
+// About Page View
+// General info about this app for the User
+// 
+
+// Dependencies
 import { Style } from 'react-style-tag'
+
+
+
 
 export default function About() {
 

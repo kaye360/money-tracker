@@ -1,11 +1,15 @@
+// 
+// Forecast View. Coming Soon
+// 
+
+// Dependencies
 import { Style } from 'react-style-tag'
 
+
+
+
+
 export default function Forecast() {
-
-
-
-
-
 
 
 
@@ -22,9 +26,6 @@ export default function Forecast() {
       <h1>Forecast</h1>
     
       <p className='my2'>Coming soon in the next version!</p> 
-     
-
-
 
     </div>
     </>

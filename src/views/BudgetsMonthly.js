@@ -1,55 +1,66 @@
+// 
+// Budgets in one month Page View
+// Display and manage users budgets in a given month
+// 
+
+// Dependencies
 import React, { useContext, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import { UserContext } from '../App'
 
+// Components
 import AddBudget from '../components/budgets/AddBudget'
 import ViewBudget from '../components/budgets/ViewBudget'
 import Transaction from '../components/transactions/Transaction'
 import TransactionsMonthList from '../components/transactions/TransactionsMonthList'
 
+// Utils
 import { parseMonth } from '../utils/date'
 import useBudgets from '../utils/useBudgets'
 import useTransactions from '../utils/useTransactions'
 
+
+
+
+
 export default function BudgetsMonthly() {
 
-
-
-  // Context/Params
+  //
+  // Get Context/Params
+  //
   const [ user ] = useContext(UserContext)
   const month = parseMonth( useParams().month )
 
-
+  //
   // Require Login for this page
+  //
   const navigate = useNavigate()
   useEffect( () => { !user && navigate('/req-login') }, [navigate, user])
 
-
-
-  // User Budgets
+  //
+  // Users Budgets in given month
+  //
   const { budgets, loadBudgets } = useBudgets({userId : user.id, month : month.asNumber })
   
-
-
-  // Total $ amount of all Budgets. Number
+  //
+  // Total $ amount of all Budgets
+  //
   function  totalBudgetsAmount(total=0) {
     budgets.forEach( (budget) => total += Number(budget.amount) )
     return total
   }
   
-  
-
-  // Users Transactions
-  // Array of Objects
+  // 
+  // Users Transactions in given month
+  // 
   const { transactions, loadTransactions } = useTransactions({ userId: user.id, month: month.asNumber })
 
-
-
-  // Users Transactions without an active budget (previously deleted)
+  //
+  // Users Transactions without an active budget (budget could be deleted)
+  //
   const transactionsWithoutBudget = transactions.filter( transaction => {
 
-    // Check if transaction.budget is in budgets[#].name
     return !budgets.some( budget => {
       return budget.name === transaction.budget
     } )
@@ -57,6 +68,8 @@ export default function BudgetsMonthly() {
   } )
 
 
+
+  
   
   return(
     <>

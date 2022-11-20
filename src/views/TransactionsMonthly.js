@@ -1,40 +1,55 @@
+//
+// Monthly Transactions View
+// View/manage all transactions in a given month
+//
+
+// Dependencies
 import { useContext, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import { UserContext } from '../App'
-import { parseMonth } from '../utils/date'
+
+// Components
 import Transaction from '../components/transactions/Transaction'
 import TransactionsMonthList from '../components/transactions/TransactionsMonthList'
+
+// Utils
+import { parseMonth } from '../utils/date'
 import useBudgets from '../utils/useBudgets'
 import useTransactions from '../utils/useTransactions'
 
+
+
+
+
 export default function TransactionsMonthly() {
 
-
-
-  // Context/Params
-  const user = useContext(UserContext)[0]
+  //
+  // Get Context/Params
+  //
+  const [ user ] = useContext(UserContext)
   const month = parseMonth( useParams().month )
 
-
-
+  //
   // Require Login for this page
+  //
   const navigate = useNavigate()
   useEffect( () => { !user && navigate('/req-login') }, [navigate, user])
 
-
-  
-  // Get monthly transations
+  //  
+  // Get users transations in a given month
+  //  
   const { transactions } = useTransactions({ userId : user.id, month : month.asNumber })
 
-  
-
+  //
   // Get User budgets
+  //
   const { budgets } = useBudgets({ userId : user.id })
 
 
 
 
+  
   return(
     <>
     <Style>

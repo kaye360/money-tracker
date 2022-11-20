@@ -1,4 +1,13 @@
+// 
+// 404 Not found View
+// 
+
+// Dependencies
 import { Style } from 'react-style-tag'
+
+
+
+
 
 export default function PageNotFound() {
 

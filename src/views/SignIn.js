@@ -1,33 +1,45 @@
+// 
+// User Sign In View
+// 
+
+// Dependencies
 import { Link, useNavigate } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import { useContext } from 'react'
 import { FlashContext, UserContext } from '../App'
+
+// Utils
 import { login } from '../model/users.model'
+
+// Assets
 import signInBg from '../assets/img/bg-gradient.svg'
 import { bg } from '../assets/css/css-variables'
 
 
+
+
+
 export default function SignIn() {
 
-  const setUser = useContext(UserContext)[1]
-  const setFlash = useContext(FlashContext)[1]
-
+  // 
+  // Get Contexts/Hooks
+  // 
+  const [ ,setUser ] = useContext(UserContext)
+  const [ ,setFlash ] = useContext(FlashContext)
   const navigate = useNavigate()
 
-
+  // 
+  // Login Handler
+  // 
   async function handleLogin(e) {
     e.preventDefault()
 
     try {
 
-      // Get/Check response
       const res = await login({ username : e.target[0].value, password : e.target[1].value })
       if(res.error) throw new Error(res.error)
 
-      // set user to logged in
       setUser({ 'name' : res[0], 'id' : res[1] })
-
-      // Success message and redirect to dashboard
       setFlash({ type : 'success', message : `You are now logged in as ${res[0]}` })
       navigate("/")
 
@@ -38,10 +50,9 @@ export default function SignIn() {
     }
   }
 
-
-
+  // 
   // CSS variables
-
+  //
   const inlinePadding = '150px'
 
   return(
