@@ -2,14 +2,18 @@
 
 class Budgets {
 
+  //
+  // DB connections
+  //
   private $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
   private $dbh;
   private $stmt;
 
-
-
-
-  
+  //
+  // Constructor 
+  //
+  // Make DB connection
+  // 
   public function __construct() {
 
     $options = array(
@@ -23,14 +27,19 @@ class Budgets {
       echo $err->getMessage();
     }
   }
-  
-  
 
-
-
+  //
+  // Add a Budget for a User
+  //
+  // POST REQUEST
+  // 
+  // Budget Data:
+  // $post_data = obj { userId, name, amount } 
+  //
+  // Returns new Budget array with new budget appended
+  //
   public function add() {
 
-    // Format Data
     $post_data = json_decode( file_get_contents("php://input") );
 
     $users = new Users;
@@ -40,30 +49,32 @@ class Budgets {
     $current_budgets = $current_budgets == null ? [] : $current_budgets;
     $new_budgets = $current_budgets + [ ucwords($post_data->name) => $post_data->amount ];
 
-    // If budget already exists in JSON, return an error
     if( array_key_exists( $post_data->name, $current_budgets) ) {
       return ['error' => 'You already have this budget'];
     }
     
-    // Prepare Statment
     $this->stmt = $this->dbh->prepare('UPDATE users SET budgets = :budgets WHERE user_id = :user_id');
     $this->stmt->bindValue(':user_id', $user['user_id']);
     $this->stmt->bindValue(':budgets', json_encode($new_budgets) );
 
-    // Execute
     return $this->stmt->execute() ? $new_budgets : ['error' => 'Failed to execute'];
   }
 
-  
-
-
+  //
+  // Get Monthly Spending Totals for a user in a given month
+  //
+  // GET REQUEST /api/Budgets/getMonthlySpendingTotals/userId/YYYY-MM
+  //
+  // Parse URL to extract YYYY-MM
+  // Get budgets for User and get total spent per month for each budget
+  //
+  // Return an ASSOC array of budget => amount spent
+  //
   public function getMonthlySpendingTotals($userId) {
 
-    // Format Inputs
     $userId = rtrim($userId);
     $userId = filter_var($userId, FILTER_SANITIZE_URL);
 
-    // Check/Filter/Get URL
     if( !isset($_GET['url']) ) throw new Exception('No Url Param');
     $url = rtrim($_GET['url'], " \n\r\t\v\x00/");
     $url = filter_var($url, FILTER_SANITIZE_URL);
@@ -72,59 +83,60 @@ class Budgets {
     $month = isset($url[3]) ? $url[3] : false;
     $month = explode('-', $month);
 
-    // Get list of user budgets
     $budget_totals = [];
     $budgets = $this->get($userId);
 
-    // For each budget, get the total amount spent in $month
     foreach( $budgets as $name => $value ) {
 
-      // Prepare Statment
       $sql ='SELECT SUM(amount) as total FROM transactions WHERE budget = :budget AND YEAR(date) = :year AND MONTH(date) = :month';
       $this->stmt = $this->dbh->prepare($sql);
       $this->stmt->bindValue(':budget', $name);
       $this->stmt->bindValue(':year', $month[0]);
       $this->stmt->bindValue(':month', $month[1]);
 
-      //Execute
       $this->stmt->execute();
 
-      // Transactions in $budget in $month
       $transactions = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
 
       $total = !empty($transactions[0]['total']) ? $transactions[0]['total'] : 0;
       $budget_totals[$name] = $total;
     }
 
-    // Return an ASSOC array of budget => amount spent
     return $budget_totals;
   }
 
-
-
+  //
+  // Get User Budgets
+  // 
+  // GET REQUEST /api/Budgets/get/userId
+  //
+  // Returns budgets Object or Error Array
+  // 
   public function get($userId) {
 
-    // Format Inputs
     $userId = rtrim($userId);
     $userId = filter_var($userId, FILTER_SANITIZE_URL);
 
-    // Get User's budgets
     $users = new Users;
     $user = $users->getUserById($userId);
     if ( isset($user['error']) ) return ['error' => $user['error']];
     $budgets = isset($user['budgets']) ? json_decode( $user['budgets'] ) : null;
 
-    // Return budgets or error
     return $budgets == null ? ['error' => 'You don\'t have any budgets yet'] : $budgets;
   }
 
-
-
-
-
+  //
+  // Edit User Budgets
+  //
+  // POST REQUEST
+  // $post_data = { userId, oldName, newName, newAmount }
+  //
+  // get existing budget list, replace budget[oldName] with budget[newName] => budget[newAmount]
+  //
+  // Return new Budget List or Error array
+  //
   public function edit() {
     
-    // Get/Format Post data
     $post_data = json_decode( file_get_contents("php://input"), true );
     
     [
@@ -138,33 +150,34 @@ class Budgets {
     $newName = ucwords($newName);
     $newAmount = ucwords($newAmount);
     
-    // Get User's budgets
     $users = new Users;
     $user = $users->getUserById($userId);
     $budgets = json_decode( $user['budgets'], true );
 
-    // Replace single budget with new values
     unset($budgets[$oldName]);
     $budgets[$newName] = $newAmount;
 
-    // Prepare PDO
     $this->stmt = $this->dbh->prepare('UPDATE users SET budgets = :budgets WHERE user_id = :user_id');
     $this->stmt->bindValue(':budgets', json_encode($budgets) );
     $this->stmt->bindValue(':user_id', $userId);
 
-    // Execute
     return $this->stmt->execute() ? $budgets : ['error' => 'Error updating DB'];
   }
 
-
-
-
-
-  public function delete($params) {
+  // 
+  // Delete a Users Budget
+  //
+  // POST REQUEST
+  // $post_data = { userId, budgetName }
+  //
+  // Get users budgets, remove $post_data['budgetName']
+  //
+  // Return new budget list or Error Array
+  //
+  public function delete() {
 
     $post_data = json_decode( file_get_contents("php://input"), true );
 
-    // Check/set post inputs
     if( (!isset($post_data['userId'])) || (!isset($post_data['budgetName'])) ) {
       return ['error' => 'Delete requires 2 post inputs (UserId, BudgetName)'];
     }
@@ -172,23 +185,19 @@ class Budgets {
     $userId = $post_data['userId'];
     $budgetToDelete = $post_data['budgetName'] ;
 
-    // Get User Budgets
     $users = new Users;
     $user = $users->getUserById($userId);
     $budgets = json_decode($user['budgets'], true);
     
-    // Check if budget to delete is in budgets and remove
     if( !array_key_exists($budgetToDelete, $budgets) ) {
       return ['error' => 'Cannot delete. Budget does not exist'];
     }
     unset($budgets[$budgetToDelete]);
 
-    // Prepare Statment
     $this->stmt = $this->dbh->prepare('UPDATE users SET budgets = :budgets WHERE user_id = :user_id');
     $this->stmt->bindValue(':user_id', $user['user_id']);
     $this->stmt->bindValue(':budgets', json_encode($budgets) );
 
-    // Execute
     return $this->stmt->execute() ? $budgets : ['error' => 'Failed to execute'];
   }
   

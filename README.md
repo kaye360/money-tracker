@@ -14,6 +14,6 @@ This will be a money tracking app. Lots of plans to come...
 - /src/views -> App pages
 
 # TODO
-- localstorage - auth token
+- make all API returns ASSOC ARRAYS. Some are objects
 
 # Bugs
