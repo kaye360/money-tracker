@@ -1,42 +1,60 @@
+/*
+useBudgets Custom Hook
+Get User Budgets
 
+Arguments
+userId argument is required
+month argument is optional, defaults to false
 
-// How to Use
+Return Values
+Can return [ budgets ], loadBudgets(), or [ error ]
 
-// Get list of budgets
-// Month defaults to false
-// const {budgets, error} = useBudgets({ userId : 1, month : month.asNumber })
+Return Functions
+Use loadBudgets() to rerender component after DB is updated with new Values
 
-// If no Flash is needed, just get the budgets property
-// const budgets = useBudgets({ userId : 1 }).budgets
+Examples
+   Get User budgets:
+   const { budgets } = useBudgets({ userId : 1 }) 
 
-// Update Flash message if needed
-// useEffect( () => { 
-//   if(error) setFlash({ type : 'fail', message : error }) 
-// }, [error, setFlash])
+   Get User budgets in a given month with error variable:
+   const {budgets, budgetsError} = useBudgets({ userId : 1, month : month.asNumber })
 
+   To Update Flash message:
+   useEffect( () => { 
+     if(budgetsError) setFlash() 
+   }, [budgetsError, setFlash])
+*/
 
-
+// Dependencies
 import { useCallback } from "react"
 import { useEffect, useState } from "react"
+
+// Utils
 import { getBudgets, getMontlySpendingTotals } from "../model/budgets.model"
+
+
+
+
 
 export default function useBudgets( { userId = false, month = false } = {} ) {
   
+  // 
+  // Budget State Variables
+  // 
   const [budgets, setBudgets] = useState([])
   const [budgetsError, setBudgetsError] = useState(false)
 
-
+  // 
+  // Load budgets from DB
+  // 
   const loadBudgets = useCallback( async () => {
     try{
       
-      // Check if ID is given
       if(!userId) throw new Error('No User Specified')
 
-      // Get Budget Response
       const budgetRes = await getBudgets({userId : userId})
       if(budgetRes.error) throw new Error(budgetRes.error)
 
-      // If month param is given, get monthly spending totals and append to each budget
       if(month) {
         const spentRes = await(getMontlySpendingTotals({ userId : userId, month : month  }))
         if(spentRes.error) throw new Error(spentRes.error)
@@ -46,26 +64,26 @@ export default function useBudgets( { userId = false, month = false } = {} ) {
         })
       }
 
-      // Set State
       setBudgetsError(false)
       setBudgets(budgetRes)
 
     } catch (error){
 
-      // Catch error and set state
       setBudgetsError (error.message)
 
     }
   }, [month, userId])
 
-  
-  
+  //
+  // Call Loadbudgets on Render
+  //
   useEffect( () => {
     loadBudgets()
   }, [ userId, month, loadBudgets])
 
-
-  
+  //
+  // Return { [budgets], loadBudgets(), [budgetsError] }
+  //
   return { budgets, loadBudgets, budgetsError }
 }
 

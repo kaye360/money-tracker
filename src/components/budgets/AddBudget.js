@@ -21,6 +21,8 @@ export default function AddBudget({ loadBudgets, month = false }) {
     const amount = Number(e.target[1].value)
     const name = e.target[0].value
 
+    console.log({amount})
+
     // Get Response
     try {
       const res = await addBudget({

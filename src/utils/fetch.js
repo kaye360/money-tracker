@@ -1,4 +1,11 @@
+// 
+// Data Fetching Utility functions 
+// 
 
+// 
+// Generate second argument to a POST fetch request
+// Returns obj{ method, headers, data }
+//
 export function postReqOptions(data) {
   
   const postReqOptions = {

@@ -135,7 +135,6 @@ export default function Transaction({
         <input
           type="text"
           name="name"
-          size="1"
           defaultValue={ name }
           form={ transactionId }
           />
@@ -157,7 +156,6 @@ export default function Transaction({
         <input 
           type="number"
           name="amount"
-          size="1"
           defaultValue={ amount }
           form={ transactionId }
         />
