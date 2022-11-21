@@ -50,7 +50,7 @@ export async function getBudgets({ userId }) {
   if(getBudgetsSuccess.error) throw new Error(getBudgetsSuccess.error)
 
   const userBudgets = Object.entries(getBudgetsSuccess).map(budget => {
-    return { 'name' : budget[0], 'amount' : parseInt(budget[1]) }
+    return { 'name' : budget[0], 'amount' : parseFloat(budget[1]) }
   })
 
   return userBudgets.sort( (a,b) => {

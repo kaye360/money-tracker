@@ -11,6 +11,10 @@ import ProgressBar from './ProgressBar'
 
 export default function Budget({ name, amount, spent, loadBudgets, showProgressBar = false , showButtons = true }) {  
   
+  // Fix decimal bug
+  amount = parseFloat((amount).toFixed(2))
+
+
   // Context/Params
   const [ user ] = useContext(UserContext)
   const [ , setFlash ] = useContext(FlashContext)
@@ -146,7 +150,8 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
           
           <input 
             type="number" 
-            name="amount" 
+            name="amount"
+            step="0.01"
             value={ amountInput }
             onChange={ (e) => setAmountInput(e.target.value) }
           />

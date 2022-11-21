@@ -156,6 +156,7 @@ export default function Transaction({
         <input 
           type="number"
           name="amount"
+          step="0.01"
           defaultValue={ amount }
           form={ transactionId }
         />

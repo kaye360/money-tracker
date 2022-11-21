@@ -91,7 +91,7 @@ export default function AddBudget({ loadBudgets, month = false }) {
 
           <label>
             <span className="add-budget-label">Budget Amount:</span>
-            <input type="text" name="budgetAmount" className='add-budget-input'/>
+            <input type="number" name="budgetAmount" step="0.01" className='add-budget-input'/>
           </label>
 
           <input type="submit" value="Add Budget" className='add-budget-submit' />

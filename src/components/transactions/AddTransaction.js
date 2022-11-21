@@ -83,7 +83,7 @@ export default function Base({ setIsNewTransaction, loadTransactions }) {
 
           <label>
             <span className='add-transaction-label'> Amount </span>
-            <input type="text" name="transactionAmount" />
+            <input type="number" name="transactionAmount" step="0.01" />
           </label>
 
           <label>

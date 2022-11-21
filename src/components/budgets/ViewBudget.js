@@ -17,7 +17,7 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
   // Total amount of all Budgets. Number
   function  totalBudgetsAmount(total=0) {
     budgets.forEach( (budget) => total += Number(budget.amount) )
-    return total
+    return parseFloat((total).toFixed(2))
   }
   
     
@@ -38,6 +38,8 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
   }, [user])
 
 
+  //Users Net Income
+  const netIncomeAmount = parseFloat(( incomeAmount - totalBudgetsAmount() ).toFixed(2))
   
   // Handle Income Change Input
   function handleIncomeInput(e) {
@@ -162,7 +164,7 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
             }
           </span>
           <span className='budgets-total-amount'>Total: ${ totalBudgetsAmount() }/month</span>
-          <span className='budgets-total-amount bold'>Net: ${ incomeAmount - totalBudgetsAmount() }/month</span>
+          <span className='budgets-total-amount bold'>Net: ${ netIncomeAmount }/month</span>
         </div>
       </div>
 

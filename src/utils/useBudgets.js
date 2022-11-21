@@ -60,10 +60,9 @@ export default function useBudgets( { userId = false, month = false } = {} ) {
         if(spentRes.error) throw new Error(spentRes.error)
 
         budgetRes.forEach( (budget, index) => {
-          budgetRes[index].spent = spentRes[budget.name] ? parseInt(spentRes[budget.name]) : 0
+          budgetRes[index].spent = spentRes[budget.name] ? parseFloat(spentRes[budget.name]) : 0
         })
       }
-
       setBudgetsError(false)
       setBudgets(budgetRes)
 
