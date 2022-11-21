@@ -17,7 +17,7 @@ export default function SignUp() {
       if(res.error) throw new Error(res.error)
 
       // Success Flash Message
-      setFlash({ type : 'success', message : `You have succesfully signed up as ${e.target[0].value}` })
+      setFlash({ type : 'success', message : `You have succesfully signed up as ${res.username}` }) 
 
     } catch (error) {
       

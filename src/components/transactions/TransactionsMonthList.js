@@ -29,7 +29,7 @@ export default function TransactionsMonthList({ transactions, routePath }) {
       try {
 
         // Get/Check/Set Date Range
-        const dateRange = await getDateRange(user.id)
+        const dateRange = await getDateRange({ userId : user.id})
         if (dateRange.error) throw new Error(dateRange.error)
         setTransactionDateRange(dateRange)
 

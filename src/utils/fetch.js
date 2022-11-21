@@ -16,3 +16,23 @@ export function postReqOptions(data) {
 
   return postReqOptions
 }
+
+// 
+// Get data from DB
+// 
+// Paramters:
+// url is required. URL to fetch data from 
+// fetchOptions is optional. Used for POST requests.
+// 
+// Returns JSON data {}
+// 
+export async function getData({ url, fetchOptions = {} }) {
+
+  const res = await fetch(url, fetchOptions)
+  if(!res.ok) throw new Error(`Error Fetching Data from ${url}`)
+
+  const resJSON = await res.json()
+  if(resJSON.error) throw new Error(resJSON.error)
+
+  return resJSON
+}

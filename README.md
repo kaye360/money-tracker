@@ -15,5 +15,6 @@ This will be a money tracking app. Lots of plans to come...
 
 # TODO
 - make all API returns ASSOC ARRAYS. Some are objects
+- change flash to come in bottom right
 
 # Bugs

@@ -59,7 +59,7 @@ class Users {
 
     $this->stmt = $this->dbh->prepare('INSERT INTO users (username, password) VALUES (:username, :password)');
 
-    return $this->stmt->execute($post_data) ? $post_data : ['error' => 'Error Executing DB Query'];
+    return $this->stmt->execute($post_data) ? ['username' => $post_data['username']] : ['error' => 'Error Executing DB Query'];
   } 
   
   //
