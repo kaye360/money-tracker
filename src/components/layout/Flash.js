@@ -11,7 +11,7 @@ export default function Flash() {
 
   useEffect( () => {
     setTimeout( () => setFlash(false), 5000 )
-  }, [setFlash])
+  }, [setFlash, flash])
 
   return(
     <>
@@ -24,11 +24,12 @@ export default function Flash() {
         position : fixed;
         inset : auto 1rem 1rem auto;
         z-index : 99999;
+
         padding : 1rem;
         width : 100%;
         max-width : 600px;
+
         border : 1px solid ${ type === 'success' ? 'var( --clr-success-dark )' : 'var( --clr-error-dark )' };
-        // background-color : ${ type === 'success' ? 'var(--clr-success-light)' : 'var(--clr-error-light)' };
         background-color : #fff;
         box-shadow : 5px 5px 10px hsl(151, 90%, 4%, 0.2);
 
@@ -50,7 +51,7 @@ export default function Flash() {
         animation : flash-after var(--animation-duration) linear both;
       }
 
-      .flash-close {
+      .flash-close-btn {
         position : absolute;
         inset : 50% 1rem auto auto;
         z-index : 99999;
@@ -89,7 +90,7 @@ export default function Flash() {
           </p>
         }
 
-        <div className='flash-close'>
+        <div className='flash-close-btn'>
           <button onClick={ () => setFlash(false) }>
             <img src={ iconClose }  alt="Close" />
           </button>
