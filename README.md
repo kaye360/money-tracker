@@ -15,6 +15,7 @@ This will be a money tracking app. Lots of plans to come...
 
 # TODO
 - make all API returns ASSOC ARRAYS. Some are objects
-- change flash to come in bottom right
 
 # Bugs
+-  Figure out this: <tr> cannot appear as a child of <table>. (On BudgetsMonthly). Only seems to appear on a refresh
+- When a budget is renamed to and existing budget, it combines them. Need to prevent this

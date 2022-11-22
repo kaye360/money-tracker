@@ -1,30 +1,52 @@
+// 
+// Dashboard Component
+// 
+
+// Dependencies
 import { Style } from 'react-style-tag'
 import { useContext } from 'react'
 import { UserContext } from '../../App'
-import ViewBudget from '../budgets/ViewBudget'
-import ViewTransactions from '../transactions/ViewTransactions'
+
+// Utils
 import useBudgets from '../../utils/useBudgets'
 import useTransactions from '../../utils/useTransactions'
 
+// Components
+import ViewBudget from '../budgets/ViewBudget'
+import ViewTransactions from '../transactions/ViewTransactions'
+
+
+
+
+
 export default function Dashboard() {
 
-
-  // Context
+  // 
+  // Get Contexts
+  // 
   const [ user ] = useContext(UserContext)
 
-
+  // 
+  // Get month as YYYY-DD
+  // 
   let month = new Date()
   month = `${month.getFullYear()}-${month.getMonth() + 1}`
-  // Get Budgets
+
+  // 
+  // Get User Budgets in month
+  // 
   const { budgets } = useBudgets({ userId : user.id, month : month })
   
     
-  
+  // 
   // Get Transactions
+  // 
   const { transactions, loadTransactions } = useTransactions({ userId : user.id })
   
 
 
+
+  
   return(
     <>
     <Style>

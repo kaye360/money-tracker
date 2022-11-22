@@ -1,4 +1,8 @@
 <?php
+/*
+Index.php - the starting point of the API
+*/
+
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: *");

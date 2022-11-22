@@ -1,58 +1,86 @@
+/*
+Single transaction <tr>  
+ 
+Params:
+
+name, budget, amount, date, transactionID
+  -> values return from DB
+
+isNewTransaction
+  -> Used for css flash/fade style for newly added transaction
+
+loadTransactions
+  -> Passed from useTransactions hook
+  -> Loads and sets transactions from database
+  -> can be used to rerender a component after a transaction has been updated
+
+budgets
+  -> Users budgets stored in DB
+*/
+
+// Dependencies
 import { useContext, useState } from 'react'
 import { Style } from 'react-style-tag'
 import { FlashContext, UserContext } from '../../App'
+
+// Utils
 import { deleteTransaction, editTransaction, } from '../../model/transactions.model'
+
+// Assets
 import  iconDelete  from '../../assets/img/icon-delete.svg'
 import  iconEdit  from '../../assets/img/icon-edit.svg'
 import  iconSave  from '../../assets/img/icon-save.svg'
+
+
+
+
 
 export default function Transaction({
   name, budget, amount, date, transactionId,
   isNewTransaction, loadTransactions, budgets }) {
 
-
-  // Get Context
+  // 
+  // Get Contexts
+  // 
   const [ , setFlash ] = useContext(FlashContext)
   const [ user ] = useContext(UserContext)
-
-
+  
+  // 
   // is Edit mode
   // BOOL true/false
+  // 
   const [ isEditMode, setIsEditMode ] = useState(false)
-
-
-
-  // Human readable date
+  
+  // 
+  // Human readable date of current user transaction
   // String
+  // 
   const dateInWords = new Date(date).toDateString().split(' ').slice(1).join(' ')
 
-
-
-  // Handle Delete Transaction
+  //
+  // Delete Transaction Handler
+  //
   async function handleDeleteTransaction(e) {
     e.preventDefault()
 
     try {
 
-      // Get/Check/Set response
       const res = await deleteTransaction({transactionId : transactionId})
       if (res.error) throw new Error(res.error)
       loadTransactions({ userId : user.id })
 
     } catch(error) {
 
-      // Flash error message
       setFlash({ type : 'fail', message : error.message })
     }
   }
 
-
-
-  // Handle Edit Transaction
+  // 
+  // Edit Transaction Handler
+  // 
   async function handleEditTransaction(e) {
     e.preventDefault()
 
-    // Get response
     try {
       const res = await editTransaction({
         date : e.target.elements[0].value,
@@ -62,14 +90,12 @@ export default function Transaction({
         transactionId : transactionId
       })
   
-      // Check response, set state
       if(res.error) throw new Error(res.error``)
       setIsEditMode(!isEditMode)
       loadTransactions({ userId : user.id })
       
     } catch (error) {
-      console.log(error)
-      // Flash error message
+      
       setFlash({ type : 'fail', message : error.message })
 
     }

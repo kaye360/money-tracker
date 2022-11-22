@@ -1,55 +1,53 @@
+// 
+// Budgets Model
+// All functions that require GET or POST fetches from DB relating to Budgets
+// 
+
+// Config
 import { BudgetAPIURL } from '../config/config'
-import { postReqOptions } from '../utils/fetch'
 
+// Utils
+import { postReqOptions, getData } from '../utils/fetch'
 
+// 
+// Add a Users budget
+// 
+// Return list of budgets, key/value { budgetName : amount }
+// 
 export async function addBudget({ name, amount, userId }) {
 
-  // Check all inputs filled out
   if(!name || !amount) throw new Error('Please fill out all fields')
+  // TODO Check isNan
+  // TODO Check if disallowd characters
 
-  // Check isNan
-
-  // Check if disallowded characters, amount is a number
-
-  // fetch
-  const addBudgetRes = await fetch(`${BudgetAPIURL}/add`, postReqOptions({name, amount, userId}))
-  if(!addBudgetRes.ok) throw new Error('Error adding budget')
-
-  // return response json
-  const addBudgetSuccess = await addBudgetRes.json()
-  if(addBudgetSuccess.error) throw new Error(addBudgetSuccess.error)
-  return addBudgetSuccess
+  return  getData({
+    url : `${BudgetAPIURL}/add`,
+    fetchOptions : postReqOptions({name, amount, userId})
+  })
 } 
 
-
-
-
-
+// 
+// Edit a User Budget
+// 
+// Return updated list of budgets { budgetName : amount }
+// 
 export async function editBudget({ userId, newName, newAmount, oldName }) {
 
-  const editBudgetRes = await fetch(`${BudgetAPIURL}/edit`, postReqOptions({userId, newName, newAmount, oldName}))
-  if(!editBudgetRes.ok) throw new Error('Error editing budget')
-
-  const editBudgetSuccess = await editBudgetRes.json()
-  if(editBudgetSuccess.error) throw new Error(editBudgetSuccess.error)
-
-  return editBudgetSuccess
+  return getData({
+    url : `${BudgetAPIURL}/edit`,
+    fetchOptions : postReqOptions({userId, newName, newAmount, oldName})
+  })
 } 
 
-
-
-
-
+// 
+// Get list of users budgets
+//
+// Return array sorted by $ amount, hi to lo [ { name, amount } ]
+// 
 export async function getBudgets({ userId }) {
 
-  // Fetch user budgets
-  const getBudgetsRes = await fetch(`${BudgetAPIURL}/get/${userId}`)
-  if(!getBudgetsRes.ok) throw new Error('Error fetching User Budgets')
-
-  const getBudgetsSuccess = await getBudgetsRes.json()
-  if(getBudgetsSuccess.error) throw new Error(getBudgetsSuccess.error)
-
-  const userBudgets = Object.entries(getBudgetsSuccess).map(budget => {
+  const res = await getData({ url : `${BudgetAPIURL}/get/${userId}` })
+  const userBudgets = Object.entries(res).map(budget => {
     return { 'name' : budget[0], 'amount' : parseFloat(budget[1]) }
   })
 
@@ -59,36 +57,29 @@ export async function getBudgets({ userId }) {
   })
 } 
 
-
-
-
-
+// 
+// Get Monthly spending totals for each of Users budgets
+// 
+// Returns list of budgets as obj { budgetName : totalSpent }
+// 
 export async function getMontlySpendingTotals({ userId, month }) {
   
-  // Fetch user budgets
-  const getTotalsRes = await fetch(`${BudgetAPIURL}/getMonthlySpendingTotals/${userId}/${month}`)
-  if(!getTotalsRes.ok) throw new Error('Error fetching User Budgets')
-
-  const getTotalsSuccess = await getTotalsRes.json()
-  if(getTotalsSuccess.error) throw new Error(getTotalsSuccess.error)
-
-  return getTotalsSuccess
+  return getData({
+    url : `${BudgetAPIURL}/getMonthlySpendingTotals/${userId}/${month}`
+  })
 } 
 
-
-
-
-
+// 
+// Delete a Users budget
+// 
+// Returns list of updated budgets as obj { budgetName, totalSpent }
+// 
 export async function deleteBudget({ userId, budgetName }) {
 
-  // Fetch delete budget
-  const deleteBudgetRes = await fetch(`${BudgetAPIURL}/delete/`, postReqOptions({ userId, budgetName }))
-  if(!deleteBudgetRes.ok) throw new Error('Error fetching Delete function')
-
-  const deleteBudgetSuccess = await deleteBudgetRes.json()
-  if(deleteBudgetSuccess.error) throw new Error(deleteBudgetSuccess.error)
-
-  return deleteBudgetSuccess
+  return getData({
+    url : `${BudgetAPIURL}/delete/`,
+    fetchOptions : postReqOptions({ userId, budgetName })
+  })
 } 
 
 

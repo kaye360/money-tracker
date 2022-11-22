@@ -1,34 +1,67 @@
+/*
+View List of User Budgets Component
+
+Params:
+
+budgets {[]}, loadbudgets ():
+  -> from useBudgets hook
+  -> budgets is list of users budgets
+  -> loadbudgets gets budgets from DB. Used after DB is changed
+
+showProgressBar BOOL
+  -> Show the amount spent in the current month in the form of a progress bar
+
+showButtons BOOL  
+  -> Whether or not to show edit/delete budget buttons
+*/
+
+// Depencies
 import { Style } from 'react-style-tag'
 import { useEffect, useState, useContext } from 'react'
-import { getUserIncome, setUserIncome } from '../../model/users.model'
 import { FlashContext, UserContext } from '../../App'
+
+// Utils
+import { getUserIncome, setUserIncome } from '../../model/users.model'
+
+// Components
 import Budget from './Budget'
+
+// Assets
 import iconEditSmall from '../../assets/img/icon-edit-small.svg'
 import iconSave from '../../assets/img/icon-save.svg'
 
+
+
+
+
 export default function ViewBudget({ budgets, loadBudgets, showProgressBar = true , showButtons = true }) {
 
-
-  // User context
+  // 
+  // Gets contexts
+  // 
   const [ user ] = useContext(UserContext)
   const [ , setFlash ] = useContext(FlashContext)
 
-  
-  // Total amount of all Budgets. Number
+  // 
+  // Total $ amount of all Budgets combined. Float
+  // 
   function  totalBudgetsAmount(total=0) {
     budgets.forEach( (budget) => total += Number(budget.amount) )
     return parseFloat((total).toFixed(2))
   }
   
-    
+  // 
   // Users Monthly income
-  const [incomeAmount, setIncomeAmount] = useState(10)
+  // 
+  const [incomeAmount, setIncomeAmount] = useState(0)
 
+  // 
+  // Load/set users monthly income
+  // 
   useEffect( () => {
     ( async () => {
       try {
 
-        // fetch/check response, set income state
         const res = await getUserIncome({ userId : user.id })
         if (res.error) throw new Error(res.error)
         setIncomeAmount(res.income)
@@ -37,31 +70,33 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
     })()
   }, [user])
 
-
-  //Users Net Income
+  // 
+  // Users Net Income
+  // 
   const netIncomeAmount = parseFloat(( incomeAmount - totalBudgetsAmount() ).toFixed(2))
   
-  // Handle Income Change Input
+  // 
+  // Handle Income Change of Input/State
+  // 
   function handleIncomeInput(e) {
     setIncomeAmount(e.target.value)
   }
 
-
-
+  // 
   // Income form is editable or not
+  // 
   const [incomeIsEditable, setIncomeIsEditable] = useState(false) 
 
-
-
+  // 
   // Handle Income Change Form
+  // 
   async function handleChangeIncome(e) {
     e.preventDefault()
 
     try {
 
-      const res = await setUserIncome({ userId : user.id, amount : incomeAmount })
+      setUserIncome({ userId : user.id, amount : incomeAmount })
       setIncomeIsEditable(false)
-      console.log(res)
       
     } catch (error) {
       
@@ -163,7 +198,7 @@ export default function ViewBudget({ budgets, loadBudgets, showProgressBar = tru
                   </>
             }
           </span>
-          <span className='budgets-total-amount'>Total: ${ totalBudgetsAmount() }/month</span>
+          <span className='budgets-total-amount'>Expenses: ${ totalBudgetsAmount() }/month</span>
           <span className='budgets-total-amount bold'>Net: ${ netIncomeAmount }/month</span>
         </div>
       </div>

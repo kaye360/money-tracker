@@ -1,9 +1,19 @@
+// 
+// Layout Sidebar Component
+// 
+
+// Dependencies
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Style } from 'react-style-tag'
-import Logo from './Logo'
 import { UserContext } from '../../App'
 
+// Utils
+import { endLoginSession } from '../../utils/localStorage'
+import { logout } from '../../model/users.model'
+
+// Assets
+import Logo from './Logo'
 import sidebarIconBudgets from '../../assets/img/sidebar-icon-budgets.svg'
 import sidebarIconTransactions from '../../assets/img/sidebar-icon-transactions.svg'
 import sidebarIconSavings from '../../assets/img/sidebar-icon-savings.svg'
@@ -11,21 +21,32 @@ import sidebarIconForecast from '../../assets/img/sidebar-icon-forecast.svg'
 import sidebarIconAbout from '../../assets/img/sidebar-icon-about.svg'
 import sidebarIconUser from '../../assets/img/sidebar-icon-user.svg'
 import sidebarIconSignOut from '../../assets/img/sidebar-icon-sign-out.svg'
-import { endLoginSession } from '../../utils/localStorage'
-import { logout } from '../../model/users.model'
+
+
+
+
 
 export default function SideBar() {
 
+  //
+  //  Get contexts
+  //
   const [user, setUser] = useContext(UserContext)
 
-
+  // 
   // Logout handler
+  // Change State, Clear login token from localstorage and DB
+  // 
   function handleLogout() {
     setUser(false)
     endLoginSession()
     logout(user.name)
   }
 
+
+
+
+  
   return(
     <>
     <Style>

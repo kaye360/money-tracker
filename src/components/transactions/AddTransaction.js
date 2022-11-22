@@ -1,28 +1,50 @@
+/*
+Add a new Transaction form 
+
+Params:
+
+setIsNewTransaction
+  -> Used to set the state for css flash/fade effect for newly added transaction
+  -> passed down from <Transactions />
+
+loadTransactions
+  -> from useTransactions hook. Used to get updated transaction list from DB
+*/
+
+// Dependencies
 import { Style } from 'react-style-tag'
 import { useContext } from 'react'
 import { FlashContext, UserContext } from '../../App'
+
+// Utils
 import { addTransaction } from '../../model/transactions.model'
 import useBudgets from '../../utils/useBudgets'
 
+
+
+
+
 export default function Base({ setIsNewTransaction, loadTransactions }) {
 
-  // Get Context
+  // 
+  // Get Contexts
+  // 
   const user = useContext(UserContext)[0]
   const setFlash = useContext(FlashContext)[1]
 
-
+  //
   // Get Budgets
-  const budgets = useBudgets({ userId : user.id }).budgets
+  //
+  const { budgets } = useBudgets({ userId : user.id })
   
-
-
+  //
   // Add Transaction handler
+  //
   async function handleAddTransaction(e) {
     e.preventDefault()
 
     try {
 
-      // Fetch Response
       const res = await addTransaction({
         name : e.target[0].value,
         amount : e.target[1].value,
@@ -30,17 +52,14 @@ export default function Base({ setIsNewTransaction, loadTransactions }) {
         userId : user.id
       })
 
-      // Check/Set user transactions
       if (res.error) throw new Error(res.error)
       loadTransactions({ userId : user.id })
 
-      // Flash New Transaction
       setIsNewTransaction(res.transaction_id)
       setTimeout( () => { setIsNewTransaction(false) }, 1000)
       
     } catch (error) {
 
-      // Flash error message
       setFlash({ type : 'fail', message : error.message })
       
     }

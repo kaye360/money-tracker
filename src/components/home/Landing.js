@@ -1,8 +1,19 @@
+// 
+// Landing Page Component
+// 
+
+// Dependencies
 import { Style } from 'react-style-tag'
 import { Link } from 'react-router-dom'
+
+// Assets
 import heroImg from '../../assets/img/hero-img.png'
 import landingBg from '../../assets/img/bg-gradient.svg'
 import { bg } from '../../assets/css/css-variables'
+
+
+
+
 
 export default function Landing() {
 

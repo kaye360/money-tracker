@@ -1,4 +1,13 @@
+// 
+// Layout Footer component
+// 
+
+// Dependencies
 import { Style } from 'react-style-tag'
+
+
+
+
 
 export default function Footer() {
 

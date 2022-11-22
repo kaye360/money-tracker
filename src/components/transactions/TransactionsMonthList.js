@@ -1,61 +1,80 @@
+/* 
+List of months that the user has made transactions in
+Used for navigating between mont Views
+
+Paramters:
+
+transactions
+  -> List of users transactions
+
+routePath
+  -> The view the user is navigating thru. 
+  -> Ex: budgets/2022-11 or transactions/2022-04
+*/
+
+// Dependencies
+import { useState, useEffect, useContext } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import moment from 'moment/moment'
-import { Link, useParams } from 'react-router-dom'
-import { useState, useEffect, useContext } from 'react'
 import { UserContext, FlashContext } from '../../App'
 
+// Utils
 import { getDateRange } from '../../model/transactions.model'
 import { parseMonth } from '../../utils/date'
 
 
 
+
+
 export default function TransactionsMonthList({ transactions, routePath }) {
 
-  // Get context
-  const user = useContext(UserContext)[0]
-  const setFlash = useContext(FlashContext)[1]
+  // 
+  // Get contexts/params
+  // 
+  const [ user ] = useContext(UserContext)
+  const [ ,setFlash ] = useContext(FlashContext)
   const currentMonth = parseMonth( useParams().month )
 
-
-  // Date Range
+  // 
+  // Date Range for all user transactions
   // object { minDate, maxDate } or { error }
+  // 
   const [transactionDateRange, setTransactionDateRange] = useState({min : null, max : null})
-  
 
-
+  //
   // load Date Range from DB or Flash error
+  //
   useEffect( () => {
     ( async () => {
       try {
 
-        // Get/Check/Set Date Range
         const dateRange = await getDateRange({ userId : user.id})
         if (dateRange.error) throw new Error(dateRange.error)
         setTransactionDateRange(dateRange)
 
       } catch (error) {
 
-          // Flash error message
           setFlash({ type : 'fail', message : error.message })
 
       }
     })()
   }, [setFlash, user.id, transactions])
 
-
-
+  // 
   // transaction month list
-  // array
+  // array of dates ex :("2022-11-09")
+  //
   const [transactionMonthList, setTransactionMonthList] = useState([])
 
-
-
-  // load transaction month list 
+  //
+  // Calculate transaction month list from users transactions
+  //
   useEffect( () => {
+
     if(!transactionDateRange.min || !transactionDateRange.max) return
 
     let startDate = moment(transactionDateRange.min)
-    // let endDate = moment(transactionDateRange.max).add(1, 'M')
     let endDate = moment(transactionDateRange.max)
     let dateList = []
 
@@ -63,8 +82,11 @@ export default function TransactionsMonthList({ transactions, routePath }) {
       dateList.push(startDate.format("YYYY-MM-DD"))
       startDate.add(1, 'month')
     }
+
     setTransactionMonthList(dateList.reverse())
   }, [transactionDateRange.min, transactionDateRange.max])
+
+
 
 
 

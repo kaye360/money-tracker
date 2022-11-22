@@ -1,27 +1,45 @@
+// 
+// User Sign Up Form Component
+// 
+
+// Dependencies
 import { useContext } from 'react'
 import { Style } from 'react-style-tag'
 import { FlashContext } from '../../App'
+
+// Utils
 import { signUp } from '../../model/users.model'
+
+
+
+
 
 export default function SignUp() {
 
-  const setFlash = useContext(FlashContext)[1]
+  // 
+  // Get contexts
+  // 
+  const [ ,setFlash ] = useContext(FlashContext)
 
+  // 
+  // Sign up handler
+  // 
   async function handleSignUp(e) {
     e.preventDefault()
 
     try{
 
-      // Sign up Response
-      const res = await signUp({ username : e.target[0].value, password : e.target[1].value, confirmPassword : e.target[2].value })   
+      const res = await signUp({ 
+        username : e.target[0].value, 
+        password : e.target[1].value, 
+        confirmPassword : e.target[2].value 
+      })   
       if(res.error) throw new Error(res.error)
 
-      // Success Flash Message
       setFlash({ type : 'success', message : `You have succesfully signed up as ${res.username}` }) 
 
     } catch (error) {
       
-      // Error Flash Message
       setFlash({ type : 'fail', message : error.message })
     }
   }

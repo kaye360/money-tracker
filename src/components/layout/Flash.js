@@ -1,18 +1,43 @@
-import { Style } from 'react-style-tag'
-import { Link } from 'react-router-dom'
+// 
+// Flash Message Component
+// Used to send error or success messages to the user in a small modal
+// 
+
+// Dependencies
 import { useContext, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { Style } from 'react-style-tag'
 import { FlashContext } from '../../App'
+
+// Assets
 import iconClose from '../../assets/img/icon-close.svg'
 
-export default function Flash() {
 
+
+
+
+export default function Flash() {
+  
+  // 
+  // Get flash
+  // 
   const [flash, setFlash] = useContext(FlashContext)
   const { type, message, link, linkText } = flash
 
+  // 
+  // Run Flash
+  // 
   useEffect( () => {
-    setTimeout( () => setFlash(false), 5000 )
-  }, [setFlash, flash])
 
+    const flashTimeout = setTimeout( () => setFlash(false), 5000 )
+    return () => { clearTimeout(flashTimeout) }
+    
+  }, [setFlash])
+
+
+
+
+  
   return(
     <>
     <Style>

@@ -32,6 +32,7 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
   // Handle Delete
   async function handleDeleteBudget(e) {
     e.preventDefault()
+    console.log(nameInput)
 
     try {
 
@@ -45,7 +46,7 @@ export default function Budget({ name, amount, spent, loadBudgets, showProgressB
       : loadBudgets({ userId : user.id })
 
       // Flash Success
-      setFlash({type : 'success', message : `Succesfully deleted ${e.target.id}`})
+      setFlash({type : 'success', message : `Succesfully deleted ${nameInput}`})
 
     } catch (error) {
 

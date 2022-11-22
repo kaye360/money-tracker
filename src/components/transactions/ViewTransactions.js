@@ -1,6 +1,30 @@
+/*
+View list of Users Transactions
+
+REQUIRED Paramaters passed through:
+
+loadTransactions
+  -> from useTransactions hook. Used to get updated transaction list from DB
+
+isNewTransaction
+  -> used to apply a css flash/fade effect on a newly added transition
+
+transactions
+  -> from useTransactions hook. List of users Transactions
+  
+budgets
+  -> fron useBudgets hook. List of users Transactions
+*/
+
+// Dependencies
 import React from 'react'
 import { Style } from 'react-style-tag'
+
+// Components
 import Transaction from './Transaction'
+
+
+
 
 
 export default function ViewTransactions({ loadTransactions, isNewTransaction, transactions, budgets, maxCount = false }) {
