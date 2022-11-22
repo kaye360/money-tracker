@@ -17,29 +17,25 @@ export default function Flash() {
     <>
     <Style>
     {`
-      .flash-wrapper {
-        position : fixed;
-        inset : 0 0 50% 0;
-        z-index : 9999;
-
-        display : grid;
-        place-items : center;
-      }
 
       .flash {
-        --animation-duration : 4s;
+        --animation-duration : 5s;
 
-        position : relative;
+        position : fixed;
+        inset : auto 1rem 1rem auto;
         z-index : 99999;
         padding : 1rem;
         width : 100%;
         max-width : 600px;
-        border : 1px solid #aaa;
-        background-color : ${ type === 'success' ? 'var(--clr-success-light)' : 'var(--clr-error-light)' };
+        border : 1px solid ${ type === 'success' ? 'var( --clr-success-dark )' : 'var( --clr-error-dark )' };
+        // background-color : ${ type === 'success' ? 'var(--clr-success-light)' : 'var(--clr-error-light)' };
+        background-color : #fff;
+        box-shadow : 5px 5px 10px hsl(151, 90%, 4%, 0.2);
 
         animation : flash var(--animation-duration) ease-in-out both;
       }
 
+      // Timeout Bar
       .flash::after {
         content : '';
         position : absolute;
@@ -62,15 +58,16 @@ export default function Flash() {
       }
   
       @keyframes flash {
-        from { transform : translateY(-1000px); }
-        10% { transform : translateY(100px); }
-        15% { transform : translateY(0); }
+        from { transform : translateX( calc(100% + 1rem) ); }
+        10% { transform : translateX(-25px); }
+        15% { transform : translateX(0); }
         80% { opacity : 1; }
-        to { transform : translateY(0); opacity : 0; }
+        to { opacity : 0; }
       }
 
       @keyframes flash-after {
         from { width : 0%; }
+        80% { width : 100%; }
         to { width : 100%; }
       }
 
@@ -78,7 +75,8 @@ export default function Flash() {
     `}
     </Style>
     
-    <div className='flash-wrapper'>
+    {
+    flash &&
       <div className='flash'>
         <p>
           { message }
@@ -98,7 +96,7 @@ export default function Flash() {
         </div>
 
       </div>
-    </div>
+    }
     </>
   )
 }

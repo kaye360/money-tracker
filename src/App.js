@@ -88,7 +88,7 @@ function App() {
   // Displays Temporary Success or Error messages
   // Obj {type, message, link, linkText} or False
   //
-  const [flash, setFlash] = useState(false)
+  const [flash, setFlash] = useState({type : 'fail', message : 'asdkjfasdfhjk'})
 
   //
   // Set the document title
