@@ -118,6 +118,7 @@ export default function BudgetsMonthly() {
             <h3>UnBudgeted Transactions This Month</h3>
 
             <table className='budgets-monthly-transactions-table'>
+              <tbody>
               {
                 transactionsWithoutBudget.map( (transaction, index) => {
                   return( 
@@ -135,6 +136,7 @@ export default function BudgetsMonthly() {
                   )
                 } )
               }
+              </tbody>
             </table>
           </div>
       }

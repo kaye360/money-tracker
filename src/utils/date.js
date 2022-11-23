@@ -2,6 +2,8 @@
 // Date/Time utility functions 
 //
 
+import moment from "moment/moment"
+
 //
 // Parse Date function
 // Data a datetime string and convert it to YYYY-MM or English words
@@ -18,3 +20,22 @@ export function parseMonth(month='2022-11') {
   return { asNumber : month, asWords : monthInWords }
   
 }
+
+// 
+// Generate list of days
+// 
+// Returns list of days as array
+// 
+export function getUpcomingDaysAsWords ({ amountOfDays = 0 } = {}) {
+
+  const days = []
+  const dateStart = moment()
+  const dateEnd = moment().add(amountOfDays, 'days')
+
+  while (dateEnd.diff(dateStart, 'days') > 0) {
+   days.push(dateStart.format('MMMM D'))
+   dateStart.add(1, 'days')
+  }
+
+  return days
+ }

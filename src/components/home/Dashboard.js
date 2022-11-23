@@ -14,6 +14,7 @@ import useTransactions from '../../utils/useTransactions'
 // Components
 import ViewBudget from '../budgets/ViewBudget'
 import ViewTransactions from '../transactions/ViewTransactions'
+import ViewForecast from '../forecast/ViewForecast'
 
 
 
@@ -83,6 +84,15 @@ export default function Dashboard() {
         userId={ user.id }
         showButtons={ false }
       />
+
+      <div>
+
+        <h2>1 Week Forecast</h2>
+        <ViewForecast amountOfDays={ 7 } />
+
+      </div>
+
+      <div></div>
       
       <ViewTransactions
         loadTransactions={ loadTransactions }
@@ -92,7 +102,6 @@ export default function Dashboard() {
         maxCount="7"
       />
 
-      
       </div>
     </div>
     </>

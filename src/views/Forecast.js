@@ -5,7 +5,8 @@
 // Dependencies
 import { Style } from 'react-style-tag'
 
-
+// Components
+import ViewForecast from '../components/forecast/ViewForecast'
 
 
 
@@ -19,13 +20,14 @@ export default function Forecast() {
     <>
     <Style>
     {`
+
     `}
     </Style>
     
     <div>
       <h1>Forecast</h1>
     
-      <p className='my2'>Coming soon in the next version!</p> 
+      <ViewForecast />
 
     </div>
     </>
