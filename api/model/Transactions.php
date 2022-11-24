@@ -159,8 +159,7 @@ class Transactions {
   //
   public function getAll($userId) {
 
-    $userId = rtrim($userId);
-    $userId = filter_var($userId, FILTER_SANITIZE_URL);
+    $userId = trim($userId);
 
     $sql = 'SELECT * FROM transactions WHERE user_id = :user_id ORDER BY date DESC';
     $this->stmt = $this->dbh->prepare($sql);
@@ -184,8 +183,7 @@ class Transactions {
   //
   public function getOne($transaction_id) {
 
-    $transaction_id = rtrim($transaction_id);
-    $transaction_id = filter_var($transaction_id, FILTER_SANITIZE_URL);
+    $transaction_id = trim($transaction_id);
 
     $this->stmt = $this->dbh->prepare('SELECT * FROM transactions WHERE transaction_id = :transaction_id');
     $this->stmt->bindValue(':transaction_id', $transaction_id);
@@ -208,8 +206,7 @@ class Transactions {
   //
   public function getDateRange($user_id) {
     
-    $user_id = rtrim($user_id);
-    $user_id = filter_var($user_id, FILTER_SANITIZE_URL);
+    $user_id = trim($user_id);
     
     $sql = 'SELECT MIN(date) AS min, MAX(date) AS max FROM transactions WHERE user_id = :user_id';
     $this->stmt = $this->dbh->prepare($sql);

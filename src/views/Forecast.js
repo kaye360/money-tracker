@@ -3,17 +3,24 @@
 // 
 
 // Dependencies
+import { useContext } from 'react'
 import { Style } from 'react-style-tag'
-import AddForecastEntry from '../components/forecast/AddForecastEntry'
+import { UserContext } from '../App'
+
+// Cusomt Hooks
+import useForecast from '../utils/useForecast'
 
 // Components
 import ViewForecast from '../components/forecast/ListForecastEntries'
+import AddForecastEntry from '../components/forecast/AddForecastEntry'
 
 
 
 export default function Forecast() {
 
+  const [ user ] = useContext(UserContext)
 
+  const { forecastEntries, loadForecastEntries } = useForecast({ userId : user.id })
 
 
 
@@ -28,9 +35,13 @@ export default function Forecast() {
     <div>
       <h1>Forecast</h1>
 
-      <AddForecastEntry />
+      <AddForecastEntry
+        loadForecastEntries={ loadForecastEntries }
+      />
     
-      <ViewForecast />
+      <ViewForecast
+        forecastEntries={ forecastEntries }
+      />
 
     </div>
     </>

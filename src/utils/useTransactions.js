@@ -44,7 +44,7 @@ export default function useTransactions({ userId = false, month = false } = {} )
   const [transactionsError, setTransactionsError] = useState(false)
 
   // 
-  // Load Transactions from DB
+  // Load Transactions from DB function
   // 
   async function loadTransactions({ userId, month }) {
     try {

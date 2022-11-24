@@ -10,9 +10,10 @@ import { getUpcomingDaysAsWords } from '../../utils/date'
 
 
 
-export default function ListForecastEntries({ amountOfDays = 30 }) {
+export default function ListForecastEntries({ amountOfDays = 30, forecastEntries }) {
 
-  const days = getUpcomingDaysAsWords({ amountOfDays : amountOfDays })
+  const days = getUpcomingDaysAsWords({ amountOfDays })
+
 
   return(
     <>
@@ -31,9 +32,29 @@ export default function ListForecastEntries({ amountOfDays = 30 }) {
     <div className='forecast-days-wrapper'>
       {
         days.map( (day) =>{
+          
+          const forecastOnCurrentDay = forecastEntries.filter( entry => {
+
+            console.log(entry.starting_date)
+            
+            const entryToDate = new Date(entry.starting_date).toString().split(' ').splice(1,3).join(' ')
+            return entryToDate === day && entry
+
+          })
+
           return (
             <div className='forecast-single-day' key={ day }>
-            {day} 
+            {day} <br />
+            {
+            forecastOnCurrentDay && 
+              forecastOnCurrentDay.map( entry => {
+                return( 
+                <div key={entry.forecast_id}>
+                  {entry.name}: {entry.amount} {entry.type}
+                </div>
+              )})
+            } <br />
+
           </div>
           )
         })

@@ -70,4 +70,33 @@ class Forecast {
       : ['error' => 'Error adding entry to DB'];
   }
 
+  // 
+  // Get Users forecast entries
+  // 
+  // GET REQUEST  
+  // /api/Forecast/get/userId
+  // 
+  // return users forecasts (ASSOC ARRAY) or error array
+  // 
+  public function get($userId) {
+
+   $userId = trim($userId);
+
+   $this->stmt = $this->dbh->prepare('SELECT * FROM forecast WHERE user_id = :user_id ');
+   $this->stmt->bindValue(':user_id', $userId);
+
+   if ($this->stmt->execute()) {
+
+    $forecast = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return count($forecast) != 0
+      ? $forecast
+      : ['error' => 'No Forecast entries found'];
+
+   } else {
+    return ['error' => 'Error getting forecast entries'];
+   }
+
+  }
+
 }

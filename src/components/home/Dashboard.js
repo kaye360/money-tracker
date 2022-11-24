@@ -15,6 +15,7 @@ import useTransactions from '../../utils/useTransactions'
 import ViewBudget from '../budgets/ViewBudget'
 import ViewTransactions from '../transactions/ViewTransactions'
 import ViewForecast from '../forecast/ListForecastEntries'
+import useForecast from '../../utils/useForecast'
 
 
 
@@ -44,8 +45,10 @@ export default function Dashboard() {
   // 
   const { transactions, loadTransactions } = useTransactions({ userId : user.id })
   
-
-
+  // 
+  // Get Forecast Entries
+  // 
+  const { forecastEntries } = useForecast({ userId : user.id })
 
   
   return(
@@ -88,7 +91,10 @@ export default function Dashboard() {
       <div>
 
         <h2>1 Week Forecast</h2>
-        <ViewForecast amountOfDays={ 7 } />
+        <ViewForecast 
+          amountOfDays={ 7 }
+          forecastEntries={ forecastEntries }
+        />
 
       </div>
 

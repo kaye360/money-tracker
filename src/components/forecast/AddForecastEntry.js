@@ -6,7 +6,6 @@
 import { useState, useContext } from 'react'
 import { Style } from 'react-style-tag'
 import { UserContext, FlashContext } from '../../App'
-import { parseMonth } from '../../utils/date'
 
 // Utils
 import { addForecastEntry } from '../../model/forecast.model'
@@ -15,10 +14,10 @@ import { addForecastEntry } from '../../model/forecast.model'
 
 
 
-export default function AddForecastEntry() {
+export default function AddForecastEntry({ loadForecastEntries }) {
 
   // 
-  // Get Contexts
+  // Get Contexts/Hooks
   // 
   const [user] = useContext(UserContext)
   const [ , setFlash] = useContext(FlashContext)
@@ -44,6 +43,7 @@ export default function AddForecastEntry() {
       if(res.error) throw new Error(res.error)
 
       setFlash({ type : 'success', message : `${res.name} added successfully` })
+      loadForecastEntries({ userId : user.id })
 
     } catch(error) {
       setFlash({
@@ -78,7 +78,6 @@ export default function AddForecastEntry() {
     
     <form onSubmit={ handleFormSubmit }>
     <div className='add-forecast-entry-form'>
-      {date}
       <label>
         Name:
         <input 

@@ -33,7 +33,7 @@ export function getUpcomingDaysAsWords ({ amountOfDays = 0 } = {}) {
   const dateEnd = moment().add(amountOfDays, 'days')
 
   while (dateEnd.diff(dateStart, 'days') > 0) {
-   days.push(dateStart.format('MMMM D'))
+   days.push(dateStart.format('MMM D YYYY'))
    dateStart.add(1, 'days')
   }
 

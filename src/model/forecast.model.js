@@ -27,3 +27,17 @@ export async function addForecastEntry({ name, amount, type, repeat, date, userI
     fetchOptions : postReqOptions({ name, amount, type, repeat, date, userId })
   })
 }
+
+// 
+// Get Users Forecast Entries
+// 
+// Return list of users forecast entries as array of obj 
+// [{name, amount, type, repeat_amount, starting_date, forecast_id}]
+// 
+export async function getForecast({ userId }) {
+
+  return getData({
+    url : `${ForecastAPIURL}/get/${userId}`
+  })
+
+}
