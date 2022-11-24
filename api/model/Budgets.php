@@ -3,7 +3,7 @@
 class Budgets {
 
   //
-  // DB connections
+  // DB connection vars
   //
   private $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
   private $dbh;

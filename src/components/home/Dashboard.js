@@ -14,7 +14,7 @@ import useTransactions from '../../utils/useTransactions'
 // Components
 import ViewBudget from '../budgets/ViewBudget'
 import ViewTransactions from '../transactions/ViewTransactions'
-import ViewForecast from '../forecast/ViewForecast'
+import ViewForecast from '../forecast/ListForecastEntries'
 
 
 

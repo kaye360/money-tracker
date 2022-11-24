@@ -10,7 +10,7 @@ import { getUpcomingDaysAsWords } from '../../utils/date'
 
 
 
-export default function ViewForecast({ amountOfDays = 30 }) {
+export default function ListForecastEntries({ amountOfDays = 30 }) {
 
   const days = getUpcomingDaysAsWords({ amountOfDays : amountOfDays })
 

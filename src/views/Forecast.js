@@ -4,9 +4,10 @@
 
 // Dependencies
 import { Style } from 'react-style-tag'
+import AddForecastEntry from '../components/forecast/AddForecastEntry'
 
 // Components
-import ViewForecast from '../components/forecast/ViewForecast'
+import ViewForecast from '../components/forecast/ListForecastEntries'
 
 
 
@@ -26,6 +27,8 @@ export default function Forecast() {
     
     <div>
       <h1>Forecast</h1>
+
+      <AddForecastEntry />
     
       <ViewForecast />
 

@@ -13,11 +13,9 @@ require_once './config/config.php';
 
 require_once './controller.php';
 
-require_once './model/Users.php';
-require_once './model/Transactions.php';
-require_once './model/Budgets.php';
-require_once './model/Savings.php';
-
+spl_autoload_register( function($class) {
+  require_once './model/' . $class . '.php';
+});
 
 
 try{

@@ -15,6 +15,9 @@ This will be a money tracking app. Lots of plans to come...
 
 # TODO
 - make all API returns ASSOC ARRAYS for consistency. Some are objects
+- Change ViewBudgets and ViewTransactions as ListBudgets and ListTransactions
+- "" make headings separate components
+- "" simplify props passed thru. Call custom hooks where needed instead of passing thru
 
 # Bugs
 - When a budget is renamed to and existing budget, it combines them. Need to prevent this
