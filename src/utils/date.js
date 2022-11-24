@@ -39,3 +39,36 @@ export function getUpcomingDaysAsWords ({ amountOfDays = 0 } = {}) {
 
   return days
  }
+
+// 
+// Check if 2 dates fall on the same weekday
+// 
+export function isSameWeeklyDay({ currentDay, compareDay }) {
+
+  currentDay = moment(currentDay).format('ddd')
+  compareDay = moment(compareDay).format('ddd')
+  return currentDay === compareDay
+}
+
+// 
+// Check if 2 dates fall on same every other weekday
+// 
+export function isSameBiWeeklyDay({ currentDay, compareDay, startDay }) {
+  
+  currentDay = moment(currentDay).format('MMM D YYYY')
+  compareDay = moment(compareDay).format('MMM D YYYY')
+  startDay = moment(startDay)
+  let endDay = moment().add(31, 'days')
+  let dayRange = startDay.diff(endDay, 'days')
+
+  let compareDayList = [startDay.format('MMM D YYYY')]
+
+  while (dayRange <= 0) {
+    compareDayList.push( startDay.add(14, 'days').format('MMM D YYYY') )
+    dayRange += 14
+  } 
+
+  console.log(compareDayList)
+
+  return compareDayList.find( compareDay => compareDay === currentDay )
+}
