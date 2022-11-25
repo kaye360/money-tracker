@@ -1,11 +1,21 @@
-//
-// Date/Time utility functions 
-//
+/*
+Date/Time utility pure functions 
+
+parseMonth()
+isLeapYear()
+generateCalendar()
+isSameWeeklyDay()
+isSameBiweeklyDay()
+generateValidBiweeklyDates()
+isSameMonthlyDay()
+isSameBimonthlyDay()
+getTodaysEntries()
+*/
 
 import moment from "moment/moment"
 
 //
-// Parse Date function
+// Parse Month function
 // Data a datetime string and convert it to YYYY-MM or English words
 // returns obj { asNumber, asWords }
 //
@@ -29,7 +39,7 @@ export function isLeapYear(year) {
 }
 
 // 
-// Generate list of days
+// Generate list of days/calendar
 // 
 // Returns list of days as array
 // 
@@ -77,7 +87,7 @@ export function isSameBiweeklyDay({ currentDay, startDay }) {
 // 
 // Return array of valid days as text string : ex: "Nov 16 2020"
 // 
-export function generateValidBiweeklyDates({ startDay }) {
+function generateValidBiweeklyDates({ startDay }) {
 
   startDay = moment(startDay)
   let endDay = moment().add(31, 'days')
@@ -171,4 +181,50 @@ export function isSameBimonthlyDay({ currentDay }) {
   }
 
   return false
+}
+
+// 
+// Get entries for a single day
+// 
+// Return array of objects
+// 
+export function getTodaysEntries({ day, forecastEntries }) {
+    
+  let todaysEntries = []
+  forecastEntries.forEach( entry => {
+    
+    switch(entry.repeat_amount) {
+      
+      case 'monthly':
+        if(isSameMonthlyDay({ currentDay : day, compareDay : entry.starting_date })) {
+           todaysEntries.push(entry)
+        }
+      break
+      
+      case 'bimonthly':
+        if(isSameBimonthlyDay({ currentDay : day })) {
+          todaysEntries.push(entry)
+        }
+      break
+      
+      case 'biweekly':
+        if(isSameBiweeklyDay({ currentDay : day, startDay : entry.starting_date })) {
+          todaysEntries.push(entry)
+        }
+      break
+      
+      case 'weekly':
+        if(isSameWeeklyDay({ currentDay : day, compareDay : entry.starting_date })) {
+          todaysEntries.push(entry)
+        }
+      break
+
+      default:
+      break
+
+    }
+    
+  })
+
+  return todaysEntries
 }
