@@ -7,7 +7,8 @@
 import { Style } from 'react-style-tag'
 
 // Utils
-import { isSameWeeklyDay, isSameBiweeklyDay, isSameMonthlyDay, isSameBimonthlyDay, generateCalendar} from '../../utils/date'
+import { generateCalendar, getTodaysEntries} from '../../utils/date'
+import ForecastEntry from './ForecastEntry'
 
 
 
@@ -21,7 +22,7 @@ export default function ListForecastEntries({ amountOfDays = 30, forecastEntries
   // 
   const calendar = generateCalendar({ amountOfDays })
 
-  console.log(forecastEntries)
+  
 
   return(
     <>
@@ -34,6 +35,36 @@ export default function ListForecastEntries({ amountOfDays = 30, forecastEntries
       .forecast-single-day:nth-child(2n) {
         background-color : var(--clr-primary-1);
       }
+
+      .forecast-entry {
+        margin-block : 0.5rem;
+      }
+
+      .forecast-entry-paycheck {
+        color : hsl(119, 90%, 30%);;
+      }
+
+      .forecast-entry-bill {
+        color : hsl(349, 90%, 50%);
+      }
+
+      .forecast-entry-paycheck .forecast-entry-amount::before {
+        content : '+';
+      }
+
+      .forecast-entry-bill .forecast-entry-amount::before {
+        content : '-';
+      }
+
+      .forecast-entry-edit {
+        margin : 0;
+        padding : 0;
+        display : none;
+      }
+
+      .forecast-entry:hover .forecast-entry-edit {
+        display : inline;
+      }
     `}
     </Style>
     
@@ -41,25 +72,21 @@ export default function ListForecastEntries({ amountOfDays = 30, forecastEntries
       {
         calendar.map( (day) =>{
 
-          const forecastOnCurrentDay = forecastEntries.filter( entry => {
-
-            const entryToDate = new Date(entry.starting_date).toString().split(' ').splice(1,3).join(' ')
-            return entryToDate === day && entry
-
-          })
-
+          const entriesToday = getTodaysEntries({day, forecastEntries})
+          
           return (
             <div className='forecast-single-day' key={ day }>
             {day} <br />
+
             {
-            forecastOnCurrentDay && 
-              forecastOnCurrentDay.map( entry => {
-                return( 
-                <div key={entry.forecast_id}>
-                  {entry.name}: {entry.amount} {entry.type}
-                </div>
-              )})
-            } <br />
+            entriesToday.map( entry => {
+              return(
+                <ForecastEntry entry={ entry } />
+              )
+            })
+
+            }
+            
 
           </div>
           )

@@ -52,7 +52,7 @@ class Forecast {
       return ['error' => 'Repeat field is not valid'];
     }
     
-    $post_data['name'] = trim($post_data['name']);
+    $post_data['name'] = trim( ucwords($post_data['name']) );
     $post_data['amount'] = number_format( trim($post_data['amount']), 2 );
 
     $sql = 'INSERT INTO forecast (user_id, name, amount, type, repeat_amount, starting_date) VALUES (:user_id, :name, :amount, :type, :repeat_amount, :starting_date)'; 
