@@ -14,7 +14,7 @@ import useTransactions from '../../utils/useTransactions'
 // Components
 import ViewBudget from '../budgets/ViewBudget'
 import ViewTransactions from '../transactions/ViewTransactions'
-import ViewForecast from '../forecast/ListForecastEntries'
+import ListForecastEntries from '../forecast/ListForecastEntries'
 import useForecast from '../../utils/useForecast'
 
 
@@ -91,7 +91,7 @@ export default function Dashboard() {
       <div>
 
         <h2>1 Week Forecast</h2>
-        <ViewForecast 
+        <ListForecastEntries 
           amountOfDays={ 7 }
           forecastEntries={ forecastEntries }
         />

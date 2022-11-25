@@ -5,15 +5,23 @@
 
 // Dependencies
 import { Style } from 'react-style-tag'
-import { getUpcomingDaysAsWords } from '../../utils/date'
+
+// Utils
+import { isSameWeeklyDay, isSameBiweeklyDay, isSameMonthlyDay, isSameBimonthlyDay, generateCalendar} from '../../utils/date'
 
 
 
 
-export default function ListForecastEntries({ amountOfDays = 5, forecastEntries }) {
+export default function ListForecastEntries({ amountOfDays = 30, forecastEntries }) {
 
-  const days = getUpcomingDaysAsWords({ amountOfDays })
+  // 
+  // Calendar
+  // 
+  // List of Days as text String. ex: "Nov 09 2022"
+  // 
+  const calendar = generateCalendar({ amountOfDays })
 
+  console.log(forecastEntries)
 
   return(
     <>
@@ -31,11 +39,11 @@ export default function ListForecastEntries({ amountOfDays = 5, forecastEntries 
     
     <div className='forecast-days-wrapper'>
       {
-        days.map( (day) =>{
-          
+        calendar.map( (day) =>{
+
           const forecastOnCurrentDay = forecastEntries.filter( entry => {
+
             const entryToDate = new Date(entry.starting_date).toString().split(' ').splice(1,3).join(' ')
-            console.log(entryToDate)
             return entryToDate === day && entry
 
           })

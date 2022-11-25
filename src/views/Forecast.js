@@ -11,7 +11,7 @@ import { UserContext } from '../App'
 import useForecast from '../utils/useForecast'
 
 // Components
-import ViewForecast from '../components/forecast/ListForecastEntries'
+import ListForecastEntries from '../components/forecast/ListForecastEntries'
 import AddForecastEntry from '../components/forecast/AddForecastEntry'
 
 
@@ -39,7 +39,7 @@ export default function Forecast() {
         loadForecastEntries={ loadForecastEntries }
       />
     
-      <ViewForecast
+      <ListForecastEntries
         forecastEntries={ forecastEntries }
       />
 

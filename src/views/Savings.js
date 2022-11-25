@@ -8,8 +8,6 @@ import { useContext, useEffect } from 'react'
 import { UserContext } from '../App'
 import { useNavigate } from 'react-router-dom'
 
-import { isSameBiWeeklyDay } from '../utils/date'
-
 
 
 export default function Savings() {
@@ -26,20 +24,7 @@ export default function Savings() {
   useEffect( () => { !user && navigate('/req-login') }, [navigate, user])
 
 
-  // const date = isSameWeeklyDay({
-  //   currentDay : "2022-11-23 00:00:00",
-  //   compareDay : "2022-11-23 00:00:00"
-  // })
-
-
-  const date = isSameBiWeeklyDay({
-    currentDay : "2022-11-23 00:00:00",
-    compareDay : "2022-09-20 00:00:00",
-    startDay : "2022-08-23 00:00:00"
-  })
-
-  console.log(date)
-  
+    
   return(
     <>
     <Style>
