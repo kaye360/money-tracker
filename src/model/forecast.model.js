@@ -41,3 +41,22 @@ export async function getForecast({ userId }) {
   })
 
 }
+
+// 
+// Edit Single User Forecast Entry
+// 
+export async function editForecastEntry({ entry }) {
+  console.log(entry)
+  return getData({
+    url : `${ForecastAPIURL}/edit`,
+    fetchOptions : postReqOptions({
+      name : entry.name, 
+      amount : entry.amount, 
+      type : entry.type,
+      userId : entry.userId,
+      startingDate : entry.startingDate,
+      forecastEntryId : entry.forecastEntryId,
+      repeat : entry.repeatAmount 
+    })
+  })
+}

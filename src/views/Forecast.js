@@ -41,6 +41,7 @@ export default function Forecast() {
     
       <ListForecastEntries
         forecastEntries={ forecastEntries }
+        loadForecastEntries={ loadForecastEntries }
       />
 
     </div>

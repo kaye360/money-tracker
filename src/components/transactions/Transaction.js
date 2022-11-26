@@ -36,7 +36,7 @@ import  iconSave  from '../../assets/img/icon-save.svg'
 
 
 export default function Transaction({
-  name, budget, amount, date, transactionId,
+  name, budget, amount, date, transactionId, // need to condense this to a single obj
   isNewTransaction, loadTransactions, budgets }) {
 
   // 
@@ -71,6 +71,7 @@ export default function Transaction({
 
     } catch(error) {
 
+
       setFlash({ type : 'fail', message : error.message })
     }
   }
@@ -90,7 +91,7 @@ export default function Transaction({
         transactionId : transactionId
       })
   
-      if(res.error) throw new Error(res.error``)
+      if(res.error) throw new Error(res.error)
       setIsEditMode(!isEditMode)
       loadTransactions({ userId : user.id })
       

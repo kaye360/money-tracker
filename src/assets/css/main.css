@@ -61,7 +61,7 @@ button, .btn, input[type=submit] {
   cursor : pointer;
 }
 
-input {
+input, select {
   margin-inline : 0.5rem;
   padding : 0.5rem;
   border : 1px solid #bbb;

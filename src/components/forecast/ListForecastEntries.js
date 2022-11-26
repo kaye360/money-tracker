@@ -13,7 +13,7 @@ import ForecastEntry from './ForecastEntry'
 
 
 
-export default function ListForecastEntries({ amountOfDays = 30, forecastEntries }) {
+export default function ListForecastEntries({ amountOfDays = 30, forecastEntries, loadForecastEntries }) {
 
   // 
   // Calendar
@@ -81,7 +81,10 @@ export default function ListForecastEntries({ amountOfDays = 30, forecastEntries
             {
             entriesToday.map( entry => {
               return(
-                <ForecastEntry entry={ entry } />
+                <ForecastEntry 
+                  entry={ entry } 
+                  loadForecastEntries={ loadForecastEntries }
+                />
               )
             })
 

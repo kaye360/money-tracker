@@ -34,7 +34,7 @@ class Forecast {
   // POST REQUEST
   // 
   // Forecast Entry Data:
-  // $post_data = obj [ userId, name, amount, type, repeat, date ]
+  // $post_data = array [ userId, name, amount, type, repeat, date ]
   //
   // Returns new Forecast Entry info
   //
@@ -99,4 +99,60 @@ class Forecast {
 
   }
 
+  // 
+  // Edit a single User Forecast entry
+  // 
+  // POST REQUEST
+  // $post_data = [ name, amount, type, repeatAmount, startingDate, userId, forecastEntryId ]
+  // 
+  // return new forecast entry data
+  // 
+  public function edit() {
+
+    $valid_repeat = ['monthly', 'bimonthly', 'weekly', 'biweekly'];
+    $valid_type = ['bill', 'paycheck'];
+    $post_data = json_decode( file_get_contents('php://input'), true );
+    $post_data['name'] = trim( ucwords($post_data['name']) );
+    $post_data['amount'] = number_format( trim($post_data['amount']), 2 );
+
+    if( empty($post_data['name']) || 
+        empty($post_data['amount']) || 
+        empty($post_data['type']) ||
+        empty($post_data['repeat']) ||
+        empty($post_data['startingDate']) 
+      ) {
+        return ['error' => 'Please fill out all fields'];
+    }
+
+    if( !in_array($post_data['type'], $valid_type) ) {
+      return ['error' => 'Type field is not valid.'];
+    }
+
+    if(!in_array($post_data['repeat'], $valid_repeat) ){
+      return ['error' => 'Repeat field is not valid'];
+    }
+
+    $this->stmt = $this->dbh->prepare('
+      UPDATE forecast
+      SET name = :name,
+          amount = :amount,
+          type = :type,
+          repeat_amount = :repeat_amount,
+          starting_date = :starting_date
+      WHERE forecast_id = :forecast_id
+    ');
+
+    $this->stmt->bindValue(':name', $post_data['name']);
+    $this->stmt->bindValue(':amount', $post_data['amount']);
+    $this->stmt->bindValue(':type', $post_data['type']);
+    $this->stmt->bindValue(':repeat_amount', $post_data['repeat']);
+    $this->stmt->bindValue(':starting_date', $post_data['startingDate']);
+    $this->stmt->bindValue(':forecast_id', $post_data['forecastEntryId']);
+
+    return $this->stmt->execute() 
+    ? ['name' => $post_data['name']]
+    : ['error' => 'Error executing edit function'];
+
+  }  
+  
 }
