@@ -65,9 +65,8 @@ export default function Transactions() {
     </Style>
     
     <div className="transactions px2">
+
       <h1 className="px1">Transactions</h1>
-
-
 
       <AddTransaction 
         setIsNewTransaction={ setIsNewTransaction }
@@ -79,14 +78,12 @@ export default function Transactions() {
         routePath='transactions'
       />
 
-
       <ViewTransactions 
         loadTransactions={ loadTransactions }
         isNewTransaction={ isNewTransaction }
         transactions={ transactions }
         budgets={ budgets }
       />
-
       
     </div>
     </>

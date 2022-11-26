@@ -5,13 +5,14 @@
 
 // Dependencies
 import React, { useContext, useEffect } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import { UserContext } from '../App'
 
 // Components
 import AddBudget from '../components/budgets/AddBudget'
 import ViewBudget from '../components/budgets/ViewBudget'
+import BackLink from '../components/layout/BackLink'
 import Transaction from '../components/transactions/Transaction'
 import TransactionsMonthList from '../components/transactions/TransactionsMonthList'
 
@@ -42,7 +43,6 @@ export default function BudgetsMonthly() {
   // Users Budgets in given month
   //
   const { budgets, loadBudgets } = useBudgets({userId : user.id, month : month.asNumber })
-  console.log(budgets)
   
   //
   // Total $ amount of all Budgets
@@ -96,12 +96,12 @@ export default function BudgetsMonthly() {
     <div className='budgets py2'>
       <h1 className='px1'>
         Budgets
-        <span className='budgets-total-amount'>Total ${ totalBudgetsAmount() }/month</span>
+        <span className='budgets-total-amount'>
+          Total ${ totalBudgetsAmount() }/month
+        </span>
       </h1>
 
-      <div className="my1 px1">
-        <Link to='/budgets'>Back to Budgets</Link>
-      </div>
+      <BackLink path="budgets" title="Budgets" />
 
       <TransactionsMonthList 
         transactions={ transactions } 

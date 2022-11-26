@@ -5,7 +5,7 @@
 // 
 
 // Dependencies
-import { Style } from 'react-style-tag'
+// import { Style } from 'react-style-tag'
 import { useContext } from 'react'
 import { UserContext } from '../App'
 
@@ -30,19 +30,9 @@ export default function Home() {
   
   return(
     <>
-    <Style>
-    {`
-
-    `}
-    </Style>
-    
-    <div>
       
-      {
-        user ? <Dashboard /> : <Landing />
-      }
+    { user ? <Dashboard /> : <Landing /> }
 
-    </div>
     </>
   )
 }

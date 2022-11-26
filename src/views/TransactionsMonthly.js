@@ -5,9 +5,10 @@
 
 // Dependencies
 import { useContext, useEffect } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Style } from 'react-style-tag'
 import { UserContext } from '../App'
+import BackLink from '../components/layout/BackLink'
 
 // Components
 import Transaction from '../components/transactions/Transaction'
@@ -80,9 +81,7 @@ export default function TransactionsMonthly() {
     <div>
       <h1>Transactions - { month.asWords }</h1>
 
-      <div className='my1 px1'>
-        <Link to='/transactions'>Back to Transactions</Link>
-      </div>
+      <BackLink path="transactions" title="Transactions" />
 
       <TransactionsMonthList 
         transactions={ transactions }

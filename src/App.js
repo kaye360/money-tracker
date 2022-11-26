@@ -125,7 +125,7 @@ function App() {
 
         <SideBar />
 
-        <main className="">
+        <main>
           <Routes>
 
             <Route path="/" element={ <Home /> } />
