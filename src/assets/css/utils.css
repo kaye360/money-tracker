@@ -112,6 +112,7 @@
 .pr7 { padding-right : 7rem; }
 
 .pxd { padding-inline : var(--padding-x-default); }
+.px0 { padding-inline : 0rem; }
 .px1 { padding-inline : 1rem; }
 .px2 { padding-inline : 2rem; }
 .px3 { padding-inline : 3rem; }
@@ -121,6 +122,7 @@
 .px7 { padding-inline : 7rem; }
 
 .pyd { padding-block : var(--padding-y-default); }
+.py0 { padding-block : 0rem; }
 .py1 { padding-block : 1rem; }
 .py2 { padding-block : 2rem; }
 .py3 { padding-block : 3rem; }

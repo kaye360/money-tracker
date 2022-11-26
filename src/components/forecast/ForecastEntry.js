@@ -54,7 +54,7 @@ export default function ForecastEntry({ entry, loadForecastEntries }) {
 
       if (res.error) throw new Error(res.error)
       setIsEditMode(false)
-      setFlash({ type : 'success', message : `Successfully edited ${res.name}` })
+      setFlash({ type : 'success', message : `Successfully saved ${res.name}` })
       loadForecastEntries({ userId : user.id })
       
     } catch (error) {
@@ -78,6 +78,7 @@ export default function ForecastEntry({ entry, loadForecastEntries }) {
       isEditMode ? 
       <>
       <form onSubmit={ handleSubmit }>
+      <div className='forecast-entry-form'>
         
         <input 
           type="text" 
@@ -105,10 +106,11 @@ export default function ForecastEntry({ entry, loadForecastEntries }) {
         </select>
 
         <input type="date" defaultValue={ startingDate } onChange={ (e) => setStartingDate(e.target.value) }/>
-        {startingDate}
         <button type="submit">
           <img src={ iconSave } alt="Save" />
         </button>
+
+      </div>  
       </form>
       </>
       : // isEditMode = false

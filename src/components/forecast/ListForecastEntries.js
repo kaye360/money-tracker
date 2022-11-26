@@ -32,8 +32,12 @@ export default function ListForecastEntries({ amountOfDays = 30, forecastEntries
         padding : 2rem 0.5rem;
       }
 
-      .forecast-single-day:nth-child(2n) {
+      .forecast-single-day:nth-child(2n-1) {
         background-color : var(--clr-primary-1);
+      }
+
+      .forecast-entry-form {
+        display : flex;
       }
 
       .forecast-entry {

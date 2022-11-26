@@ -48,7 +48,7 @@ export default function Dashboard() {
   // 
   // Get Forecast Entries
   // 
-  const { forecastEntries } = useForecast({ userId : user.id })
+  const { forecastEntries, loadForecastEntries } = useForecast({ userId : user.id })
 
   
   return(
@@ -94,6 +94,7 @@ export default function Dashboard() {
         <ListForecastEntries 
           amountOfDays={ 7 }
           forecastEntries={ forecastEntries }
+          loadForecastEntries={ loadForecastEntries }
         />
 
       </div>

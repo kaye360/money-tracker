@@ -10,7 +10,8 @@ import { UserContext, FlashContext } from '../../App'
 // Utils
 import { addForecastEntry } from '../../model/forecast.model'
 
-
+// Assets
+import iconAdd from '../../assets/img/icon-add-calendar.svg'
 
 
 
@@ -23,13 +24,18 @@ export default function AddForecastEntry({ loadForecastEntries }) {
   const [ , setFlash] = useContext(FlashContext)
   
   // 
-  //Form state values
+  // Form state values
   // 
   const [name, setName] = useState('')
   const [amount, setAmount] = useState(0)
   const [type, setType] = useState('bill')
   const [repeat, setRepeat] = useState('monthly')
   const [date, setDate] = useState( new Date().toISOString().slice(0,10) )
+
+  // 
+  // Form is shown or not
+  // 
+  const [isFormShown, setIsFormShown] = useState(false)
 
   // 
   // Add new Forecast entry Handler
@@ -42,6 +48,7 @@ export default function AddForecastEntry({ loadForecastEntries }) {
       const res = await addForecastEntry({ name, amount, type, repeat, date, userId : user.id })
       if(res.error) throw new Error(res.error)
 
+      setIsFormShown(false)
       setFlash({ type : 'success', message : `${res.name} added successfully` })
       loadForecastEntries({ userId : user.id })
 
@@ -59,14 +66,26 @@ export default function AddForecastEntry({ loadForecastEntries }) {
     <>
     <Style>
     {`
-      .add-forecast-entry-form {
+      .add-forecast-heading {
         display : flex;
         align-items : center;
-        gap : 1rem;
-        flex-wrap : wrap;
+        gap : 0.5rem;
+      }
+
+      .add-forecast-entry-form {
+        display : grid;
+        grid-template-columns : 1fr 1fr;
+        max-width : 750px;
+        margin-bottom : 1rem;
+      }
+
+      .add-forecast-entry-form label {
+        display : block;
+        margin-block : 1rem;
       }
 
       input.add-forecast-entry-submit {
+
         background-color : var(--clr-primary-2);
       }
       
@@ -76,68 +95,86 @@ export default function AddForecastEntry({ loadForecastEntries }) {
     `}
     </Style>
     
-    <form onSubmit={ handleFormSubmit }>
-    <div className='add-forecast-entry-form'>
-      <label>
-        Name:
-        <input 
-          type="text" 
-          defaultValue={ name } 
-          onChange={ (e) => setName(e.target.value) } 
-        />
-      </label>
-
-      <label>
-        Amount
-        <input 
-          type="number" 
-          step="0.01" 
-          defaultValue={ amount }
-          onChange={ (e) => setAmount(e.target.value) }   
-        />
-      </label>
-
-      <label>
-        Starting Date
-        <input
-          type="date" 
-          defaultValue={ date }
-          onChange={ (e) => setDate(e.target.value) }
-        />
-      </label>
-
-      <label>
-        Type
-        <select 
-          defaultValue={ type }
-          onChange={ (e) => setType(e.target.value) }   
-        >
-          <option value="bill">Bill</option>
-          <option value="paycheck">Paycheck</option>
-        </select>
-      </label>
-
-      <label>
-        Repeat
-        <select 
-          defaultValue={ repeat }
-          onChange={ (e) => setRepeat(e.target.value) }   
-        >
-          <option value="monthly">Monthly</option>
-          <option value="bimonthly">Bi-Monthly</option>
-          <option value="weekly">Weekly</option>
-          <option value="biweekly">Bi-Weekly</option>
-        </select>
-      </label>
-    
-      <input 
-        type="submit" 
-        value={ `Add Recurring ${ type[0].toUpperCase() + type.slice(1) }` }
-        className='add-forecast-entry-submit' 
-      />
-
+    <div className='add-forecast-heading'>
+      <h2>Add an Entry</h2>
+      <button onClick={ () => setIsFormShown(!isFormShown) } className='my0 py0'>
+        <img src={ iconAdd } alt="Add an Entry" />
+      </button>
     </div>
-    </form>
+
+    {
+    isFormShown &&
+      <form onSubmit={ handleFormSubmit }>
+      <div className='add-forecast-entry-form'>
+        
+        <div className='add-forecast-entry-form-column'>
+
+          <label>
+            Name:
+            <input 
+              type="text" 
+              defaultValue={ name } 
+              onChange={ (e) => setName(e.target.value) } 
+            />
+          </label>
+
+          <label>
+            Amount
+            <input 
+              type="number" 
+              step="0.01" 
+              defaultValue={ amount }
+              onChange={ (e) => setAmount(e.target.value) }   
+            />
+          </label>
+
+          <label>
+            Starting Date
+            <input
+              type="date" 
+              defaultValue={ date }
+              onChange={ (e) => setDate(e.target.value) }
+            />
+          </label>
+
+        </div>
+
+        <div className='add-forecast-entry-form-column'>
+
+          <label>
+            Type
+            <select 
+              defaultValue={ type }
+              onChange={ (e) => setType(e.target.value) }   
+            >
+              <option value="bill">Bill</option>
+              <option value="paycheck">Paycheck</option>
+            </select>
+          </label>
+
+          <label>
+            Repeat
+            <select 
+              defaultValue={ repeat }
+              onChange={ (e) => setRepeat(e.target.value) }   
+            >
+              <option value="monthly">Monthly</option>
+              <option value="bimonthly">Bi-Monthly</option>
+              <option value="weekly">Weekly</option>
+              <option value="biweekly">Bi-Weekly</option>
+            </select>
+          </label>
+        
+          <input 
+            type="submit" 
+            value={ `Add Recurring ${ type[0].toUpperCase() + type.slice(1) }` }
+            className='add-forecast-entry-submit' 
+          />
+        </div>
+
+      </div>
+      </form>
+    }
     </>
   )
 }
