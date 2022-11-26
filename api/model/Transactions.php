@@ -78,6 +78,9 @@ class Transactions {
 
     // Get post data
     $post_data = json_decode( file_get_contents('php://input'), true );
+    $post_data['name'] = trim($post_data['name']);
+    $post_data['amount'] = trim($post_data['amount']);
+    $post_data['amount'] = number_format($post_data['amount'], 2, '.', '');
 
     // Prepare statmenet
     $this->stmt = $this->dbh->prepare('

@@ -53,7 +53,7 @@ class Forecast {
     }
     
     $post_data['name'] = trim( ucwords($post_data['name']) );
-    $post_data['amount'] = number_format( trim($post_data['amount']), 2 );
+    $post_data['amount'] = number_format( trim($post_data['amount']), 2, '.', '');
 
     $sql = 'INSERT INTO forecast (user_id, name, amount, type, repeat_amount, starting_date) VALUES (:user_id, :name, :amount, :type, :repeat_amount, :starting_date)'; 
     $this->stmt = $this->dbh->prepare($sql);
@@ -113,7 +113,7 @@ class Forecast {
     $valid_type = ['bill', 'paycheck'];
     $post_data = json_decode( file_get_contents('php://input'), true );
     $post_data['name'] = trim( ucwords($post_data['name']) );
-    $post_data['amount'] = number_format( trim($post_data['amount']), 2 );
+    $post_data['amount'] = number_format( trim($post_data['amount']), 2, '.', '');
 
     if( empty($post_data['name']) || 
         empty($post_data['amount']) || 

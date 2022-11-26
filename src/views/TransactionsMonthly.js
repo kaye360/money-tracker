@@ -39,7 +39,7 @@ export default function TransactionsMonthly() {
   //  
   // Get users transations in a given month
   //  
-  const { transactions } = useTransactions({ userId : user.id, month : month.asNumber })
+  const { transactions, loadTransactions } = useTransactions({ userId : user.id, month : month.asNumber })
 
   //
   // Get User budgets
@@ -116,6 +116,7 @@ export default function TransactionsMonthly() {
                     transactionId={ transaction.transaction_id }
                     key={ transaction.transaction_id }
 
+                    loadTransactions={ loadTransactions }
                     budgets={ budgets }
                     />
                     )

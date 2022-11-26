@@ -88,8 +88,9 @@ class Budgets {
 
     foreach( $budgets as $name => $value ) {
 
-      $sql ='SELECT SUM(amount) as total FROM transactions WHERE budget = :budget AND YEAR(date) = :year AND MONTH(date) = :month';
+      $sql ='SELECT SUM(amount) as total FROM transactions WHERE budget = :budget AND YEAR(date) = :year AND MONTH(date) = :month AND user_id = :user_id';
       $this->stmt = $this->dbh->prepare($sql);
+      $this->stmt->bindValue(':user_id', $userId);
       $this->stmt->bindValue(':budget', $name);
       $this->stmt->bindValue(':year', $month[0]);
       $this->stmt->bindValue(':month', $month[1]);

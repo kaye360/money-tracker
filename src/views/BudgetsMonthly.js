@@ -42,6 +42,7 @@ export default function BudgetsMonthly() {
   // Users Budgets in given month
   //
   const { budgets, loadBudgets } = useBudgets({userId : user.id, month : month.asNumber })
+  console.log(budgets)
   
   //
   // Total $ amount of all Budgets
