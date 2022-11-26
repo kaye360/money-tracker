@@ -39,7 +39,7 @@ export default function About() {
         <h1>About</h1>
 
         <p>
-          MoneyApp is an app to keep track of your finances. Here is a little bit of info about the app.
+          Spendly is an app to keep track of your finances. Here is a little bit of info about the app. Currently is is on version <strong>1.0.0</strong>
         </p>
       </div>
 

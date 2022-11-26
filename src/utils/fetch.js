@@ -27,7 +27,7 @@ export function postReqOptions(data) {
 // Returns JSON data {}
 // 
 export async function getData({ url, fetchOptions = {} }) {
-
+  
   const res = await fetch(url, fetchOptions)
   if(!res.ok) throw new Error(`Error Fetching Data from ${url}`)
 

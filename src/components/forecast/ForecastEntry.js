@@ -17,7 +17,7 @@ import iconSave from '../../assets/img/icon-save.svg'
 
 
 export default function ForecastEntry({ entry, loadForecastEntries }) {
-  console.log(entry)
+  
   // 
   // Get contexts
   // 

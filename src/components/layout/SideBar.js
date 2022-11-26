@@ -122,15 +122,15 @@ export default function SideBar() {
             </Link>
           </li>
           <li>
-            <Link to="/savings">
-              <img src={ sidebarIconSavings } alt="Savings" />
-              Savings
-            </Link>
-          </li>
-          <li>
             <Link to="/forecast">
               <img src={ sidebarIconForecast } alt="Forecast" />
               Forecast
+            </Link>
+          </li>
+          <li>
+            <Link to="/savings">
+              <img src={ sidebarIconSavings } alt="Savings" />
+              Savings
             </Link>
           </li>
           <li>

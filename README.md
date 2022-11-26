@@ -21,3 +21,6 @@ This will be a money tracking app. Lots of plans to come...
 
 # Bugs
 - When a budget is renamed to and existing budget, it combines them. Need to prevent this
+- paycheck or bill bi-weekly is saving incorrect value
+- Some transactions are not saving properly
+- when total amount spent per month are calc'd, it incorporates all users

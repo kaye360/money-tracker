@@ -41,7 +41,7 @@ class Transactions {
     $post_data = json_decode( file_get_contents("php://input"), true );
     $post_data['name'] = trim($post_data['name']);
     $post_data['amount'] = trim($post_data['amount']);
-    $post_data['amount'] = number_format($post_data['amount'], 2);
+    $post_data['amount'] = number_format($post_data['amount'], 2, '.', '');
 
     $this->stmt = $this->dbh->prepare('
       INSERT INTO transactions (user_id, name, budget, amount) 

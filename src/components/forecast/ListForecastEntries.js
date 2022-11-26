@@ -88,6 +88,7 @@ export default function ListForecastEntries({ amountOfDays = 30, forecastEntries
                 <ForecastEntry 
                   entry={ entry } 
                   loadForecastEntries={ loadForecastEntries }
+                  key={ entry.forecast_id }
                 />
               )
             })

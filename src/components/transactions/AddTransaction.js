@@ -47,7 +47,7 @@ export default function Base({ setIsNewTransaction, loadTransactions }) {
 
       const res = await addTransaction({
         name : e.target[0].value,
-        amount : e.target[1].value,
+        amount : parseFloat(e.target[1].value),
         budget : e.target[2].value,
         userId : user.id
       })
