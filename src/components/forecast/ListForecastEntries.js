@@ -74,7 +74,7 @@ export default function ListForecastEntries({ amountOfDays = 30, forecastEntries
     
     <div className='forecast-days-wrapper'>
       {
-        calendar.map( (day) =>{
+        calendar.map( day =>{
 
           const entriesToday = getTodaysEntries({day, forecastEntries})
           

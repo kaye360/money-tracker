@@ -39,7 +39,7 @@ export default function About() {
         <h1>About</h1>
 
         <p>
-          Spendly is an app to keep track of your finances. Here is a little bit of info about the app. Currently is is on version <strong>1.0.0</strong>
+          Spendly is an app to keep track of your finances. Here is a little bit of info about the app. Currently is is on version <strong>1.0.1</strong>
         </p>
       </div>
 
@@ -57,8 +57,8 @@ export default function About() {
         </div>
 
         <div className='about-card'>
-          <h3>Coming Soon: Forecast</h3>
-          <p> Here you will be able to see your upcoming bills and paychecks in the next month, laid out day by day.</p>
+          <h3>Forecast</h3>
+          <p> Here you are able to see your upcoming bills and paychecks in the next month, laid out day by day.</p>
         </div>
 
         <div className='about-card'>
